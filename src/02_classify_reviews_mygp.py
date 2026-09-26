@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 import time
 from groq import Groq
 import pandas as pd
@@ -10,8 +11,14 @@ if not api_key:
 
 client = Groq(api_key=api_key)
 
+# Resolve paths relative to project root
+BASE_DIR = Path(__file__).resolve().parent.parent
+input_file = BASE_DIR / "data" / "raw" / "mygp_raw_reviews.csv"
+output_file = BASE_DIR / "data" / "processed" / "mygp_classified_reviews.csv"
+output_file.parent.mkdir(parents=True, exist_ok=True)
+
 # Load scraped reviews
-df = pd.read_csv("mygp_raw_reviews.csv")
+df = pd.read_csv(input_file)
 print(f"Loaded {len(df)} reviews to process.")
 
 SYSTEM_PROMPT = """
@@ -57,16 +64,15 @@ def process_review_text(text):
     }
 
 
-output_file = "mygp_classified_reviews.csv"
 results = []
 start_index = 0
 
 # Resume from checkpoint if interrupted
-if os.path.exists(output_file):
+if output_file.exists():
   cached_df = pd.read_csv(output_file)
   start_index = len(cached_df)
   results = cached_df.to_dict(orient="records")
-  print(f"Resuming pipeline from index {start_index}...")
+  print(f"Resuming MyGP pipeline from index {start_index}...")
 
 for i in range(start_index, len(df)):
   row = df.iloc[i].to_dict()
@@ -78,7 +84,8 @@ for i in range(start_index, len(df)):
   results.append(row)
 
   print(
-      f"[{i+1}/{len(df)}] Rating: {row['rating']} | Category: {row['category']}"
+      f"[MyGP {i+1}/{len(df)}] Rating: {row['rating']} | Category:"
+      f" {row['category']}"
   )
 
   # Save progress every 25 records
