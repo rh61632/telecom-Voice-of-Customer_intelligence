@@ -7,7 +7,7 @@
 | :---: | :---: | :---: |
 | **Grameenphone** | **Banglalink** | **Robi Axiata** |
 | `com.portonics.mygp` | `com.arena.banglalinkmela.app` | `net.omobio.robisc` |
-| **MyGP Platform** | **MyBL Platform** | **MyRobi Platform** |
+| **MyGP Platform** | **MyBL Platform** | **My Robi Platform** |
 
 </div>
 
