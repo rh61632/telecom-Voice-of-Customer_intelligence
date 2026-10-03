@@ -61,7 +61,7 @@ All visualizations are generated natively in Python at publication-grade **300 D
 ## 🏗️ Technical Architecture & Data Lineage
 
 ```text
-[Stage 1: Seed LLM Labeling (Groq API)] ──► 4,500 Reviews (1,500 per operator) labeled via Qwen-2.5-32B / Llama-3.3-70B
+[Stage 1: Seed LLM Labeling (Groq API)] ──► 4,500 Reviews (1,500 per operator) labeled via Qwen (`qwen/qwen3.8-27b`)
                       │
                       ▼
 [Stage 2: Multi-Paradigm Supervised Training] ──► Train Ensemble ML, LinearSVC, LogReg & BiLSTM+Attention
@@ -89,7 +89,7 @@ All visualizations are generated natively in Python at publication-grade **300 D
 
 1. **Phase 1: Seed Dataset & Weak Supervision via Groq API (N=4,500)**
    * **The Challenge:** Telecom customer feedback in Bangladesh is heavily code-switched across standard Bengali, English, and romanized Banglish (*"baje network"*, *"purle offer"*, *"valo chole"*). Manual labeling of thousands of samples from scratch is cost-prohibitive.
-   * **The Solution:** We extracted an initial seed corpus of **4,500 customer reviews** (1,500 each from Grameenphone, Banglalink, and Robi). We then utilized the **Groq API** (powered by high-throughput LLM architectures including `qwen-2.5-32b` and `llama-3.3-70b-versatile`) to perform zero-shot multilingual parsing, 1-sentence English translation, operational taxonomy mapping (Billing, Network, App Bugs, Offers, Appreciation), and silver sentiment labeling.
+   * **The Solution:** We extracted an initial seed corpus of **4,500 customer reviews** (1,500 each from Grameenphone, Banglalink, and Robi). We then utilized the **Groq API** with the **`qwen/qwen3.8-27b`** model to perform zero-shot multilingual parsing, 1-sentence English translation, operational taxonomy mapping (Billing, Network, App Bugs, Offers, Appreciation), and silver sentiment labeling.
    * **Artifacts:** Stored in `data/processed/mygp_classified_reviews.csv`, `mybl_classified_reviews.csv`, and `myrobi_classified_reviews.csv`.
 
 2. **Phase 2: Multi-Paradigm Supervised Model Development**
@@ -305,5 +305,5 @@ This project is licensed under the MIT License. If you use this methodology, cod
 ## 🙏 Acknowledgments
 
 * **AI-Assisted Engineering:** Data pipeline automation, terminal interactive annotation tooling, and visualization suites were developed in collaborative pair-programming with **Google Antigravity** (Google DeepMind), adhering to COPE and ACM AI transparency guidelines.
-* **LLM Weak Supervision:** Gratitude to **Groq** for high-throughput cloud inference (utilizing open-weight LLMs including `Qwen-2.5-32B` and `Llama-3.3-70B`) enabling rapid zero-shot seed dataset translation and taxonomy labeling.
+* **LLM Weak Supervision:** Gratitude to **Groq** for high-throughput cloud inference (utilizing the open-weight `qwen/qwen3.8-27b` model) enabling rapid zero-shot seed dataset translation and taxonomy labeling.
 * **Open-Source Community:** Built upon foundational open-source packages including `scikit-learn`, `PyTorch`, `pandas`, `numpy`, `matplotlib`, and `google-play-scraper`.
