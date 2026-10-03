@@ -61,33 +61,65 @@ All visualizations are generated natively in Python at publication-grade **300 D
 ## 🏗️ Technical Architecture & Data Lineage
 
 ```text
-[Google Play Store Ingestion Pipeline]
-           │  (Historical Scraping: 2020 to Sep 2026)
-           ▼
-[scraped_data_2020/raw/*.csv] (35 MB, Multi-Year Review Archives)
-           │
-           ▼  (Strict Temporal Alignment Filter)
-[scraped_data_2020/common_duration/*.csv] (402 Shared Days: Aug 24, 2025 to Sep 30, 2026 | N=83,417)
-           │
-           ▼  (Multi-Model High-Throughput Inference Engine)
-  ├── 1. Soft-Voting Ensemble ML (TF-IDF sub-word n-grams) ──► 17,495 reviews/sec [HERO MODEL]
-  ├── 2. Calibrated LinearSVC (Linear Maximum Margin)     ──► 37,297 reviews/sec
-  ├── 3. Balanced Logistic Regression (Linear Probabilistic)──► 37,891 reviews/sec
-  └── 4. Hybrid BiLSTM + Bahdanau Attention (Neural Seq)   ──►    490 reviews/sec
-           │
-           ▼  (Active Human-in-the-Loop Stratification)
-[scraped_data_2020/gold_set/gold_set_candidates.csv]
-  ├── 50% Consensus Anchors
-  ├── 30% Multi-Model Disagreements (Stress-Test Cases)
-  └── 20% Low-Confidence Ambiguous Code-Switched Cases
-           │
-           ▼  (Interactive CLI Annotation with Undo & Jump Navigation)
-[scraped_data_2020/gold_set/gold_set_verified.csv] (N=600 Human Verified Ground Truth)
-           │
-           ▼  (Empirical Scientific Evaluation & BI Synthesis)
-  ├── gold_standard_evaluation_report.md
-  └── telecom_voc_business_intelligence_report.md
+[Stage 1: Seed LLM Labeling (Groq API)] ──► 4,500 Reviews (1,500 per operator) labeled via Qwen-2.5-32B / Llama-3.3-70B
+                      │
+                      ▼
+[Stage 2: Multi-Paradigm Supervised Training] ──► Train Ensemble ML, LinearSVC, LogReg & BiLSTM+Attention
+                      │
+                      ▼
+[Stage 3: Multi-Year Scraping & Alignment] ──► Extract 83,417 Common Duration Reviews (402 Shared Days, Aug 2025 - Sep 2026)
+                      │
+                      ▼
+[Stage 4: High-Throughput Production Inference] ──► Classify 83.4k Reviews across all models (~17.5k reviews/sec)
+                      │
+                      ▼
+[Stage 5: Active Sampling & Golden Data Creation] ──► Stratify 600 Stress-Test Reviews (50% Consensus, 30% Disagreement, 20% Low-Conf)
+                      │
+                      ▼
+[Stage 6: Interactive Human-in-the-Loop CLI] ──► 100% Human Verification with Undo & Jump Navigation (Gold Ground Truth)
+                      │
+                      ▼
+[Stage 7: Empirical Benchmark & Discovery] ──► Validate Models on Gold Truth (Ensemble wins: 82.0% Acc, 0.6781 Macro-F1)
+                      │
+                      ▼
+[Stage 8: Executive BI Scorecard & Visual Analytics] ──► Net Sentiment Scores (+81.5% BL, +79.4% Robi, +56.6% GP) & 300 DPI Plots
 ```
+
+### 🔄 How Everything is Connected (The Closed-Loop Story)
+
+1. **Phase 1: Seed Dataset & Weak Supervision via Groq API (N=4,500)**
+   * **The Challenge:** Telecom customer feedback in Bangladesh is heavily code-switched across standard Bengali, English, and romanized Banglish (*"baje network"*, *"purle offer"*, *"valo chole"*). Manual labeling of thousands of samples from scratch is cost-prohibitive.
+   * **The Solution:** We extracted an initial seed corpus of **4,500 customer reviews** (1,500 each from Grameenphone, Banglalink, and Robi). We then utilized the **Groq API** (powered by high-throughput LLM architectures including `qwen-2.5-32b` and `llama-3.3-70b-versatile`) to perform zero-shot multilingual parsing, 1-sentence English translation, operational taxonomy mapping (Billing, Network, App Bugs, Offers, Appreciation), and silver sentiment labeling.
+   * **Artifacts:** Stored in `data/processed/mygp_classified_reviews.csv`, `mybl_classified_reviews.csv`, and `myrobi_classified_reviews.csv`.
+
+2. **Phase 2: Multi-Paradigm Supervised Model Development**
+   * Using the 4,500 LLM-labeled seed examples, we trained multiple model families to benchmark speed vs. accuracy tradeoffs:
+     * **Classical ML (`ml/`):** Primary Balanced Logistic Regression, Calibrated LinearSVC, and a **Soft-Voting Ensemble Classifier** leveraging sub-word TF-IDF n-grams (1-gram to 3-gram character and word features).
+     * **Deep Learning (`dl/`):** A **Bidirectional LSTM with Bahdanau Attention** and a fine-tuned multilingual Transformer head (**MiniLM**).
+   * **Throughput Profiling:** The Soft-Voting Ensemble achieved **~17,495 reviews/sec** on standard CPU, while Deep Learning models ran at **490 reviews/sec** and Transformers required heavy GPU compute.
+
+3. **Phase 3: Production Scale Inference (83,417 Reviews, Common Duration)**
+   * To evaluate the models in a real-world multi-brand competitive setting, we scraped **all reviews from 2020 through September 2026** (35 MB in `scraped_data_2020/raw/`).
+   * We computed the exact continuous overlapping time window across all three operators: **August 24, 2025 to September 30, 2026 (402 days, ~13.2 months)**, yielding **83,417 standardized customer reviews**.
+   * We deployed our pre-trained models to classify this massive production cohort, generating `classified_all_operators_pretrained.csv`.
+
+4. **Phase 4: Golden Data Implementation (Active Human-in-the-Loop Validation)**
+   * **Why Golden Data was Essential:** While LLM weak supervision enabled initial training, automated models and LLMs still possess blind spots on subtle Bengali sarcasm, rating misclicks, and local slang. An **empirical human ground truth (Golden Data)** was required to scientifically validate the models.
+   * **Active Stress-Test Sampling Strategy (N=600):** Rather than sampling uniformly, we constructed a balanced cohort of 200 reviews per operator deliberately engineered with:
+     * **50% Consensus Anchors (300 reviews):** Cases where all 4 models unanimously agreed.
+     * **30% Multi-Model Disagreements (180 reviews):** Difficult boundary cases where models debated (e.g., Ensemble vs. BiLSTM vs. LogReg).
+     * **20% Low-Confidence Ambiguous Cases (120 reviews):** Reviews with <65% prediction confidence containing heavy Banglish slang.
+   * **Interactive Annotation CLI (`scraped_data_2020/pipeline/04_interactive_gold_annotator.py`):**
+     * Built a custom terminal labeling environment featuring single-key voting (`1:Negative`, `2:Neutral`, `3:Positive`), quick `[Enter]` acceptance of model suggestions, undo history (`b`), and direct review jumping (`edit <num>`).
+     * The author verified **100% of all 600 reviews**, creating the definitive ground-truth benchmark in `scraped_data_2020/gold_set/gold_set_verified.csv`.
+
+5. **Phase 5: Empirical Benchmark & Discovery**
+   * Evaluating all models against the verified Golden Data decisively proved the **Soft-Voting Ensemble is the Hero Model (82.00% Accuracy, 0.6781 Macro-F1)**, outperforming LinearSVC (79.3%), Logistic Regression (75.3%), and BiLSTM (71.5%).
+   * Uncovered textbook linguistic phenomena that automated heuristics miss: **Bengali sarcasm** (*"লোট পাটের জন্য সেরা রে"*), **star-rating user misclicks** (*"ভালো"* with 1★), and **sub-word contractions** (*"nc app 🫠"*).
+
+6. **Phase 6: Executive BI Translation & Visual Analytics**
+   * Translated model predictions into executive scorecards (Net Sentiment Scores: Banglalink `+81.5%`, Robi `+79.4%`, Grameenphone `+56.6%`) and operational recommendations in `telecom_voc_business_intelligence_report.md`.
+   * Generated 7 publication-grade **300 DPI visualizations** in Python, completely replacing external BI dependencies.
 
 ---
 
