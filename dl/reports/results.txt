@@ -1,57 +1,60 @@
 ================================================================================
-TELECOM VOICE OF CUSTOMER (VoC) INTELLIGENCE - DEEP LEARNING BENCHMARK REPORT
+TELECOM VOICE OF CUSTOMER (VoC) INTELLIGENCE - GOOGLE COLAB GPU BENCHMARK REPORT
 ================================================================================
+Executed In   : Google Colab (Commit: 60cf0f4)
+Compute Device: NVIDIA Tesla T4 GPU (15.64 GB VRAM, CUDA Enabled)
+Framework     : PyTorch 2.11.0+cu130, Hugging Face Transformers
 Dataset Scope : 4,500 Multilingual Reviews (Grameenphone, Banglalink, Robi)
-Script Coverage: Bengali UTF-8, Phonetic Romanized Banglish, English
 
 1. DATASET CLASS DISTRIBUTION:
 --------------------------------------------------------------------------------
-  - Positive Reviews :  2773 (61.62%)
-  - Negative Reviews :  1238 (27.51%)
-  - Neutral Reviews  :   489 (10.87%)
-  - Total Evaluated  :  4500 (100.0%)
+  - Positive Reviews :  2,773 (61.62%)
+  - Negative Reviews :  1,238 (27.51%)
+  - Neutral Reviews  :    489 (10.87%)
+  - Total Evaluated  :  4,500 (100.0%)
 
 2. 5-FOLD STRATIFIED CROSS-VALIDATION SUMMARY:
 --------------------------------------------------------------------------------
 Model                                  Macro-F1 (Mean ± Std)   Accuracy (Mean ± Std)
 --------------------------------------------------------------------------------
 Statistical Floor (Dummy - Most Freq)  0.2542 ± 0.0001         61.62% ± 0.05%
-Classical ML (Char N-Gram LogReg)      0.7796 ± 0.0182         85.96% ± 1.36%
-Deep Learning (BiLSTM + Attention)     0.7557 ± 0.0149         84.56% ± 1.67%
-Deep Learning (MiniLM Transformer)     0.7795 ± 0.0158         85.73% ± 1.20%
+Deep Learning: BiLSTM + Char-CNN       0.7525 ± 0.0116         84.02% ± 1.15%
+Classical ML: Char N-Gram LogReg       0.7796 ± 0.0182         85.96% ± 1.36%
+Deep Learning: Multilingual MiniLM     0.7809 ± 0.0203         86.00% ± 1.42%
 
 3. FOLD-BY-FOLD BREAKDOWN (Macro-F1):
 --------------------------------------------------------------------------------
-Fold    BiLSTM Macro-F1    MiniLM Macro-F1    LogReg Macro-F1
-Fold 1  0.7543             0.7720             0.7873
-Fold 2  0.7485             0.7578             0.7615
-Fold 3  0.7595             0.7999             0.7949
-Fold 4  0.7808             0.7726             0.7998
-Fold 5  0.7355             0.7953             0.7545
+Fold    BiLSTM + Char-CNN    Multilingual MiniLM    Char N-Gram LogReg
+Fold 1  0.7562               0.7621                 0.7873
+Fold 2  0.7371               0.7525                 0.7615
+Fold 3  0.7659               0.7996                 0.7949
+Fold 4  0.7628               0.7862                 0.7998
+Fold 5  0.7408               0.8039                 0.7545
 
-4. QUALITATIVE INFERENCE HIGHLIGHTS:
+4. SAMPLE INFERENCE RESULTS (Tesla T4 GPU):
 --------------------------------------------------------------------------------
 - Review: "Network speed khub e baje, 4G thakleo kono kaje ase na" (Banglish)
-  * BiLSTM Prediction   : Negative (Confidence: 98.25%)
-  * MiniLM Prediction   : Positive (Confidence: 55.69%) - Tokenizer fracture issue
-  * LogReg Prediction   : Negative (Confidence: 59.41%)
+  * Predicted : Negative (Confidence: 99.93%)
+  * Probabilities: Negative: 99.93%, Neutral: 0.04%, Positive: 0.03%
 
 - Review: "খুব সুন্দর এবং সহজ অ্যাপ, অনেক সুবিধা পাই" (Bengali script)
-  * BiLSTM Prediction   : Positive (Confidence: 99.97%)
-  * MiniLM Prediction   : Positive (Confidence: 99.85%)
-  * LogReg Prediction   : Positive (Confidence: 91.79%)
+  * Predicted : Positive (Confidence: 100.00%)
+  * Probabilities: Negative: 0.00%, Neutral: 0.00%, Positive: 100.00%
 
 - Review: "মোটামুটি চলে তবে আরও উন্নতি দরকার" (Bengali script)
-  * BiLSTM Prediction   : Neutral (Confidence: 99.82%)
-  * MiniLM Prediction   : Neutral (Confidence: 94.10%)
-  * LogReg Prediction   : Neutral (Confidence: 95.26%)
+  * Predicted : Neutral (Confidence: 99.80%)
+  * Probabilities: Negative: 0.03%, Neutral: 99.80%, Positive: 0.17%
 
-5. ARTIFACTS SAVED:
+- Review: "Emergency internet option its very very good services" (English)
+  * Predicted : Positive (Confidence: 99.72%)
+  * Probabilities: Negative: 0.04%, Neutral: 0.24%, Positive: 99.72%
+
+- Review: "faltu service kono kajer na akdom useless" (Banglish)
+  * Predicted : Negative (Confidence: 99.96%)
+  * Probabilities: Negative: 99.96%, Neutral: 0.02%, Positive: 0.02%
+
+5. SAVED NOTEBOOK & ARTIFACTS:
 --------------------------------------------------------------------------------
-  - BiLSTM Model Checkpoint     : dl/models/bilstm_attention_model.pt
-  - MiniLM Transformer Head     : dl/models/minilm_transformer_head.pt
-  - Primary Logistic Regression : ml/models/primary_logistic_regression.joblib
-  - Challenger LinearSVC        : ml/models/challenger_linearsvc.joblib
-  - Google Colab Notebook       : dl/telecom_voc_deep_learning_colab.ipynb
-  - Benchmark Summary Report    : dl/reports/results.txt
+  - Executed Notebook with Visual Plots: dl/telecom_voc_deep_learning_colab.ipynb
+  - Local GPU Checkpoint Export Path   : dl/models/colab_bilstm_attention.pt
 ================================================================================
