@@ -286,6 +286,33 @@ python scraped_data_2020/pipeline/06_generate_visualizations.py
 
 ---
 
+## ⚠️ Project Limitations & Threats to Validity
+
+To ensure responsible analytical interpretation and scientific transparency, several inherent methodological and domain boundaries must be explicitly noted:
+
+1. **Perception vs. Operational Reality (VoC Subjectivity Gap):**
+   * This pipeline measures **Voice-of-Customer sentiment (customer perception and emotional experience)**; it **does not verify whether the customer's claims are factually, legally, or technically accurate**.
+   * *Illustrative Example:* A customer review alleging *"balance theft"* or *"unauthorized deduction"* may stem from automated OS background app updates, third-party content subscriptions, or unpaid emergency balances rather than telecommunications billing malpractice. Similarly, reviews asserting *"zero 4G speed"* may reflect handset misconfiguration, dense concrete indoor shielding, or localized cell maintenance rather than nationwide network deficiency.
+   * VoC analytics reflects **brand perception and user friction**, serving as an operational diagnostic rather than an audit of Call Detail Records (CDRs) or spectrum QoS telemetry.
+
+2. **Self-Selection & Voluntary Reporting Bias:**
+   * Public app store reviews exhibit classic bimodal self-selection bias. Users are disproportionately driven to publish reviews during emotional extremes: either intense delight (promotional rewards, free GB bonuses) or acute frustration (service outages, package expiration). The silent majority of daily users with stable, satisfactory connectivity rarely submit written feedback.
+
+3. **Incentivized Review Distortion (Gamification Effects):**
+   * Telco self-care apps (notably *MyBL* and *MyRobi*) regularly deploy gamified promotional incentives (e.g., spin-to-win, free 500MB login bonuses). A segment of customer feedback consists of brief promotional affirmations (*"nice 5gb free pailam"*, *"wow"*, *"good app"*) submitted primarily to unlock in-app rewards, which can artificially elevate positive sentiment and Net Sentiment Scores (NSS) relative to organic service satisfaction.
+
+4. **Linguistic Sparsity & Code-Switched Ambiguity:**
+   * Romanized Banglish lacks standardized phonetic orthography (e.g., *"valo"*, *"bhalo"*, *"bahlo"*, *"bala"*), leading to vocabulary variance.
+   * Ultra-short reviews (*"bad"*, *"best"*, *"..."*, *"ok"*) lack contextual diagnostic depth, making it impossible to isolate whether the friction relates to bundle pricing, UI responsiveness, customer support, or internet latency without broader operational telemetry.
+
+5. **Channel Demographic Restriction (Android Play Store Only):**
+   * The analyzed dataset exclusively represents Android smartphone subscribers utilizing digital self-care apps. It excludes iOS subscribers, feature-phone users relying on USSD (`*121#`) / IVR interfaces, and rural demographics who interact with telcos primarily through physical retail agents.
+
+6. **Temporal & Macroeconomic Climate (Aug 2025 – Sep 2026):**
+   * Sentiment metrics reflect the specific macroeconomic conditions, inflation rates, and BTRC regulatory tariff floors active during the 402-day shared window. Macro-level changes in consumer purchasing power can influence price sensitivity independently of operator service quality.
+
+---
+
 ## 📜 Citation & License
 
 This project is licensed under the MIT License. If you use this methodology, code-switched Banglish preprocessing, or empirical Gold Standard benchmarking in your research or commercial applications, please cite:

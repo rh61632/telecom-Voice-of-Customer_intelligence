@@ -125,5 +125,20 @@ Analyzing 83,417 customer reviews across all three major telecom operators revea
    Customized bundles (such as Robi's *Amar Offer* and GP's *Flexiplan*) generate higher positive sentiment than generic mass-market campaigns. Investing in predictive analytics to serve the right pack at the right price point will be the key differentiator for 2026 and beyond.
 
 ---
+
+## 7. Analytical Limitations & Methodological Boundaries
+
+For executive decision-makers, several core boundaries of Voice-of-Customer intelligence must be acknowledged:
+
+1. **Perception vs. Technical Ground Truth:**  
+   This report synthesizes customer **perception, sentiment, and reported friction**; it does **not verify the factual or technical accuracy of user claims**. For example, reviews claiming *"balance deductions"* may stem from automated background data usage, third-party content subscriptions, or handset settings rather than telco billing errors. VoC measures brand sentiment and customer experience, not network telemetry.
+2. **Voluntary Reporting Bias:**  
+   Customer feedback on digital app stores is voluntary and typically submitted during extreme satisfaction (e.g., promotional bonuses) or frustration (e.g., service disruption). The satisfied majority of daily users rarely leaves feedback.
+3. **Promotional Incentive Distortions:**  
+   Promotional campaigns offering free data bonuses (e.g., 500MB login rewards in MyBL/MyRobi) generate short positive reviews written primarily to claim rewards, creating an upward bias in positive volume.
+4. **Channel Scope:**  
+   Data represents smartphone users on Android self-care apps, excluding feature-phone subscribers using USSD (`*121#`) and rural subscribers utilizing physical retail agents.
+
+---
 *Report generated from the Telecom VoC Intelligence Pipeline.*  
 *Datasets & Checkpoints: `scraped_data_2020/common_duration/`*
