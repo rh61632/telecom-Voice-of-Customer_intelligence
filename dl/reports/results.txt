@@ -1,0 +1,57 @@
+================================================================================
+TELECOM VOICE OF CUSTOMER (VoC) INTELLIGENCE - DEEP LEARNING BENCHMARK REPORT
+================================================================================
+Dataset Scope : 4,500 Multilingual Reviews (Grameenphone, Banglalink, Robi)
+Script Coverage: Bengali UTF-8, Phonetic Romanized Banglish, English
+
+1. DATASET CLASS DISTRIBUTION:
+--------------------------------------------------------------------------------
+  - Positive Reviews :  2773 (61.62%)
+  - Negative Reviews :  1238 (27.51%)
+  - Neutral Reviews  :   489 (10.87%)
+  - Total Evaluated  :  4500 (100.0%)
+
+2. 5-FOLD STRATIFIED CROSS-VALIDATION SUMMARY:
+--------------------------------------------------------------------------------
+Model                                  Macro-F1 (Mean ± Std)   Accuracy (Mean ± Std)
+--------------------------------------------------------------------------------
+Statistical Floor (Dummy - Most Freq)  0.2542 ± 0.0001         61.62% ± 0.05%
+Classical ML (Char N-Gram LogReg)      0.7796 ± 0.0182         85.96% ± 1.36%
+Deep Learning (BiLSTM + Attention)     0.7557 ± 0.0149         84.56% ± 1.67%
+Deep Learning (MiniLM Transformer)     0.7795 ± 0.0158         85.73% ± 1.20%
+
+3. FOLD-BY-FOLD BREAKDOWN (Macro-F1):
+--------------------------------------------------------------------------------
+Fold    BiLSTM Macro-F1    MiniLM Macro-F1    LogReg Macro-F1
+Fold 1  0.7543             0.7720             0.7873
+Fold 2  0.7485             0.7578             0.7615
+Fold 3  0.7595             0.7999             0.7949
+Fold 4  0.7808             0.7726             0.7998
+Fold 5  0.7355             0.7953             0.7545
+
+4. QUALITATIVE INFERENCE HIGHLIGHTS:
+--------------------------------------------------------------------------------
+- Review: "Network speed khub e baje, 4G thakleo kono kaje ase na" (Banglish)
+  * BiLSTM Prediction   : Negative (Confidence: 98.25%)
+  * MiniLM Prediction   : Positive (Confidence: 55.69%) - Tokenizer fracture issue
+  * LogReg Prediction   : Negative (Confidence: 59.41%)
+
+- Review: "খুব সুন্দর এবং সহজ অ্যাপ, অনেক সুবিধা পাই" (Bengali script)
+  * BiLSTM Prediction   : Positive (Confidence: 99.97%)
+  * MiniLM Prediction   : Positive (Confidence: 99.85%)
+  * LogReg Prediction   : Positive (Confidence: 91.79%)
+
+- Review: "মোটামুটি চলে তবে আরও উন্নতি দরকার" (Bengali script)
+  * BiLSTM Prediction   : Neutral (Confidence: 99.82%)
+  * MiniLM Prediction   : Neutral (Confidence: 94.10%)
+  * LogReg Prediction   : Neutral (Confidence: 95.26%)
+
+5. ARTIFACTS SAVED:
+--------------------------------------------------------------------------------
+  - BiLSTM Model Checkpoint     : dl/models/bilstm_attention_model.pt
+  - MiniLM Transformer Head     : dl/models/minilm_transformer_head.pt
+  - Primary Logistic Regression : ml/models/primary_logistic_regression.joblib
+  - Challenger LinearSVC        : ml/models/challenger_linearsvc.joblib
+  - Google Colab Notebook       : dl/telecom_voc_deep_learning_colab.ipynb
+  - Benchmark Summary Report    : dl/reports/results.txt
+================================================================================
