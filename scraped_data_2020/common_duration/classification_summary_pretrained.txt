@@ -1,0 +1,27 @@
+================================================================================
+TELECOM VOICE-OF-CUSTOMER INTELLIGENCE: PRETRAINED MODEL CLASSIFICATION
+Common Duration Window: 2025-08-24 to 2026-09-30 (Total Reviews: 83,417)
+================================================================================
+
+1. CLASSIFICATION BREAKDOWN BY MODEL (OVERALL ACROSS ALL 83,417 REVIEWS):
+--------------------------------------------------------------------------------
+Model Architecture             | Positive %  | Neutral %  | Negative % 
+--------------------------------------------------------------------------------
+Soft-Voting Ensemble (ML)      |      84.1%  |      5.9%  |       9.9%
+Balanced Logistic Regression   |      81.4%  |      9.0%  |       9.6%
+Calibrated LinearSVC           |      84.0%  |      6.0%  |      10.0%
+Hybrid BiLSTM + Attention      |      80.3%  |     10.6%  |       9.1%
+
+2. OPERATOR BENCHMARK (USING PRIMARY ENSEMBLE MODEL):
+-------------------------------------------------------------------------------------
+Operator        | Total Reviews | Positive %  | Neutral %  | Negative %  | Net Sentiment (NSS)
+-------------------------------------------------------------------------------------
+Grameenphone    | 21,524        |      75.0%  |      6.6%  |      18.4%  |            +56.6%
+Banglalink      | 28,068        |      88.3%  |      4.9%  |       6.8%  |            +81.5%
+Robi            | 33,825        |      86.5%  |      6.4%  |       7.1%  |            +79.4%
+
+3. CROSS-MODEL AGREEMENT RATE WITH PRETRAINED ENSEMBLE:
+------------------------------------------------------------
+- Agreement between Ensemble and Logistic Regression      : 96.44%
+- Agreement between Ensemble and LinearSVC                : 98.93%
+- Agreement between Ensemble and BiLSTM + Attention       : 91.84%

@@ -1,0 +1,20 @@
+================================================================================
+TELECOM VOC INTELLIGENCE: MODEL BENCHMARK ON COMMON DURATION REVIEWS
+Window: 2025-08-24 to 2026-09-30 (Shared across GP, Banglalink, Robi)
+================================================================================
+Model                               | Macro-F1 (Mean ± Std)  | Accuracy  
+--------------------------------------------------------------------------------
+Balanced Logistic Regression        | 0.4926 ± 0.0166            | 50.83%
+Calibrated LinearSVC                | 0.4825 ± 0.0132            | 50.97%
+Soft-Voting Ensemble ML             | 0.4816 ± 0.0120            | 51.23%
+Hybrid BiLSTM + Attention           | 0.4640 ± 0.0149            | 50.07%
+Pretrained MiniLM Transformer       | 0.4917 ± 0.0287            | 52.93%
+
+================================================================================
+OPERATOR VOICE-OF-CUSTOMER SENTIMENT BENCHMARK (COMMON DURATION)
+================================================================================
+Operator        | Total Reviews | Positive %  | Neutral %  | Negative %  | Net Sentiment (NSS)
+-------------------------------------------------------------------------------------
+Grameenphone    | 21,524        |      63.0%  |     12.7%  |      24.3%  |            +38.8%
+Banglalink      | 28,068        |      76.5%  |     10.3%  |      13.3%  |            +63.2%
+Robi            | 33,825        |      74.8%  |     11.3%  |      13.9%  |            +61.0%

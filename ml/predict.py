@@ -4,39 +4,60 @@ from pathlib import Path
 import joblib
 
 ML_DIR = Path(__file__).resolve().parent
-MODEL_PATH = ML_DIR / "models" / "primary_logistic_regression.joblib"
+MODELS_DIR = ML_DIR / "models"
+
+MODEL_PATHS = {
+    "ensemble": MODELS_DIR / "ensemble_voting_classifier.joblib",
+    "logistic": MODELS_DIR / "primary_logistic_regression.joblib",
+    "linearsvc": MODELS_DIR / "challenger_linearsvc.joblib",
+}
 
 
-def load_model():
-    if not MODEL_PATH.exists():
-        print(f"Error: Model artifact not found at {MODEL_PATH}")
-        print("Please run `python ml/train_sentiment.py` first.")
+def load_model(model_name: str = "ensemble"):
+    model_path = MODEL_PATHS.get(model_name)
+    if not model_path or not model_path.exists():
+        print(f"Model '{model_name}' not found at {model_path}. Falling back to available models...")
+        for name, path in MODEL_PATHS.items():
+            if path.exists():
+                return joblib.load(path), name
+        print("No trained models found. Run `python ml/train_sentiment.py` or `python ml/train_ensemble.py` first.")
         sys.exit(1)
-    return joblib.load(MODEL_PATH)
+    return joblib.load(model_path), model_name
 
 
-def predict_sentiment(text: str, model=None):
-    if model is None:
-        model = load_model()
-
+def predict_sentiment(text: str, model, model_name: str):
     prediction = model.predict([text])[0]
-    probabilities = model.predict_proba([text])[0]
-    prob_dict = {
-        cls: round(float(prob), 4)
-        for cls, prob in zip(model.classes_, probabilities)
-    }
+    
+    # Check if model supports predict_proba
+    if hasattr(model, "predict_proba"):
+        probabilities = model.predict_proba([text])[0]
+        prob_dict = {
+            cls: round(float(prob), 4)
+            for cls, prob in zip(model.classes_, probabilities)
+        }
+        confidence = prob_dict[prediction]
+    else:
+        prob_dict = {}
+        confidence = 1.0
 
     return {
         "text": text,
+        "model": model_name,
         "sentiment": prediction,
-        "confidence": prob_dict[prediction],
+        "confidence": confidence,
         "probabilities": prob_dict,
     }
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Predict telecom review sentiment (Bangla, Banglish, English)"
+        description="Predict telecom review sentiment using ML on device"
+    )
+    parser.add_argument(
+        "--model", "-m",
+        choices=["ensemble", "logistic", "linearsvc"],
+        default="ensemble",
+        help="Model architecture to use (default: ensemble)",
     )
     parser.add_argument(
         "--text", "-t",
@@ -45,35 +66,37 @@ def main():
     )
     args = parser.parse_args()
 
-    model = load_model()
+    model, actual_model_name = load_model(args.model)
 
     if args.text:
-        res = predict_sentiment(args.text, model)
-        print("\n" + "=" * 50)
-        print(f"Input Review : {res['text']}")
-        print(f"Sentiment    : {res['sentiment']}")
-        print(f"Confidence   : {res['confidence'] * 100:.2f}%")
-        print("Probability Breakdown:")
-        for sentiment, prob in res["probabilities"].items():
-            print(f"  - {sentiment:8s}: {prob * 100:6.2f}%")
-        print("=" * 50)
+        res = predict_sentiment(args.text, model, actual_model_name)
+        print("\n" + "=" * 55)
+        print(f"Model Architecture : {res['model'].upper()} ML")
+        print(f"Input Review       : {res['text']}")
+        print(f"Predicted Sentiment: {res['sentiment']}")
+        if res["probabilities"]:
+            print(f"Confidence         : {res['confidence'] * 100:.2f}%")
+            print("Class Probabilities:")
+            for s, prob in res["probabilities"].items():
+                bar = "█" * int(prob * 25)
+                print(f"  - {s:8s}: {prob * 100:6.2f}% {bar}")
+        print("=" * 55)
     else:
-        print("Interactive Telecom Sentiment Classifier")
-        print("Enter review text in Bangla, Banglish, or English (type 'exit' or 'q' to quit):")
-        print("-" * 50)
+        print(f"Interactive Telecom Sentiment Classifier [{actual_model_name.upper()}]")
+        print("Enter review in Bangla, Banglish, or English (type 'exit' or 'q' to quit):")
+        print("-" * 55)
         while True:
             try:
                 line = input("\nReview > ").strip()
-                if not line:
-                    continue
-                if line.lower() in ("exit", "quit", "q"):
+                if not line or line.lower() in ("exit", "quit", "q"):
                     break
-                res = predict_sentiment(line, model)
+                res = predict_sentiment(line, model, actual_model_name)
                 print(f"-> Sentiment: {res['sentiment']} (Confidence: {res['confidence'] * 100:.1f}%)")
-                print(f"   Probabilities: {res['probabilities']}")
+                if res["probabilities"]:
+                    print(f"   Probabilities: {res['probabilities']}")
             except (KeyboardInterrupt, EOFError):
                 break
-        print("\nGoodbye!")
+        print("\nExited.")
 
 
 if __name__ == "__main__":
