@@ -299,3 +299,11 @@ This project is licensed under the MIT License. If you use this methodology, cod
   howpublished = {\url{https://github.com/rh61632/telecom-Voice-of-Customer_intelligence}}
 }
 ```
+
+---
+
+## 🙏 Acknowledgments
+
+* **AI-Assisted Engineering:** Data pipeline automation, terminal interactive annotation tooling, and visualization suites were developed in collaborative pair-programming with **Google DeepMind's Antigravity AI**, adhering to COPE and ACM AI transparency guidelines.
+* **LLM Weak Supervision:** Gratitude to **Groq** for high-throughput cloud inference (utilizing open-weight LLMs including `Qwen-2.5-32B` and `Llama-3.3-70B`) enabling rapid zero-shot seed dataset translation and taxonomy labeling.
+* **Open-Source Community:** Built upon foundational open-source packages including `scikit-learn`, `PyTorch`, `pandas`, `numpy`, `matplotlib`, and `google-play-scraper`.
