@@ -47,17 +47,19 @@ plt.rcParams.update({
 
 LABELS = ["Negative", "Neutral", "Positive"]
 COLOR_PALETTE = {
-    "Positive": "#2ECC71",  # Green
-    "Neutral": "#F39C12",   # Orange
-    "Negative": "#E74C3C",  # Red
-    "GP": "#0072B2",        # GP Blue
-    "BL": "#D55E00",        # BL Orange
-    "Robi": "#C0392B",      # Robi Crimson
-    "Hero": "#2E86C1",      # Ensemble Royal Blue
-    "LinearSVC": "#8E44AD", # Purple
-    "LogReg": "#16A085",    # Teal
-    "BiLSTM": "#E67E22",    # Deep Orange
-    "Star": "#7F8C8D",      # Gray
+    "Positive": "#2ECC71",       # Green
+    "Neutral": "#F39C12",        # Orange
+    "Negative": "#E74C3C",       # Red
+    "Grameenphone": "#0090ff",   # GP Electric Blue
+    "GP": "#0090ff",
+    "Robi": "#e60000",           # Robi Vibrant Red
+    "Banglalink": "#ff7a00",     # BL Vibrant Orange
+    "BL": "#ff7a00",
+    "Hero": "#2E86C1",           # Ensemble Royal Blue
+    "LinearSVC": "#8E44AD",      # Purple
+    "LogReg": "#16A085",         # Teal
+    "BiLSTM": "#E67E22",         # Deep Orange
+    "Star": "#7F8C8D",           # Gray
 }
 
 
@@ -186,29 +188,34 @@ def generate_gold_set_visuals():
     print(f"  ✓ Saved: {out3.name}")
 
     # 4. Operator Accuracy Breakdown Bar Chart
-    operators = ["Grameenphone", "Robi", "Banglalink"]
-    bar_models = [
-        ("Soft-Voting Ensemble", "pred_ensemble", "#2E86C1"),
-        ("LinearSVC", "pred_linearsvc", "#8E44AD"),
-        ("Logistic Regression", "pred_logistic", "#16A085"),
-        ("BiLSTM+Attention", "pred_bilstm", "#E67E22"),
+    models_to_plot = [
+        ("Soft-Voting Ensemble\n(Hero)", "pred_ensemble"),
+        ("Calibrated\nLinearSVC", "pred_linearsvc"),
+        ("Balanced\nLogReg", "pred_logistic"),
+        ("Deep Learning\nBiLSTM+Attention", "pred_bilstm"),
+    ]
+    ops_to_plot = [
+        ("Grameenphone", COLOR_PALETTE["Grameenphone"]),
+        ("Robi", COLOR_PALETTE["Robi"]),
+        ("Banglalink", COLOR_PALETTE["Banglalink"]),
     ]
 
-    fig, ax = plt.subplots(figsize=(9, 5.5), dpi=300)
-    x = np.arange(len(operators))
-    w = 0.18
+    fig, ax = plt.subplots(figsize=(10, 5.5), dpi=300)
+    x = np.arange(len(models_to_plot))
+    w = 0.24
 
-    for i, (m_name, col, color) in enumerate(bar_models):
-        vals = [accuracy_score(df[df["operator"] == op]["gold_sentiment"], df[df["operator"] == op][col]) * 100 for op in operators]
-        rects = ax.bar(x + (i - 1.5) * w, vals, w, label=m_name, color=color, edgecolor="black", alpha=0.9)
+    for i, (op_name, op_color) in enumerate(ops_to_plot):
+        sub_df = df[df["operator"] == op_name]
+        vals = [accuracy_score(sub_df["gold_sentiment"], sub_df[col]) * 100 for _, col in models_to_plot]
+        rects = ax.bar(x + (i - 1) * w, vals, w, label=op_name, color=op_color, edgecolor="black", alpha=0.9)
         for r in rects:
             h = r.get_height()
             ax.annotate(f"{h:.1f}%", xy=(r.get_x() + r.get_width()/2, h), xytext=(0, 2),
-                        textcoords="offset points", ha="center", va="bottom", fontsize=7.5, fontweight="bold")
+                        textcoords="offset points", ha="center", va="bottom", fontsize=8, fontweight="bold")
 
-    ax.set_title("Gold Standard Accuracy by Operator (N=200 per brand)", fontsize=13, fontweight="bold", pad=12)
+    ax.set_title("Gold Standard Accuracy by Model & Operator (N=200 per brand)", fontsize=13, fontweight="bold", pad=12)
     ax.set_xticks(x)
-    ax.set_xticklabels(operators, fontweight="bold", fontsize=11)
+    ax.set_xticklabels([m[0] for m in models_to_plot], fontweight="bold", fontsize=10)
     ax.set_ylabel("Accuracy (%)", fontweight="bold")
     ax.set_ylim(60, 92)
     ax.grid(axis="y", linestyle="--", alpha=0.5)
@@ -244,6 +251,15 @@ def generate_production_visuals():
     ax.set_title("Customer Sentiment Distribution by Operator (Shared 402-Day Window)", fontsize=13, fontweight="bold", pad=12)
     ax.set_xticks(x)
     ax.set_xticklabels(dist.index, fontweight="bold", fontsize=11)
+    for tick_label in ax.get_xticklabels():
+        txt = tick_label.get_text()
+        if "Grameenphone" in txt:
+            tick_label.set_color(COLOR_PALETTE["Grameenphone"])
+        elif "Robi" in txt:
+            tick_label.set_color(COLOR_PALETTE["Robi"])
+        elif "Banglalink" in txt:
+            tick_label.set_color(COLOR_PALETTE["Banglalink"])
+
     ax.set_ylabel("Share of Reviews (%)", fontweight="bold")
     ax.set_ylim(0, 100)
     ax.grid(axis="y", linestyle="--", alpha=0.5)
@@ -275,7 +291,7 @@ def generate_production_visuals():
         "Industry Baseline\n(83.4k Reviews)": 84.1 - 9.9,
         "Grameenphone\n(MyGP)": 75.0 - 18.4,
     }
-    colors = ["#2ECC71", "#27AE60", "#2980B9", "#E67E22"]
+    colors = [COLOR_PALETTE["Banglalink"], COLOR_PALETTE["Robi"], "#5D6D7E", COLOR_PALETTE["Grameenphone"]]
 
     fig, ax = plt.subplots(figsize=(8, 5), dpi=300)
     bars = ax.bar(nss_data.keys(), nss_data.values(), color=colors, edgecolor="black", width=0.55, alpha=0.9)
@@ -308,9 +324,9 @@ def generate_production_visuals():
     fig, ax = plt.subplots(figsize=(11, 5.5), dpi=300)
     
     months = trend.index.tolist()
-    ax.plot(months, trend["Banglalink"], marker="o", linewidth=2.5, label="Banglalink (MyBL)", color="#D55E00")
-    ax.plot(months, trend["Robi"], marker="s", linewidth=2.5, label="Robi (MyRobi)", color="#C0392B")
-    ax.plot(months, trend["Grameenphone"], marker="^", linewidth=2.5, label="Grameenphone (MyGP)", color="#0072B2")
+    ax.plot(months, trend["Banglalink"], marker="o", linewidth=2.5, label="Banglalink (MyBL)", color=COLOR_PALETTE["Banglalink"])
+    ax.plot(months, trend["Robi"], marker="s", linewidth=2.5, label="Robi (MyRobi)", color=COLOR_PALETTE["Robi"])
+    ax.plot(months, trend["Grameenphone"], marker="^", linewidth=2.5, label="Grameenphone (MyGP)", color=COLOR_PALETTE["Grameenphone"])
 
     ax.set_title("Monthly Net Sentiment Score (NSS) Trajectory\n(Aug 2025 – Sep 2026, Common Duration)", fontsize=13, fontweight="bold", pad=12)
     ax.set_xlabel("Month", fontweight="bold")
