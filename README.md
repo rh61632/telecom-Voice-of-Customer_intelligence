@@ -292,7 +292,7 @@ This project is licensed under the MIT License. If you use this methodology, cod
 
 ```bibtex
 @misc{telecom_voc_intelligence_2026,
-  author = {Ratul Hasan and Antigravity AI},
+  author = {Ratul Hasan},
   title = {Cross-Operator Voice of Customer (VoC) Intelligence Engine for Bangladesh Telecom Platforms},
   year = {2026},
   publisher = {GitHub},
