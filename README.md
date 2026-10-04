@@ -11,9 +11,9 @@
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Main Dataset: 353.7k Reviews](https://img.shields.io/badge/Main%20Dataset-353%2C714%20Reviews-emerald.svg)](scraped_data_global_2020_2026/classified/)
-[![Time Horizon: 2020--2026](https://img.shields.io/badge/Time%20Horizon-Jan%202020--Sep%202026-blueviolet.svg)](scraped_data_global_2020_2026/)
-[![Archived Dataset: 83.4k](https://img.shields.io/badge/Archived%20Cohort-83%2C417%20Reviews-gray.svg)](archive/scraped_data_2020/)
+[![Common Period Benchmark: 248.5k Reviews](https://img.shields.io/badge/Active%20Benchmark-248%2C501%20Reviews-emerald.svg)](scraped_data_global_2020_2026/classified/all_operators_common_duration_classified.csv)
+[![Master Corpus: 398.2k](https://img.shields.io/badge/Master%20Corpus-398%2C193%20Reviews-blueviolet.svg)](scraped_data_global_2020_2026/classified/all_operators_classified_global_2020_2026.csv)
+[![Common Window: 1,072 Days](https://img.shields.io/badge/Common%20Window-Oct%202023--Sep%202026-teal.svg)](scraped_data_global_2020_2026/classified/)
 [![Hero Model: Soft--Voting Ensemble](https://img.shields.io/badge/Hero%20Model-Ensemble%20(87.5%25%20Acc)-brightgreen.svg)](ml/)
 
 </div>
@@ -29,22 +29,25 @@ This flagship project provides an empirical, end-to-end Voice-of-Customer (VoC) 
 
 *(Throughout this document, operators are subsequently referred to as **Grameenphone**, **Robi**, and **Banglalink**).*
 
-### 📊 Master Lifetime Performance Scorecard ($N = 353,714$, January 2020 – September 2026)
+> **Methodological Note on Common Duration Window**:  
+> To guarantee strict statistical equity and eliminate temporal selection bias (ensuring no operator has missing historical windows in comparative analytics), all published benchmarks, comparative scorecards, trendlines, and category distributions strictly analyze the continuous **1,072-Day Common Duration Period** (**October 24, 2023 – September 30, 2026**, $N = 248,501$) where all three operators coexist simultaneously. The full multi-year corpus ($N = 398,193$, January 2020 – September 2026) is preserved in storage for extended longitudinal modeling.
 
-Every review across all 81 continuous months was scored by our production **Hero Soft-Voting Ensemble** (calibrated on 4,500 human-annotated multi-operator reviews, achieving **87.5% CV Accuracy** on Sentiment and **87.3%** on Operational Categories), cross-verified with **PyTorch BiLSTM + Attention**, **Balanced Logistic Regression**, and **Calibrated LinearSVC**.
+### 📊 Common Duration Performance Scorecard ($N = 248,501$, October 24, 2023 – September 30, 2026)
+
+Every review was scored by our production **Hero Soft-Voting Ensemble** (calibrated on 4,500 human-annotated multi-operator reviews, achieving **87.5% CV Accuracy** on Sentiment and **87.3%** on Operational Categories), cross-verified with **PyTorch BiLSTM + Attention**, **Balanced Logistic Regression**, and **Calibrated LinearSVC**.
 
 ```
 +---------------------------------------------------------------------------------------------------------+
-|                                    LIFETIME VoC PERFORMANCE SCORECARD                                   |
-|                                    (January 1, 2020 – September 30, 2026)                               |
+|                                COMMON DURATION VoC PERFORMANCE SCORECARD                                |
+|                                (October 24, 2023 – September 30, 2026 | 1,072 Days)                      |
 +----+----------------------+---------------+------------+-----------+------------+-----------------------+
-|Rank| Operator             | Total Reviews | Positive % | Neutral % | Negative % | Net Sentiment (NSS)   |
+| #  | Operator             | Total Reviews | Positive % | Neutral % | Negative % | Net Sentiment (NSS)   |
 +----+----------------------+---------------+------------+-----------+------------+-----------------------+
-| 2  | Grameenphone (MyGP)  | 161,461       | 79.7%      | 10.4%     | 9.9%       | +69.8% (Scale Anchor) |
-| 3  | Robi (MyRobi)        | 155,655       | 77.6%      | 10.4%     | 12.0%      | +65.6% (Engaged/Polar)|
-| 1  | Banglalink (MyBL)    | 36,598        | 82.4%      | 9.0%      | 8.5%       | +73.9% (High Goodwill)|
+| 1  | Grameenphone (MyGP)  | 161,491       | 79.7%      | 10.4%     | 9.9%       | +69.8% (Volume Scale) |
+| 2  | Robi (MyRobi)        | 43,720        | 80.7%      | 10.2%     | 9.1%       | +71.7% (NSS Leader)   |
+| 3  | Banglalink (MyBL)    | 43,290        | 80.9%      | 9.5%      | 9.6%       | +71.3% (Agile Growth) |
 +----+----------------------+---------------+------------+-----------+------------+-----------------------+
-| -- | Industry Benchmark   | 353,714       | 79.1%      | 10.2%     | 10.7%      | +68.4%                |
+| -- | Industry Benchmark   | 248,501       | 80.1%      | 10.2%     | 9.7%       | +70.4%                |
 +----+----------------------+---------------+------------+-----------+------------+-----------------------+
 ```
 
@@ -63,7 +66,7 @@ All visualizations are generated natively in Python at publication-grade **300 D
 | :---: | :---: |
 | <img src="assets/plots/net_sentiment_score_comparison_bars.png" width="450"/> | <img src="assets/plots/operator_sentiment_distribution_bars.png" width="450"/> |
 
-### B. 6-Year Longitudinal Trajectory (2020 – 2026)
+### B. Longitudinal Trajectory Across Shared Horizon (2023 – 2026)
 <div align="center">
   <img src="assets/plots/multi_year_sentiment_trend_line.png" width="900" alt="Multi-Year Net Sentiment Trajectory"/>
 </div>
@@ -75,19 +78,16 @@ All visualizations are generated natively in Python at publication-grade **300 D
 
 ---
 
-## 📈 3. Longitudinal Trajectory & Inflection Points (2020 – 2026)
+## 📈 3. Longitudinal Trajectory & Inflection Points (2023 – 2026)
 
-Tracking customer sentiment across 81 continuous months revealed three macro-level market events:
+Tracking customer sentiment across the shared 1,072-day window revealed clear shifts in market leadership and consumer satisfaction:
 
 | Year | Grameenphone (MyGP) | Robi (MyRobi) | Banglalink (MyBL) | Historical Strategic Event |
 | :---: | :---: | :---: | :---: | :--- |
-| **2020** | — | **+63.6%** (32,333) | — | Pandemic surge in digital self-care adoption. |
-| **2021** | — | **+63.8%** (30,296) | — | Nationwide 4G expansion; baseline stability. |
-| **2022** | — | **+68.4%** (34,416) | — | Pre-inflationary consumer satisfaction peak. |
-| **2023** | **+73.2%** (19,829) | **+48.7%** ⚠️ (16,784) | — | **The 2023 Robi Crisis**: Robi negative complaints surged to **19.5%** driven by aggressive airtime deductions and session crashes. GP maintained high trust (+73.2%). |
-| **2024** | **+70.6%** (75,046) | **+52.1%** (6,816) | **+52.8%** (4,612) | GP dominated review volume with steady 70%+ NSS; Banglalink scaled into public view. |
-| **2025** | **+70.3%** (54,244) | **+78.0%** 🚀 (16,112) | **+66.4%** (10,235) | **The 2025 Robi Turnaround**: Robi resolved backend latency, cutting negative reviews to just **6.0%**. |
-| **2026** | **+56.8%** 📉 (12,342) | **+76.2%** (18,898) | **+81.9%** 🏆 (21,751) | **The 2026 Market Reversal**: Banglalink surged to industry-leading **+81.9% NSS** (only 5.2% negative); Grameenphone dipped sharply to **+56.8% NSS** (17.4% negative) due to data pack price increases and OTP delivery failures. |
+| **2023** *(Q4)* | **+73.2%** (19,829) | **+41.9%** ⚠️ (1,888) | **+45.0%** (1,384) | **The 2023 Friction Point**: Robi and Banglalink faced acute onboarding and VAS balance deduction complaints in late 2023, while GP enjoyed strong baseline brand goodwill. |
+| **2024** | **+70.6%** (75,057) | **+52.1%** (6,816) | **+56.6%** (9,897) | Grameenphone anchored massive review volume with steady 70%+ NSS; Robi and Banglalink rolled out UX stability improvements. |
+| **2025** | **+70.3%** (54,258) | **+78.0%** 🚀 (16,115) | **+66.4%** (10,238) | **The 2025 Robi Turnaround**: Robi resolved core backend latency and modernized self-care, catapulting NSS to +78.0% (cutting negative reviews to just 6.0%). |
+| **2026** | **+56.8%** 📉 (12,347) | **+76.2%** (18,901) | **+81.9%** 🏆 (21,771) | **The 2026 Market Reversal**: Banglalink surged to industry-leading **+81.9% NSS** (only 5.2% negative) on high self-care goodwill; Grameenphone dipped sharply to **+56.8% NSS** (17.4% negative) due to data pack pricing friction and OTP delays. |
 
 ---
 
@@ -95,13 +95,13 @@ Tracking customer sentiment across 81 continuous months revealed three macro-lev
 
 Every review was classified into **5 operational domains** by our Soft-Voting Category Ensemble:
 
-| Operational Category | Grameenphone (161.5k) | Robi (155.7k) | Banglalink (36.6k) | Operational Diagnosis |
+| Operational Category | Grameenphone (161.5k) | Robi (43.7k) | Banglalink (43.3k) | Operational Diagnosis |
 | :--- | :---: | :---: | :---: | :--- |
-| **Offers & Data Packs** | **5.30%** (8,559) | **5.09%** (7,922) | **3.36%** (1,228) | GP and Robi face **~50% more pricing friction** than Banglalink. |
-| **App Login & Technical Bugs** | **2.31%** (3,725) | **4.45%** (6,926) | **2.97%** (1,088) | **Robi's Primary Vulnerability**: Nearly **2x the login/crash rate** of Grameenphone. |
-| **Network Speed & 4G Latency** | **1.55%** (2,500) | **2.72%** (4,239) | **2.82%** (1,032) | Grameenphone maintains the strongest reputation for indoor 4G reliability. |
-| **Billing & Airtime Loss** | **1.23%** (1,978) | **0.78%** (1,215) | **0.63%** (232) | **Grameenphone's Primary Vulnerability**: Double the accidental deduction complaints of Banglalink. |
-| **General Appreciation / Other** | **89.62%** (144,699) | **86.96%** (135,353) | **90.22%** (33,018) | App praise, short reviews, emojis. |
+| **Offers & Data Packs** | **5.30%** (8,561) | **6.00%** (2,625) | **3.51%** (1,519) | Robi and GP face significantly higher price sensitivity and data pack validity friction than Banglalink. |
+| **App Login & Technical Bugs** | **2.31%** (3,727) | **2.73%** (1,195) | **3.48%** (1,506) | **Banglalink's Vulnerability**: Authentication/session stability and biometric login token timeouts. |
+| **Network Speed & 4G Latency** | **1.55%** (2,500) | **1.83%** (798) | **2.77%** (1,199) | Grameenphone maintains the lowest network complaint rate, while Banglalink users report indoor 4G friction. |
+| **Billing & Airtime Loss** | **1.23%** (1,979) | **0.91%** (399) | **0.71%** (306) | **Grameenphone's Primary Vulnerability**: Nearly double the accidental deduction complaints of Banglalink. |
+| **General Appreciation / Other** | **89.62%** (144,724) | **88.52%** (38,703) | **89.54%** (38,760) | App praise, short reviews, emojis, and general service feedback. |
 
 ---
 
@@ -125,19 +125,19 @@ Models were trained and evaluated on the curated ground truth ($N=4,500$ across 
 ## 💼 6. Operator Strategic Roadmaps
 
 ### 1. Grameenphone (MyGP) — *Scale Anchor*
-* **Lifetime NSS:** `+69.8%` | **2026 NSS:** `+56.8%` 📉
+* **Common Period NSS:** `+69.8%` | **2026 NSS:** `+56.8%` 📉
 * **Core Vulnerabilities:** Billing deduction transparency (1.23%) and data pack pricing complaints (5.30%).
 * **Strategic Lever:** Deploy dynamic micro-packs with rollover validity and a zero-click "Where Did My Balance Go?" transaction timeline.
 
 ### 2. Robi (MyRobi) — *Digital Lifestyle Leader*
-* **Lifetime NSS:** `+65.6%` | **2026 NSS:** `+76.2%` 🚀
-* **Core Vulnerabilities:** App login bugs (4.45%—highest in industry) and OTP delivery delays.
+* **Common Period NSS:** `+71.7%` | **2026 NSS:** `+76.2%` 🚀
+* **Core Vulnerabilities:** Offers and data pack friction (6.00%) and app login bugs (2.73%).
 * **Strategic Lever:** Overhaul biometric login token caching and simplify automated VAS cancellation toggles.
 
 ### 3. Banglalink (MyBL) — *Agile Value Champion*
-* **Lifetime NSS:** `+73.9%` | **2026 NSS:** `+81.9%` 🏆
-* **Core Vulnerabilities:** Suburban and indoor 4G coverage gaps (2.82%).
-* **Strategic Lever:** Leverage high brand sentiment to transition promotional micro-rechargers into recurring monthly commitments.
+* **Common Period NSS:** `+71.3%` | **2026 NSS:** `+81.9%` 🏆
+* **Core Vulnerabilities:** Indoor/suburban 4G latency (2.77%) and technical login glitches (3.48%).
+* **Strategic Lever:** Leverage high brand sentiment to transition promotional micro-rechargers into recurring monthly commitments while optimizing 4G edge caching.
 
 ---
 
@@ -154,14 +154,16 @@ telecom-Voice-of-Customer_intelligence/
 │       ├── operator_category_complaint_distribution_bars.png
 │       └── category_sentiment_stacked_bars.png
 │
-├── scraped_data_global_2020_2026/            # 🌟 MAIN DATASET SUITE (N=353,714)
+├── scraped_data_global_2020_2026/            # 🌟 MASTER DATASET SUITE (N=398,193)
 │   ├── raw/                                  # 1. Scraped raw reviews (2020 - Sep 2026)
-│   │   ├── mygp_global_2020_to_sep2026.csv   # 161,461 reviews (17 MB)
-│   │   ├── myrobi_global_2020_to_sep2026.csv # 155,655 reviews (20 MB)
-│   │   └── mybl_global_2020_to_sep2026.csv   # 36,598 reviews (4 MB)
+│   │   ├── mygp_global_2020_to_sep2026.csv   # 161,491 unique reviews
+│   │   ├── myrobi_global_2020_to_sep2026.csv # 155,661 unique reviews
+│   │   └── mybl_global_2020_to_sep2026.csv   # 81,040 unique reviews
 │   │
-│   ├── classified/                           # 2. Fully Classified Multi-Model Datasets
-│   │   ├── all_operators_classified_global_2020_2026.csv # Master dataset (353.7k rows, 96 MB)
+│   ├── classified/                           # 2. Classified Datasets & Common Benchmark
+│   │   ├── all_operators_common_duration_classified.csv # 🏆 Active Benchmark (N=248,501 | 1,072 Days)
+│   │   ├── all_operators_classified_global_2020_2026.csv# Master Multi-Year Corpus (N=398,193)
+│   │   ├── common_duration_summary.json      # Statistical metadata for shared 1,072-day window
 │   │   ├── mygp_classified_global_2020_2026.csv
 │   │   ├── myrobi_classified_global_2020_2026.csv
 │   │   ├── mybl_classified_global_2020_2026.csv
@@ -171,7 +173,8 @@ telecom-Voice-of-Customer_intelligence/
 │   │
 │   └── pipeline/                             # 3. High-Throughput Production Scripts
 │       ├── run_parallel_scrapers.py
-│       ├── classify_global_dataset.py        # Batch classifies 353k reviews (~1,000 rev/s)
+│       ├── merge_and_sync_all_datasets.py    # Strict deduplication & common window extraction
+│       ├── classify_global_dataset.py        # Batch classifies reviews (~1,000 rev/s)
 │       └── generate_global_visualizations.py # Renders 300 DPI publication plots
 │
 ├── ml/                                       # Classical Machine Learning Engine
@@ -214,9 +217,9 @@ source ml/.venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Execute Batch Classification over All 353,714 Reviews
+### 2. Extract Deduplicated Common Duration Window
 ```bash
-python scraped_data_global_2020_2026/pipeline/classify_global_dataset.py
+python scraped_data_global_2020_2026/pipeline/merge_and_sync_all_datasets.py
 ```
 
 ### 3. Render 300 DPI Visualizations

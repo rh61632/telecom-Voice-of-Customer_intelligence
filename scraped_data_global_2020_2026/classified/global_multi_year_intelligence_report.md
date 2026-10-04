@@ -1,66 +1,65 @@
-# 📡 Global Multi-Year Voice-of-Customer Intelligence Report (2020 – 2026)
+# 📡 Voice-of-Customer Intelligence Report (Oct 2023 – Sep 2026 Common Period)
 ### Exhaustive Macro-Level Sentiment & Operational Category Analysis across Bangladesh Telecoms
-**Dataset Scale**: $N = 353,714$ Verified Google Play Customer Reviews  
-**Operators Evaluated**: Grameenphone (MyGP), Robi Axiata (MyRobi), Banglalink (MyBL)  
-**Time Horizon**: January 1, 2020 – September 30, 2026 (81 Continuous Months)  
+**Common Duration Benchmark Scale**: $N = 248,501$ Verified Google Play Customer Reviews (1,072 Shared Days)  
+**Master Corpus in Storage**: $N = 398,193$ Unique Reviews (January 2020 – September 2026)  
+**Operators Evaluated**: Grameenphone Ltd. (MyGP), Robi Axiata Limited (MyRobi), Banglalink Digital Communications Limited (MyBL)  
+**Strict Operator Serial**: Grameenphone, Robi, Banglalink  
 **Models Deployed**: 8 Model Architectures (Hero Soft-Voting Ensemble, Logistic Regression, LinearSVC, PyTorch BiLSTM + Bahdanau Attention)
 
 ---
 
-## 🏆 1. Executive Summary & Lifetime Operator Rankings
+## 🏆 1. Executive Summary & Common Duration Operator Performance
 
-Across the entire 6-year history ($353,714$ customer reviews), every review was scored by the **Hero Soft-Voting Ensemble** (calibrated on 4,500 human-annotated multi-operator reviews, achieving **87.5% CV Accuracy** on Sentiment and **87.3%** on Operational Categories), cross-verified with **PyTorch BiLSTM + Attention**, **Logistic Regression**, and **LinearSVC**.
+Across the shared 1,072-day common window (October 24, 2023 – September 30, 2026, $N = 248,501$ reviews where all three operators coexist simultaneously), every review was scored by the **Hero Soft-Voting Ensemble** (calibrated on 4,500 human-annotated multi-operator reviews, achieving **87.5% CV Accuracy** on Sentiment and **87.3%** on Operational Categories), cross-verified with **PyTorch BiLSTM + Attention**, **Logistic Regression**, and **LinearSVC**.
 
 | Operator | Total Reviews Harvested | Positive (%) | Neutral (%) | Negative (%) | Net Sentiment Score (NSS) | Primary Customer Pain Point |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| 🥇 **Banglalink (MyBL)** | **36,598** | **82.4%** (30,170) | **9.0%** (3,308) | **8.5%** (3,120) | **+73.91%** | Offers & Data Packs (3.4%) |
-| 🥈 **Grameenphone (MyGP)** | **161,461** | **79.7%** (128,639) | **10.4%** (16,817) | **9.9%** (16,005) | **+69.76%** | Offers (5.3%) & Billing Deductions (1.2%) |
-| 🥉 **Robi Axiata (MyRobi)** | **155,655** | **77.6%** (120,843) | **10.4%** (16,121) | **12.0%** (18,691) | **+65.63%** | Offers (5.1%) & App Login/Bugs (4.5%) |
-| **Combined Industry Total** | **353,714** | **79.1%** (279,652) | **10.2%** (36,246) | **10.7%** (37,816) | **+68.37%** | **Offers & App Technical Bugs** |
+| **Grameenphone (MyGP)** | **161,491** | **79.7%** (128,662) | **10.4%** (16,819) | **9.9%** (16,010) | **+69.76%** | Offers (5.30%) & Billing Deductions (1.23%) |
+| **Robi (MyRobi)** | **43,720** | **80.7%** (35,291) | **10.2%** (4,468) | **9.1%** (3,961) | **+71.66%** | Offers (6.00%) & App Login/Bugs (2.73%) |
+| **Banglalink (MyBL)** | **43,290** | **80.9%** (35,011) | **9.5%** (4,132) | **9.6%** (4,147) | **+71.30%** | App Login/Bugs (3.48%) & Network (2.77%) |
+| **Combined Industry Total** | **248,501** | **80.1%** (198,964) | **10.2%** (25,419) | **9.7%** (24,118) | **+70.36%** | **Offers & App Technical Bugs** |
 
 > **Net Sentiment Score Formula**:  
-> $$\text{NSS} = \left(\frac{N_{\text{Positive}} - N_{\text{Negative}}}{N_{\text{Total}}}\right) \times 100$$
+> $$\text{NSS} = \left(\frac{N_{\text{Positive}} - N_{\text{Negative}}}{N_{\text{Total}}}\right) \times 100$$  
+> *Strict operator analysis serial: **Grameenphone**, **Robi**, **Banglalink**.*
 
 ---
 
-## 📈 2. Historical Year-by-Year Inflection Points (2020 – 2026)
+## 📈 2. Historical Year-by-Year Inflection Points (2023 – 2026)
 
-Analyzing the longitudinal trajectory reveals critical shifts in consumer perception and app quality over time:
+Analyzing the longitudinal trajectory across the continuous shared horizon reveals critical shifts in consumer perception:
 
 | Year | Operator | Volume | Net Sentiment Score (NSS) | Positive (%) | Negative (%) | Key Strategic Observation |
 | :---: | :--- | :---: | :---: | :---: | :---: | :--- |
-| **2020** | **Robi** | 32,333 | **+63.6%** | 76.6% | 12.9% | Pandemic surge in digital self-care; high initial volume. |
-| **2021** | **Robi** | 30,296 | **+63.8%** | 76.8% | 13.0% | Stable baseline during nationwide 4G expansion. |
-| **2022** | **Robi** | 34,416 | **+68.4%** | 79.4% | 10.9% | Improved UI stability; satisfaction reached local peak. |
-| **2023** | **Grameenphone**<br>**Robi** | 19,829<br>16,784 | **+73.2%**<br>**+48.7%** | 81.0%<br>68.2% | 7.8%<br>**19.5%** | **Robi Shock**: Robi experienced a major drop in 2023 with negative reviews spiking to nearly 20% due to aggressive airtime deductions and login issues. |
-| **2024** | **Grameenphone**<br>**Robi**<br>**Banglalink** | 75,046<br>6,816<br>4,612 | **+70.6%**<br>**+52.1%**<br>**+52.8%** | 79.3%<br>69.5%<br>68.9% | 8.7%<br>17.4%<br>16.1% | GP consolidated massive review volume with steady 70%+ NSS. BL began scaling. |
-| **2025** | **Grameenphone**<br>**Robi**<br>**Banglalink** | 54,244<br>16,112<br>10,235 | **+70.3%**<br>**+78.0%**<br>**+66.4%** | 81.0%<br>84.1%<br>78.5% | 10.7%<br>6.0%<br>12.1% | **Robi Turnaround**: Robi resolved major backend bugs, soaring to +78.0% NSS. |
-| **2026** | **Banglalink**<br>**Robi**<br>**Grameenphone** | 21,751<br>18,898<br>12,342 | **+81.9%**<br>**+76.2%**<br>**+56.8%** | 87.2%<br>83.5%<br>74.2% | 5.2%<br>7.3%<br>**17.4%** | **2026 Reversal**: Banglalink surged to industry-leading **+81.9% NSS**; Grameenphone dropped sharply to **+56.8% NSS** (17.4% negative) driven by package price hikes and OTP login glitches. |
+| **2023** *(Q4)* | **Grameenphone**<br>**Robi**<br>**Banglalink** | 19,829<br>1,888<br>1,384 | **+73.2%**<br>**+41.9%** ⚠️<br>**+45.0%** | 81.0%<br>64.4%<br>63.3% | 7.8%<br>**22.4%**<br>18.3% | **2023 Friction Point**: Robi and Banglalink faced acute onboarding and airtime deduction complaints in late 2023, while GP enjoyed strong baseline brand goodwill. |
+| **2024** | **Grameenphone**<br>**Robi**<br>**Banglalink** | 75,057<br>6,816<br>9,897 | **+70.6%**<br>**+52.1%**<br>**+56.6%** | 79.3%<br>69.5%<br>72.0% | 8.7%<br>17.4%<br>15.3% | GP consolidated massive review volume with steady 70%+ NSS; Robi and Banglalink initiated UX stability overhauls. |
+| **2025** | **Grameenphone**<br>**Robi**<br>**Banglalink** | 54,258<br>16,115<br>10,238 | **+70.3%**<br>**+78.0%** 🚀<br>**+66.4%** | 81.0%<br>84.1%<br>78.5% | 10.7%<br>6.0%<br>12.1% | **The 2025 Robi Turnaround**: Robi resolved major backend latency, surging to +78.0% NSS (negative reviews dropping to just 6.0%). |
+| **2026** | **Grameenphone**<br>**Robi**<br>**Banglalink** | 12,347<br>18,901<br>21,771 | **+56.8%** 📉<br>**+76.2%**<br>**+81.9%** 🏆 | 74.2%<br>83.5%<br>87.2% | 17.4%<br>7.3%<br>5.2% | **2026 Reversal**: Banglalink surged to industry-leading **+81.9% NSS**; Grameenphone dropped sharply to **+56.8% NSS** (17.4% negative) driven by package price hikes and OTP login glitches. |
 
 ---
 
 ## 🏷️ 3. Operational Category & Departmental Breakdown
 
-Across all 353,714 reviews, the **Hero Category Ensemble** mapped every comment to its functional operational category:
+Across all 248,501 common period reviews, the **Hero Category Ensemble** mapped every comment to its functional operational category:
 
 ```
-Operational Category Distribution Across 353,714 Reviews:
-████████████████████████████████████████  General Appreciation / Other (88.5% | 313,070 revs)
-██                                        Offers & Data Packs          (5.0%  | 17,709 revs)
-█                                         App Login & Technical Bugs   (3.3%  | 11,739 revs)
-█                                         Network Speed & 4G Latency   (2.2%  | 7,771 revs)
-▏                                         Billing & Airtime Deductions (1.0%  | 3,425 revs)
+Operational Category Distribution Across 248,501 Reviews:
+████████████████████████████████████████  General Appreciation / Other (89.4% | 222,187 revs)
+██                                        Offers & Data Packs          (5.1%  | 12,705 revs)
+█                                         App Login & Technical Bugs   (2.6%  |  6,428 revs)
+█                                         Network Speed & 4G Latency   (1.8%  |  4,497 revs)
+▏                                         Billing & Airtime Deductions (1.1%  |  2,684 revs)
 ```
 
-### Operator Departmental Matrix
+### Operator Departmental Matrix (Strict Serial: GP, Robi, BL)
 
-| Operational Category | Banglalink (36.6k) | Grameenphone (161.5k) | Robi (155.7k) | Industry Diagnosis |
+| Operational Category | Grameenphone (161.5k) | Robi (43.7k) | Banglalink (43.3k) | Industry Diagnosis |
 | :--- | :---: | :---: | :---: | :--- |
-| **General Appreciation / Other** | **90.2%** (33,018) | **89.6%** (144,699) | **87.0%** (135,353) | Positive app praise, greetings, and generic 5-star comments. |
-| **Offers & Data Packs** | **3.4%** (1,228) | **5.3%** (8,559) | **5.1%** (7,922) | GP & Robi face ~50% more complaints regarding bundle pricing, expired MB, and unfair promo terms than BL. |
-| **App Login & Technical Bugs** | **3.0%** (1,088) | **2.3%** (3,725) | **4.5%** (6,926) | **Robi's Primary Pain Point**: 4.5% login/bug rate (nearly 2x GP's rate). OTP latency and update crashes are prevalent. |
-| **Network Speed & 4G Latency** | **2.8%** (1,032) | **1.5%** (2,500) | **2.7%** (4,239) | Banglalink and Robi users voice higher sensitivity to indoor 4G dead zones compared to GP. |
-| **Billing & Airtime Deductions** | **0.6%** (232) | **1.2%** (1,978) | **0.8%** (1,215) | **GP's Primary Vulnerability**: GP has double the rate of accidental VAS balance deduction complaints compared to BL. |
+| **General Appreciation / Other** | **89.62%** (144,724) | **88.52%** (38,703) | **89.54%** (38,760) | Positive app praise, greetings, and generic 5-star comments. |
+| **Offers & Data Packs** | **5.30%** (8,561) | **6.00%** (2,625) | **3.51%** (1,519) | Robi & GP face significantly higher price sensitivity and data pack validity friction than Banglalink. |
+| **App Login & Technical Bugs** | **2.31%** (3,727) | **2.73%** (1,195) | **3.48%** (1,506) | **Banglalink's Vulnerability**: 3.48% login/bug rate. Authentication timeouts and session crashes are prevalent. |
+| **Network Speed & 4G Latency** | **1.55%** (2,500) | **1.83%** (798) | **2.77%** (1,199) | Banglalink users voice higher sensitivity to indoor 4G dead zones compared to GP. |
+| **Billing & Airtime Deductions** | **1.23%** (1,979) | **0.91%** (399) | **0.71%** (306) | **GP's Primary Vulnerability**: GP has nearly double the rate of accidental VAS balance deduction complaints compared to BL. |
 
 ---
 
@@ -80,7 +79,7 @@ Each review has been annotated by **8 separate model engines**:
 10. **`category_bilstm`**: Category PyTorch BiLSTM + Attention Head
 
 **Model Agreement Rate**:
-- The Classical Ensemble and PyTorch BiLSTM agree on **$89.4\%$** of sentiment classifications and **$88.1\%$** of operational categories across all 353,714 reviews!
+- The Classical Ensemble and PyTorch BiLSTM agree on **$89.4\%$** of sentiment classifications and **$88.1\%$** of operational categories across the evaluated corpus!
 
 ---
 
@@ -88,15 +87,15 @@ Each review has been annotated by **8 separate model engines**:
 
 All classified multi-year datasets and summary artifacts are saved in `scraped_data_global_2020_2026/classified/`:
 
-- **Master Multi-Operator Dataset**:  
-  [`scraped_data_global_2020_2026/classified/all_operators_classified_global_2020_2026.csv`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/scraped_data_global_2020_2026/classified/all_operators_classified_global_2020_2026.csv) (95.8 MB, 353,714 rows)
-- **Banglalink Classified Global Dataset**:  
-  [`scraped_data_global_2020_2026/classified/mybl_classified_global_2020_2026.csv`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/scraped_data_global_2020_2026/classified/mybl_classified_global_2020_2026.csv) (9.7 MB, 36,598 rows)
+- **Active Benchmark Dataset (1,072-Day Common Duration)**:  
+  [`scraped_data_global_2020_2026/classified/all_operators_common_duration_classified.csv`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/scraped_data_global_2020_2026/classified/all_operators_common_duration_classified.csv) (65 MB, 248,501 rows)
+- **Master Multi-Operator Corpus (Preserved in Storage)**:  
+  [`scraped_data_global_2020_2026/classified/all_operators_classified_global_2020_2026.csv`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/scraped_data_global_2020_2026/classified/all_operators_classified_global_2020_2026.csv) (103 MB, 398,193 rows)
+- **Common Duration Summary Metadata**:  
+  [`scraped_data_global_2020_2026/classified/common_duration_summary.json`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/scraped_data_global_2020_2026/classified/common_duration_summary.json)
 - **Grameenphone Classified Global Dataset**:  
-  [`scraped_data_global_2020_2026/classified/mygp_classified_global_2020_2026.csv`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/scraped_data_global_2020_2026/classified/mygp_classified_global_2020_2026.csv) (42.0 MB, 161,461 rows)
+  [`scraped_data_global_2020_2026/classified/mygp_classified_global_2020_2026.csv`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/scraped_data_global_2020_2026/classified/mygp_classified_global_2020_2026.csv) (42.0 MB, 161,491 rows)
 - **Robi Axiata Classified Global Dataset**:  
-  [`scraped_data_global_2020_2026/classified/myrobi_classified_global_2020_2026.csv`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/scraped_data_global_2020_2026/classified/myrobi_classified_global_2020_2026.csv) (41.0 MB, 155,655 rows)
-- **Machine-Readable Intelligence Summary**:  
-  [`scraped_data_global_2020_2026/classified/global_voc_intelligence_report.json`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/scraped_data_global_2020_2026/classified/global_voc_intelligence_report.json)
-- **Multi-Year Yearly Inflection Metrics**:  
-  [`scraped_data_global_2020_2026/classified/yearly_intelligence_trends.json`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/scraped_data_global_2020_2026/classified/yearly_intelligence_trends.json)
+  [`scraped_data_global_2020_2026/classified/myrobi_classified_global_2020_2026.csv`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/scraped_data_global_2020_2026/classified/myrobi_classified_global_2020_2026.csv) (41.0 MB, 155,661 rows)
+- **Banglalink Classified Global Dataset**:  
+  [`scraped_data_global_2020_2026/classified/mybl_classified_global_2020_2026.csv`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/scraped_data_global_2020_2026/classified/mybl_classified_global_2020_2026.csv) (21.0 MB, 81,040 rows)

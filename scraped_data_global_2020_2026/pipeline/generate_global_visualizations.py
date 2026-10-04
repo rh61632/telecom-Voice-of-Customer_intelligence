@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Generate Publication-Quality Visualizations for Global Multi-Year VoC Dataset (2020 - 2026).
-Dataset Scale: N = 353,714 Verified Reviews across Grameenphone, Robi, and Banglalink.
+Generate Publication-Quality Visualizations for Common Duration VoC Dataset (Oct 2023 - Sep 2026).
+Continuous Shared Window: 1,072 Days, N = 248,501 Verified Reviews across Grameenphone, Robi, and Banglalink.
 Strict Operator Serial:
   1. Grameenphone (GP, #0090ff)
   2. Robi (Robi, #e60000)
@@ -38,7 +38,7 @@ plt.rcParams.update({
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 GLOBAL_DIR = REPO_ROOT / "scraped_data_global_2020_2026"
-CLASSIFIED_CSV = GLOBAL_DIR / "classified" / "all_operators_classified_global_2020_2026.csv"
+CLASSIFIED_CSV = GLOBAL_DIR / "classified" / "all_operators_common_duration_classified.csv"
 
 PLOTS_DIR = GLOBAL_DIR / "plots"
 ASSETS_PLOTS_DIR = REPO_ROOT / "assets" / "plots"
@@ -114,7 +114,7 @@ def plot_operator_sentiment_distribution(df):
     r2 = ax.bar(x, neu_vals, w, label="Neutral", color=SENTIMENT_COLORS["Neutral"], edgecolor="black", alpha=0.9)
     r3 = ax.bar(x + w, neg_vals, w, label="Negative", color=SENTIMENT_COLORS["Negative"], edgecolor="black", alpha=0.9)
 
-    ax.set_title("Customer Sentiment Distribution by Operator (2020 – 2026, N=353,714)", fontsize=13, fontweight="bold", pad=12)
+    ax.set_title("Customer Sentiment Distribution by Operator\n(Continuous 1,072-Day Common Period: Oct 2023 – Sep 2026, N=248,501)", fontsize=13, fontweight="bold", pad=12)
     ax.set_xticks(x)
     ax.set_xticklabels(OPERATOR_LABELS, fontweight="bold", fontsize=11)
     
@@ -167,13 +167,13 @@ def plot_net_sentiment_score(df):
     ind_neg = (df["predicted_sentiment"] == "Negative").sum()
     ind_nss = ((ind_pos - ind_neg) / len(df)) * 100
     nss_vals.append(ind_nss)
-    labels.append("Industry Benchmark\n(353.7k Reviews)")
+    labels.append("Industry Benchmark\n(248.5k Reviews)")
     colors.append("#5D6D7E")
 
     fig, ax = plt.subplots(figsize=(8.5, 5.2), dpi=300)
     bars = ax.bar(labels, nss_vals, color=colors, edgecolor="black", width=0.55, alpha=0.9)
 
-    ax.set_title("Lifetime Net Sentiment Score (NSS = % Positive − % Negative)\nAcross 353,714 Multi-Year Customer Reviews (2020 – 2026)", fontsize=13, fontweight="bold", pad=12)
+    ax.set_title("Lifetime Net Sentiment Score (NSS = % Positive − % Negative)\nAcross 248,501 Verified Reviews (Oct 2023 – Sep 2026 Common Period)", fontsize=13, fontweight="bold", pad=12)
     ax.set_ylabel("Net Sentiment Score (%)", fontweight="bold")
     ax.set_ylim(40, 95)
     ax.grid(axis="y", linestyle="--", alpha=0.5)
@@ -188,7 +188,7 @@ def plot_net_sentiment_score(df):
 
 
 def plot_yearly_sentiment_trajectory(df):
-    """Plot 3: Multi-Year Longitudinal NSS Trajectory (2020 - 2026) (Serial: GP, Robi, BL)"""
+    """Plot 3: Multi-Year Longitudinal NSS Trajectory (2023 - 2026) (Serial: GP, Robi, BL)"""
     print("Generating Plot 3: Multi-Year Sentiment Trajectory...")
     
     # Calculate yearly NSS for each operator
@@ -211,6 +211,21 @@ def plot_yearly_sentiment_trajectory(df):
     markers = {"Grameenphone": "^", "Robi": "s", "Banglalink": "o"}
     styles = {"Grameenphone": "-", "Robi": "-", "Banglalink": "-"}
 
+    offset_map = {
+        ("Grameenphone", 2023): (0, 8),
+        ("Banglalink", 2023): (0, 8),
+        ("Robi", 2023): (0, -14),
+        ("Grameenphone", 2024): (0, 8),
+        ("Banglalink", 2024): (0, 8),
+        ("Robi", 2024): (0, -14),
+        ("Robi", 2025): (0, 8),
+        ("Grameenphone", 2025): (0, 8),
+        ("Banglalink", 2025): (0, -14),
+        ("Banglalink", 2026): (0, 8),
+        ("Robi", 2026): (0, -14),
+        ("Grameenphone", 2026): (0, -14),
+    }
+
     for op in OPERATOR_SERIAL:
         op_years = sorted(yearly_data[op].keys())
         op_nss = [yearly_data[op][y] for y in op_years]
@@ -225,28 +240,30 @@ def plot_yearly_sentiment_trajectory(df):
             color=BRAND_COLORS[op],
         )
         for y, val in zip(op_years, op_nss):
+            xytext = offset_map.get((op, y), (0, 8))
             ax.annotate(
                 f"{val:+.1f}%",
                 xy=(y, val),
-                xytext=(0, 7 if op != "Grameenphone" or y != 2026 else -15),
+                xytext=xytext,
                 textcoords="offset points",
                 ha="center",
-                fontsize=8.5,
+                fontsize=9,
                 fontweight="bold",
                 color=BRAND_COLORS[op],
             )
 
-    ax.set_title("Longitudinal Net Sentiment Score (NSS) Trajectory (2020 – 2026)\n6-Year Multi-Operator Historical Trajectory Across Bangladesh", fontsize=13, fontweight="bold", pad=12)
+    ax.set_title("Longitudinal Net Sentiment Score (NSS) Trajectory (2023 – 2026)\nContinuous Multi-Operator Benchmark Across 1,072 Shared Days (Oct 2023 – Sep 2026)", fontsize=13, fontweight="bold", pad=12)
     ax.set_xlabel("Year", fontweight="bold")
     ax.set_ylabel("Net Sentiment Score (%)", fontweight="bold")
+    ax.set_xlim(2022.7, 2026.3)
     ax.set_ylim(35, 95)
     ax.set_xticks(years)
     ax.set_xticklabels([str(y) for y in years], fontweight="bold")
     ax.grid(True, linestyle="--", alpha=0.6)
     
     # Highlight inflection annotations
-    ax.axvspan(2022.8, 2023.2, color="#E74C3C", alpha=0.1, label="2023 Robi VAS/Deduction Crisis")
-    ax.axvspan(2025.8, 2026.2, color="#2ECC71", alpha=0.1, label="2026 Banglalink Surge / GP Dip")
+    ax.axvspan(2023.7, 2024.3, color="#E74C3C", alpha=0.08, label="2023-24 Robi/BL VAS & Network Hurdles")
+    ax.axvspan(2025.7, 2026.3, color="#2ECC71", alpha=0.08, label="2026 Banglalink Surge / GP App Fatigue")
 
     ax.legend(frameon=True, facecolor="white", edgecolor="gray", loc="lower left")
 
@@ -288,11 +305,11 @@ def plot_operator_category_complaints(df):
     r2 = ax.bar(x, robi_vals, w, label="Robi (MyRobi)", color=BRAND_COLORS["Robi"], edgecolor="black", alpha=0.9)
     r3 = ax.bar(x + w, bl_vals, w, label="Banglalink (MyBL)", color=BRAND_COLORS["Banglalink"], edgecolor="black", alpha=0.9)
 
-    ax.set_title("Operational Complaint Rate Across Bangladesh Telecom Operators\n(Relative Prevalence Among All Customer Reviews, 2020 – 2026)", fontsize=13, fontweight="bold", pad=12)
+    ax.set_title("Operational Complaint Rate Across Bangladesh Telecom Operators\n(Relative Prevalence in 1,072-Day Common Period: Oct 2023 – Sep 2026, N=248,501)", fontsize=13, fontweight="bold", pad=12)
     ax.set_xticks(x)
     ax.set_xticklabels([c.replace(" & ", "\n& ") for c in complaint_cats], fontweight="bold", fontsize=10.5)
     ax.set_ylabel("Share of Total Reviews (%)", fontweight="bold")
-    ax.set_ylim(0, 6.5)
+    ax.set_ylim(0, 7.5)
     ax.grid(axis="y", linestyle="--", alpha=0.5)
     ax.legend(frameon=True, loc="upper right")
 
@@ -344,7 +361,7 @@ def plot_category_sentiment_stacked(df):
     ax.barh(y, b_df["Neutral"], h, left=b_df["Positive"], label="Neutral", color=SENTIMENT_COLORS["Neutral"], edgecolor="black", alpha=0.9)
     ax.barh(y, b_df["Negative"], h, left=b_df["Positive"] + b_df["Neutral"], label="Negative", color=SENTIMENT_COLORS["Negative"], edgecolor="black", alpha=0.9)
 
-    ax.set_title("Sentiment Breakdown by Operational Category (N=353,714)", fontsize=13, fontweight="bold", pad=12)
+    ax.set_title("Sentiment Breakdown by Operational Category (Common Period N=248,501)", fontsize=13, fontweight="bold", pad=12)
     ax.set_yticks(y)
     ax.set_yticklabels([f"{c} (N={n:,d})" for c, n in zip(categories, b_df["Total"])], fontweight="bold")
     ax.set_xlabel("Proportion of Category (%)", fontweight="bold")
@@ -366,7 +383,7 @@ def plot_category_sentiment_stacked(df):
 
 def main():
     print("=" * 75)
-    print("GENERATING GLOBAL MULTI-YEAR PUBLICATION PLOTS (N=353,714)")
+    print("GENERATING GLOBAL COMMON PERIOD PUBLICATION PLOTS (N=248,501)")
     print("Strict Operator Serial: Grameenphone, Robi, Banglalink")
     print("=" * 75)
     df = load_dataset()
