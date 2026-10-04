@@ -1,9 +1,17 @@
 # 📡 Telecom VoC Deep Learning & Colab Suites
 
-This folder contains the complete Deep Learning pipeline and **two end-to-end, GPU-accelerated Google Colab notebooks**:
+This folder contains the complete Deep Learning pipeline and **GPU-accelerated Google Colab notebooks**:
 
-1. [**`telecom_voc_deep_learning_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_deep_learning_colab.ipynb): **Sentiment Classification** (Positive, Neutral, Negative) across Ensemble ML, BiLSTM+Attention, Multilingual MiniLM, and BUET BanglaBERT.
-2. [**`telecom_voc_comment_type_classification_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_comment_type_classification_colab.ipynb): **Comment Type / Operational Category Classification** across the 5 telecom operational domains (*Billing*, *Network Speed*, *App Login Bugs*, *Offers & Packs*, *General*).
+### 🏆 1. Master Unified Colab Suite (All ML + DL Models in One File)
+* [**`telecom_voc_master_unified_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_master_unified_colab.ipynb): **Complete All-in-One Suite**. Trains and benchmarks **both Sentiment Analysis and Operational Comment Types** across Classical Soft-Voting Ensembles, Hybrid BiLSTM+Attention (PyTorch), and Multilingual Sentence Transformers with automated 1-click model download.
+  * **Direct Colab Link**:
+    ```text
+    https://colab.research.google.com/github/rh61632/telecom-Voice-of-Customer_intelligence/blob/main/dl/telecom_voc_master_unified_colab.ipynb
+    ```
+
+### Specialized Single-Task Notebooks
+2. [**`telecom_voc_deep_learning_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_deep_learning_colab.ipynb): Focused **Sentiment Classification** (Positive, Neutral, Negative).
+3. [**`telecom_voc_comment_type_classification_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_comment_type_classification_colab.ipynb): Focused **Comment Type / Operational Category** (5 Classes).
 
 ---
 
