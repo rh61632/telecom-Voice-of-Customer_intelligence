@@ -65,8 +65,9 @@ Evaluating model failures against human judgment revealed three primary linguist
 ### 1. Bengali Sarcasm & Mockery (Where Human Annotators Excel)
 * **Review:** *"লোট পাটের জন্য সেরা রে"* (Rating: 5★)
   * **Human Vote:** `Negative`
-  * **All Models (Ensemble & DL):** `Positive`
-  * **Insight:** The reviewer sarcastically awarded 5 stars while writing *"Best for looting [the customer] haha"*. The models were misled by the high star rating and the keyword *"সেরা"* (best). Human annotation successfully caught this subtle socio-linguistic irony.
+  * **Star-Rating Baseline:** `Positive` (blindly followed the 5★ rating)
+  * **Automated NLP Models (Ensemble & DL):** `Positive` (misled by the lexical token *"সেরা"* [best])
+  * **Insight:** The reviewer sarcastically awarded 5 stars while writing *"Best for looting [the customer] haha"*. The star-based heuristic blindly followed the 5★ rating, while the text-based NLP models (which do not use star ratings as input features) were fooled by the positive keyword *"সেরা"*. Human annotation successfully caught this subtle socio-linguistic irony.
 
 ### 2. Rating-Text Misalignments
 * **Review:** *"ভালো"* (Rating: 1★)

@@ -149,8 +149,9 @@ Human-in-the-loop annotation exposed critical failure modes that automated heuri
 1. **Bengali Sarcasm & Mockery (Where Humans Win):**
    * *Customer Text:* `"লোট পাটের জন্য সেরা রে"` *(Rating: 5★)*
    * **Human Ground Truth:** `Negative`
-   * **All Automated Models:** `Positive`
-   * **Insight:** The reviewer awarded 5 stars sarcastically while writing *"Best for looting [the customer] haha"*. Automated models were fooled by the 5-star rating and the positive keyword *"সেরা"* (best). Human annotation captured the socio-linguistic irony.
+   * **Star-Rating Baseline:** `Positive` (blindly followed the sarcastic 5★ score)
+   * **Automated NLP Models (Ensemble, DL):** `Positive` (misled by the lexical token *"সেরা"* [best])
+   * **Insight:** The reviewer awarded 5 stars sarcastically while writing *"Best for looting [the customer] haha"*. The naive Star-Rating heuristic was tricked by the 5-star score, while the text NLP models (which do not use star ratings as features) were tricked by the positive keyword *"সেরা"*. Only human annotation captured the socio-linguistic irony.
 
 2. **Star-Rating Misalignment (1-Star User Mistakes):**
    * *Customer Text:* `"ভালো"` *(Rating: 1★)*
@@ -168,24 +169,80 @@ Human-in-the-loop annotation exposed critical failure modes that automated heuri
 
 ---
 
+---
+
+## 🏷️ Operational Category & Comment Type Intelligence
+
+Beyond overall sentiment, every review across the entire 83,417 production dataset is classified into **5 operational domains** using our trained **Soft-Voting Category Ensemble** (Macro-F1: `0.7845`, Accuracy: `87.44%` across 5-Fold Stratified CV on Google Colab GPU):
+
+| Operational Comment Type | Total Comments | Positive (%) | Neutral (%) | Negative (%) | Core Operational Friction |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Billing & Airtime Deductions** | 1,131 | 1.9% | 8.8% | **89.2%** 🔴 | **Most toxic topic**: Unexpected balance cuts, VAS debits |
+| **App Login & Technical Bugs** | 2,394 | 9.6% | 13.0% | **77.4%** 🔴 | Failed OTP delivery, update crash loops, biometric errors |
+| **Network Speed & 4G Latency** | 1,975 | 37.6% | 9.5% | **52.9%** 🟡 | Polarizing battleground: Buffering vs 4G throughput praise |
+| **Offers & Data Packs** | 4,889 | 33.4% | 21.3% | **45.3%** 🟡 | Split: Expensive per-GB tariffs vs emergency MB praise |
+| **General Appreciation / Other** | 73,028 | **92.5%** | 4.5% | **3.0%** 🟢 | App praise, short reviews, emojis |
+
+### Operational Visual Analytics (300 DPI Publication Plots)
+| Operational Pain Points (% of Own Complaints) | Sentiment Composition per Comment Type |
+| :---: | :---: |
+| <img src="scraped_data_2020/common_duration/plots/operator_category_complaint_distribution_bars.png" width="480"/> | <img src="scraped_data_2020/common_duration/plots/category_sentiment_stacked_bars.png" width="480"/> |
+
+### Self-Normalized Operator Profiles (100% of Own Comments)
+Evaluating each operator **relative to its own total comments** eliminates sample-size imbalances:
+* 🔵 **Grameenphone (N = 21,524)**: Offers & Data Packs drive **32.3% of all complaints**, followed by App Bugs (20.1%) and Billing Cuts (15.4%). GP has the highest billing complaint share in Bangladesh.
+* 🔴 **Robi (N = 33,825)**: Complaints are split equally between Offers & Data Packs (**25.0%**) and App Login Bugs (**23.7%**), while Billing cuts account for only 10.1%.
+* 🟠 **Banglalink (N = 28,068)**: App Login Bugs is its #1 pain point (**25.3% of complaints**), followed by Network Speed (**17.9%**). Billing deductions are virtually absent (only 8.1% of complaints).
+
+---
+
+## 🔬 Short-Text Filtering Ablation Study
+
+Mobile app stores are saturated with 1–2 word reviews (*"Good"*, *"Nice"*, *"ধন্যবাদ"*, emojis) that dilute customer feedback. We performed an ablation study across word-count thresholds:
+
+| Filter Setting | Retained Samples ($N$) | Category Macro-F1 | Category Acc | Sentiment Macro-F1 | Sentiment Acc | **Human Gold Set Macro-F1** |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Full Dataset (No Filter)** | 4,499 (100.0%) | **0.7845** | **87.44%** | **0.7917** | **88.20%** | **0.6737** |
+| **Filtered ($\ge 3$ words, removes 1–2 words)** | 3,886 (86.4%) | **0.7791** | **85.98%** | **0.7847** | **87.29%** | **0.7318** (+5.81% 🚀) |
+| **Aggressive Filter ($\ge 5$ words)** | 2,285 (50.8%) | 0.7446 | 79.34% | 0.7774 | 84.46% | 0.6989 |
+
+* **Key Takeaway**: Removing generic 1–2 word noise caused a **+5.81% surge in Human Gold Standard Macro-F1** (from `0.6737` ➔ `0.7318`) because multi-word reviews provide sufficient syntactic context to resolve sarcasm, emojis, and typos.
+* **Precision Boosts**: App Login Bug precision rose from `74.5%` ➔ **`76.3%`**, and Billing Deduction precision rose from `64.8%` ➔ **`67.4%`**.
+
+---
+
+## 📊 Multi-Year Dataset Scale & Lineage
+
+| Operator | Raw Scraped Reviews | % of Dataset | Available Date Span | Common Window (Aug 2025 – Sep 2026) |
+| :--- | :---: | :---: | :---: | :---: |
+| 🔵 **Grameenphone (MyGP)** | **132,148** | **53.7%** | Jan 2024 – Sep 2026 (33 mos) | 21,524 (25.8%) |
+| 🟠 **Banglalink (MyBL)** | **79,889** | **32.5%** | Jan 2020 – Sep 2026 (81 mos) | 28,068 (33.6%) |
+| 🔴 **Robi (MyRobi)** | **33,825** | **13.8%** | Aug 2025 – Sep 2026 (14 mos) | **33,825 (40.5%)** |
+| **Total Voice of Customer** | **245,862** | **100.0%** | **81 Months Continuous** | **83,417 (100.0%)** |
+
+* **Why GP is #1 overall but has 21.5k in Common Duration**: Grameenphone is by far the largest operator in the collection (132k reviews). Over **110,000 GP reviews occurred in 2024 and early 2025** (averaging 5,000–7,200 reviews/month). The Common Duration window was anchored to Robi's earliest available scrape date (Aug 24, 2025) to ensure exact date-for-date comparability without temporal confounding.
+* **Google Play Pagination Ceilings**: Live API testing confirms Google Play maintains fixed continuation tokens per app; public web scraping reached the absolute maximum depth supported by Google Play servers for each brand.
+
+---
+
 ## 💼 Cross-Operator Strategic Intelligence
 
 ### 1. Grameenphone (MyGP) — *Premium Anchor*
-* **Net Sentiment Score:** `+56.6%` (75.0% Positive, 18.4% Negative)
+* **Net Sentiment Score:** `+56.6%` (All reviews) | **`+1.6%`** (Substantive $\ge 3$w reviews: 45.7% Pos vs 44.1% Neg)
 * **Strengths:** Market-leading digital self-care ecosystem, high app stability, deep lifestyle integration (Flexiplan, emergency balance, health services).
-* **Friction Points:** Data bundle unit pricing, rapid validity expiration, and balance deduction transparency.
+* **Friction Points:** Data bundle unit pricing (32.3% of complaints), balance deduction transparency (15.4% of complaints), and login bugs (20.1%).
 * **Strategic Lever:** Deploy dynamic micro-packs with rollover validity and a zero-click "Where Did My Balance Go?" transaction timeline.
 
 ### 2. Banglalink (MyBL) — *Agile Value Champion*
-* **Net Sentiment Score:** `+81.5%` (88.3% Positive, 6.8% Negative)
-* **Strengths:** Strongest consumer goodwill, aggressive promotional bundles, highly popular gamified daily loyalty rewards.
-* **Friction Points:** Suburban and indoor data throughput drops, peak-hour OTP delivery delays.
+* **Net Sentiment Score:** **`+81.5%`** (All reviews) | **`+54.0%`** (Substantive $\ge 3$w reviews: 73.0% Pos vs 19.0% Neg)
+* **Strengths:** Strongest consumer goodwill, aggressive promotional bundles, lowest billing complaint rate in Bangladesh (only 8.1% of complaints).
+* **Friction Points:** App login and OTP bugs (25.3% of complaints) and suburban/indoor network speed drops (17.9%).
 * **Strategic Lever:** Transition promotional micro-rechargers into recurring monthly packs via personalized bundle recommendations.
 
 ### 3. Robi Axiata (MyRobi) — *Digital Lifestyle Leader*
-* **Net Sentiment Score:** `+79.4%` (86.5% Positive, 7.1% Negative)
-* **Strengths:** Highly engaging personalized UI (*Amar Offer*), seamless multi-account management, responsive recharge flows.
-* **Friction Points:** Inadvertent Value-Added Service (VAS) auto-renewals, occasional balance sync lag post-recharge.
+* **Net Sentiment Score:** `+79.4%` (All reviews) | **`+38.8%`** (Substantive $\ge 3$w reviews: 63.2% Pos vs 24.4% Neg)
+* **Strengths:** Lowest network speed complaint rate (10.1 per 1k), highly engaging personalized UI (*Amar Offer*), seamless multi-account management.
+* **Friction Points:** Data pack validity rules (25.0% of complaints) and app login stability (23.7%).
 * **Strategic Lever:** Implement a 1-tap "Active Subscriptions" dashboard with instant cancellation toggles to protect high user goodwill.
 
 ---
@@ -201,18 +258,23 @@ telecom-Voice-of-Customer_intelligence/
 │
 ├── ml/                                       # Classical Machine Learning Engine
 │   ├── models/
-│   │   ├── ensemble_voting_classifier.joblib # 🏆 Production Hero Model (17.5k rev/s)
+│   │   ├── ensemble_voting_classifier.joblib # 🏆 Production Hero Model (Sentiment)
+│   │   ├── category_voting_classifier.joblib # 🏷️ Production Category Hero Model
 │   │   ├── challenger_linearsvc.joblib       # Calibrated LinearSVC Model
 │   │   └── primary_logistic_regression.joblib# Balanced Logistic Regression Model
-│   ├── train_ensemble.py                     # Ensemble training script
+│   ├── train_ensemble.py                     # Ensemble training script (Sentiment)
+│   ├── train_category.py                     # Category / Comment Type trainer
 │   ├── train_sentiment.py                    # Classical ML trainer
 │   └── predict.py                            # CLI prediction utility
 │
-├── dl/                                       # Deep Learning & Neural Models
+├── dl/                                       # Deep Learning & Neural Models (Colab GPU Suites)
+│   ├── telecom_voc_deep_learning_colab.ipynb # 🚀 Colab GPU Suite: Sentiment Analysis
+│   ├── telecom_voc_comment_type_classification_colab.ipynb # 🏷️ Colab GPU Suite: Comment Types
 │   ├── models/
 │   │   ├── bilstm_attention_model.pt         # Hybrid BiLSTM + Bahdanau Attention
 │   │   └── minilm_transformer_head.pt        # Multilingual MiniLM Transformer Head
-│   ├── train_bilstm.py                       # PyTorch BiLSTM trainer
+│   ├── train_bilstm.py                       # PyTorch BiLSTM trainer (Sentiment)
+│   ├── train_bilstm_category.py              # PyTorch BiLSTM trainer (Comment Types)
 │   ├── train_transformer.py                  # Transformer fine-tuner
 │   └── predict_dl.py                         # Deep Learning inference engine
 │

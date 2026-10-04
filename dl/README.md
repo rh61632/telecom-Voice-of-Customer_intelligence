@@ -1,37 +1,41 @@
-# 📡 Telecom VoC Deep Learning on Google Colab
+# 📡 Telecom VoC Deep Learning & Colab Suites
 
-This folder contains the complete Deep Learning pipeline and an end-to-end, GPU-accelerated **Google Colab notebook**: [`telecom_voc_deep_learning_colab.ipynb`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_deep_learning_colab.ipynb).
+This folder contains the complete Deep Learning pipeline and **two end-to-end, GPU-accelerated Google Colab notebooks**:
+
+1. [**`telecom_voc_deep_learning_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_deep_learning_colab.ipynb): **Sentiment Classification** (Positive, Neutral, Negative) across Ensemble ML, BiLSTM+Attention, Multilingual MiniLM, and BUET BanglaBERT.
+2. [**`telecom_voc_comment_type_classification_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_comment_type_classification_colab.ipynb): **Comment Type / Operational Category Classification** across the 5 telecom operational domains (*Billing*, *Network Speed*, *App Login Bugs*, *Offers & Packs*, *General*).
 
 ---
 
-## 🚀 How to Run in Google Colab
+## 🚀 How to Run in Google Colab (Free GPU)
 
-### Option 1: Direct Upload (Fastest)
-1. Navigate to [Google Colab](https://colab.research.google.com).
-2. Click **Upload** and select [`dl/telecom_voc_deep_learning_colab.ipynb`](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_deep_learning_colab.ipynb).
-3. In Colab, switch to a free GPU:
-   * **Runtime** ➔ **Change runtime type** ➔ Select **T4 GPU** ➔ Click **Save**.
-4. Run all cells (`Runtime` ➔ `Run all` or `Ctrl + F9`).
+### 1. Comment Type / Operational Category Classification Notebook
+* **Direct Colab Link**:
+  ```text
+  https://colab.research.google.com/github/rh61632/telecom-Voice-of-Customer_intelligence/blob/main/dl/telecom_voc_comment_type_classification_colab.ipynb
+  ```
+* **Or Upload Directly**:
+  1. Go to [Google Colab](https://colab.research.google.com).
+  2. Click **Upload** ➔ Select `dl/telecom_voc_comment_type_classification_colab.ipynb`.
+  3. Ensure GPU is enabled: **Runtime** ➔ **Change runtime type** ➔ **T4 GPU** ➔ **Save**.
+  4. Run all cells (`Runtime` ➔ `Run all`).
 
-### Option 2: Via GitHub URL
-Once your changes are pushed to GitHub, open directly via this link:
-```text
-https://colab.research.google.com/github/rh61632/telecom-Voice-of-Customer_intelligence/blob/main/dl/telecom_voc_deep_learning_colab.ipynb
-```
+### 2. Sentiment Classification Notebook
+* **Direct Colab Link**:
+  ```text
+  https://colab.research.google.com/github/rh61632/telecom-Voice-of-Customer_intelligence/blob/main/dl/telecom_voc_deep_learning_colab.ipynb
+  ```
 
 ---
 
 ## 🧠 Notebook Capabilities
 
-1. **Hardware Detection**: Automatically detects GPU (T4/V100/A100) or CPU and sets PyTorch device.
-2. **Automated Setup**: Clones the repository, installs dependencies, and prepares all 4,500 reviews across Grameenphone, Banglalink, and Robi.
-3. **Model 1: BiLSTM with Self-Attention & Char-CNN**:
-   * Evaluates 5-fold cross-validation on GPU in seconds.
-   * Dual word + character convolutions handle phonetic Banglish, Bengali script, and English.
-4. **Model 2: Multilingual Transformer (MiniLM)**:
-   * Extracts dense multilingual embeddings on GPU in batches.
-   * Trains a regularized classification head with 5-fold CV.
-5. **Interactive Prediction**:
-   * Test any custom review in real-time with visual probability bars.
-6. **Model Checkpointing & Download**:
-   * Save `.pt` checkpoints directly to local browser download or Google Drive.
+1. **Zero Local Compute**: Everything trains in the cloud on free Google Colab Nvidia T4 GPUs.
+2. **Automated Setup**: Clones the repository, installs dependencies, and prepares all 4,499 operational reviews across Grameenphone, Banglalink, and Robi.
+3. **4-Paradigm Benchmark (5-Fold Stratified CV)**:
+   - 🏆 **Soft-Voting Ensemble ML**: Dual Char (3-5) + Word (1-2) TF-IDF + Logistic Regression + LinearSVC + ComplementNB.
+   - 🧠 **Hybrid BiLSTM + Bahdanau Attention**: Dual Word + Char-CNN embeddings with inverse class weighting.
+   - 🚀 **Multilingual MiniLM Transformer**: 384-dimensional dense semantic sentence representations.
+   - 🇧🇩 **BUET BanglaBERT**: 768-dimensional native Bengali contextual representations.
+4. **Live Interactive Testing**: Test any custom Banglish or Bengali review in real time.
+5. **Model Checkpointing & Download**: Automatically packages trained models into a zip file and triggers a browser download.

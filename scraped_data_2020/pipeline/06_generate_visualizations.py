@@ -235,7 +235,12 @@ def generate_production_visuals():
         print(f"Error: {prod_csv} not found.")
         return
 
-    df = pd.read_csv(prod_csv, usecols=["operator", "review_date", "pred_ensemble", "rating"])
+    cols = ["operator", "review_date", "pred_ensemble", "rating"]
+    # Check if pred_category is present
+    header = pd.read_csv(prod_csv, nrows=1).columns.tolist()
+    if "pred_category" in header:
+        cols.append("pred_category")
+    df = pd.read_csv(prod_csv, usecols=cols)
 
     # 1. Operator Sentiment Distribution (Stacked / Grouped)
     dist = df.groupby("operator")["pred_ensemble"].value_counts(normalize=True).unstack()[LABELS] * 100
@@ -342,6 +347,94 @@ def generate_production_visuals():
     plt.savefig(out3, dpi=300)
     plt.close()
     print(f"  ✓ Saved: {out3.name}")
+
+    # 4. Operational Complaint Distribution (% of Own Complaints)
+    if "pred_category" in df.columns:
+        neg_df = df[df["pred_ensemble"] == "Negative"]
+        key_cats = [
+            "Offers & Data Packs",
+            "App Login & Technical Bugs",
+            "Billing & Airtime Deductions",
+            "Network Speed & 4G Latency",
+        ]
+        
+        # Calculate % of own complaints
+        ct_data = {}
+        for op in ["Grameenphone", "Robi", "Banglalink"]:
+            op_neg = neg_df[neg_df["operator"] == op]
+            total_op_neg = len(op_neg)
+            ct_data[op] = [(len(op_neg[op_neg["pred_category"] == c]) / total_op_neg * 100) for c in key_cats]
+
+        fig, ax = plt.subplots(figsize=(11, 5.5), dpi=300)
+        x = np.arange(len(key_cats))
+        w = 0.26
+
+        b1 = ax.bar(x - w, ct_data["Grameenphone"], width=w, label="Grameenphone", color=COLOR_PALETTE["Grameenphone"], edgecolor="white", zorder=3)
+        b2 = ax.bar(x, ct_data["Robi"], width=w, label="Robi", color=COLOR_PALETTE["Robi"], edgecolor="white", zorder=3)
+        b3 = ax.bar(x + w, ct_data["Banglalink"], width=w, label="Banglalink", color=COLOR_PALETTE["Banglalink"], edgecolor="white", zorder=3)
+
+        ax.set_title("Operational Pain Points (% Share of Each Operator's Own Negative Reviews)\n(Common Duration Window: Aug 2025 – Sep 2026)", fontsize=13, fontweight="bold", pad=12)
+        ax.set_ylabel("% Share of Own Negative Reviews", fontweight="bold")
+        ax.set_xticks(x)
+        ax.set_xticklabels(key_cats, fontweight="bold", fontsize=10)
+        ax.set_ylim(0, 40)
+        ax.grid(axis="y", linestyle="--", alpha=0.5, zorder=0)
+        ax.legend(frameon=True, facecolor="white", edgecolor="gray")
+
+        for bars in [b1, b2, b3]:
+            for bar in bars:
+                h = bar.get_height()
+                ax.annotate(f"{h:.1f}%", xy=(bar.get_x() + bar.get_width()/2, h), xytext=(0, 3),
+                            textcoords="offset points", ha="center", va="bottom", fontsize=8.5, fontweight="bold")
+
+        plt.tight_layout()
+        out4 = COMMON_PLOTS / "operator_category_complaint_distribution_bars.png"
+        plt.savefig(out4, dpi=300)
+        plt.close()
+        print(f"  ✓ Saved: {out4.name}")
+
+        # 5. Category Sentiment Composition Stacked Bar Chart
+        cat_order = [
+            "Billing & Airtime Deductions",
+            "App Login & Technical Bugs",
+            "Network Speed & 4G Latency",
+            "Offers & Data Packs",
+            "General Appreciation / Other",
+        ]
+        cat_sents = pd.crosstab(df["pred_category"], df["pred_ensemble"], normalize="index").reindex(cat_order) * 100
+
+        fig, ax = plt.subplots(figsize=(10, 5), dpi=300)
+        y = np.arange(len(cat_order))
+        h = 0.55
+
+        p_pos = cat_sents["Positive"]
+        p_neu = cat_sents["Neutral"]
+        p_neg = cat_sents["Negative"]
+
+        b_pos = ax.barh(y, p_pos, height=h, label="Positive", color=COLOR_PALETTE["Positive"], edgecolor="white")
+        b_neu = ax.barh(y, p_neu, height=h, left=p_pos, label="Neutral", color=COLOR_PALETTE["Neutral"], edgecolor="white")
+        b_neg = ax.barh(y, p_neg, height=h, left=p_pos + p_neu, label="Negative", color=COLOR_PALETTE["Negative"], edgecolor="white")
+
+        ax.set_title("Sentiment Composition Across Operational Comment Types (N = 83,417)", fontsize=13, fontweight="bold", pad=12)
+        ax.set_xlabel("Percentage (%)", fontweight="bold")
+        ax.set_yticks(y)
+        ax.set_yticklabels(cat_order, fontweight="bold", fontsize=10)
+        ax.set_xlim(0, 100)
+        ax.grid(axis="x", linestyle="--", alpha=0.5)
+        ax.legend(loc="upper right", frameon=True, facecolor="white", edgecolor="gray")
+
+        # Label negative percentages on the right of the bars
+        for idx, (pos_val, neu_val, neg_val) in enumerate(zip(p_pos, p_neu, p_neg)):
+            if neg_val > 5:
+                ax.text(pos_val + neu_val + neg_val / 2, idx, f"{neg_val:.1f}% Neg", ha="center", va="center", color="white", fontweight="bold", fontsize=9)
+            if pos_val > 15:
+                ax.text(pos_val / 2, idx, f"{pos_val:.1f}% Pos", ha="center", va="center", color="white", fontweight="bold", fontsize=9)
+
+        plt.tight_layout()
+        out5 = COMMON_PLOTS / "category_sentiment_stacked_bars.png"
+        plt.savefig(out5, dpi=300)
+        plt.close()
+        print(f"  ✓ Saved: {out5.name}")
 
 
 if __name__ == "__main__":
