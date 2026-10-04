@@ -367,8 +367,22 @@ To ensure responsible analytical interpretation and scientific transparency, sev
    * Romanized Banglish lacks standardized phonetic orthography (e.g., *"valo"*, *"bhalo"*, *"bahlo"*, *"bala"*), leading to vocabulary variance.
    * Ultra-short reviews (*"bad"*, *"best"*, *"..."*, *"ok"*) lack contextual diagnostic depth, making it impossible to isolate whether the friction relates to bundle pricing, UI responsiveness, customer support, or internet latency without broader operational telemetry.
 
-5. **Channel Demographic Restriction (Android Play Store Only):**
-   * The analyzed dataset exclusively represents Android smartphone subscribers utilizing digital self-care apps. It excludes iOS subscribers, feature-phone users relying on USSD (`*121#`) / IVR interfaces, and rural demographics who interact with telcos primarily through physical retail agents.
+5. **Channel Scope & Empirical iOS vs. Android Comparison Probe:**
+   * The core dataset purposefully models Android subscribers on Google Play because Android accounts for **~96% of the mobile operating system market in Bangladesh** (StatCounter BD / BTRC data).
+   * **Empirical Apple App Store Probe ($N=1,199$):** To rigorously test whether iOS reviews could be incorporated, an empirical scraping probe was executed against Apple's iTunes APIs across all three operators (`scraped_data_2020/pipeline/probe_ios_appstore.py`):
+
+     | Operator | iOS App Store Star Ratings | Scraped iOS Text Reviews | Scraped Google Play Reviews | iOS Date Span Retrieved |
+     | :--- | :---: | :---: | :---: | :---: |
+     | 🔵 **Grameenphone (MyGP)** | 108,947 | **500** *(Apple API cap)* | **132,148** | June 2024 – Oct 2026 (24 mos) |
+     | 🔴 **Robi (MyRobi)** | 25,724 | **500** *(Apple API cap)* | **33,825** | Sept 2021 – Oct 2026 (5 yrs) |
+     | 🟠 **Banglalink (MyBL)** | 790 | **199** *(Lifetime total)* | **79,889** | Nov 2014 – Aug 2026 (12 yrs) |
+     | **Total Ecosystem** | **135,461** | **1,199** | **245,862** | — |
+
+   * **Why iOS is Methodologically Excluded:**
+     1. **Apple's Hard 500-Review Public Ceiling:** Even though MyGP displays 108,947 star ratings, Apple hard-caps public customer review RSS feeds at 500 written reviews, making deep historical scraping impossible via public endpoints.
+     2. **Storefront Region Distortion:** Querying the Bangladesh storefront (`country='bd'`) returned 0 customer reviews; all 1,199 reviews reside in the US storefront (`country='us'`) because local iPhone users overwhelmingly configure US Apple IDs.
+     3. **Severe Temporal Confounding:** Banglalink required 12 years (2014–2026) to accumulate 199 reviews, while Grameenphone reached its 500 cap in 24 months. Merging these would distort cross-operator temporal comparisons.
+     4. **Socioeconomic & Demographic Skew:** iOS users in Bangladesh represent an urban, high-ARPU tier whose feedback focuses on biometric logins and UI design, omitting critical mass-market topics like 500MB micro-packs and emergency balance deductions. Feature-phone subscribers using USSD (`*121#`) are similarly out of scope.
 
 6. **Temporal & Macroeconomic Climate (Aug 2025 – Sep 2026):**
    * Sentiment metrics reflect the specific macroeconomic conditions, inflation rates, and BTRC regulatory tariff floors active during the 402-day shared window. Macro-level changes in consumer purchasing power can influence price sensitivity independently of operator service quality.

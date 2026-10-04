@@ -1,0 +1,32 @@
+{
+  "Grameenphone": {
+    "app_name": "MyGP, Bangladesh",
+    "app_id": 1128691313,
+    "total_app_store_ratings": 108947,
+    "avg_star_rating": 4.54127,
+    "scraped_text_reviews": 500,
+    "date_span": "2024-06-29 to 2026-10-02",
+    "earliest_date": "2024-06-29",
+    "latest_date": "2026-10-02"
+  },
+  "Banglalink": {
+    "app_name": "MyBL by Banglalink",
+    "app_id": 934133022,
+    "total_app_store_ratings": 790,
+    "avg_star_rating": 3.11899,
+    "scraped_text_reviews": 199,
+    "date_span": "2014-11-08 to 2026-08-08",
+    "earliest_date": "2014-11-08",
+    "latest_date": "2026-08-08"
+  },
+  "Robi": {
+    "app_name": "My Robi",
+    "app_id": 963785828,
+    "total_app_store_ratings": 25724,
+    "avg_star_rating": 4.67295,
+    "scraped_text_reviews": 500,
+    "date_span": "2021-09-09 to 2026-10-02",
+    "earliest_date": "2021-09-09",
+    "latest_date": "2026-10-02"
+  }
+}

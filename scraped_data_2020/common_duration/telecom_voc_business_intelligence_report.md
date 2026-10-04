@@ -200,8 +200,22 @@ For executive decision-makers, several core boundaries of Voice-of-Customer inte
    Customer feedback on digital app stores is voluntary and typically submitted during extreme satisfaction (e.g., promotional bonuses) or frustration (e.g., service disruption). The satisfied majority of daily users rarely leaves feedback.
 4. **Promotional Incentive Distortions:**  
    Promotional campaigns offering free data bonuses (e.g., 500MB login rewards in MyBL/MyRobi) generate short positive reviews written primarily to claim rewards, creating an upward bias in positive volume.
-5. **Channel Scope:**  
-   Data represents smartphone users on Android self-care apps, excluding feature-phone subscribers using USSD (`*121#`) and rural subscribers utilizing physical retail agents.
+5. **Channel Scope & Empirical iOS vs. Android Comparison:**  
+   * **Market Asymmetry**: Android commands **~96% of the mobile operating system market share in Bangladesh** (StatCounter BD / BTRC data), while iOS represents under 4%. Google Play represents the true voice of the mainstream Bangladeshi telecom subscriber base.
+   * **Empirical Apple App Store Probe ($N=1,199$)**: To evaluate whether iOS data could be synthesized, a live scraping probe was executed against Apple's iTunes APIs (`scraped_data_2020/pipeline/probe_ios_appstore.py`):
+     
+     | Operator | App Store Star Ratings | Scraped iOS Text Reviews | Scraped Google Play Reviews | iOS Date Span Retrieved |
+     | :--- | :---: | :---: | :---: | :---: |
+     | 🔵 **Grameenphone (MyGP)** | 108,947 | **500** *(Apple API cap)* | **132,148** | June 2024 – Oct 2026 (24 mos) |
+     | 🔴 **Robi (MyRobi)** | 25,724 | **500** *(Apple API cap)* | **33,825** | Sept 2021 – Oct 2026 (5 yrs) |
+     | 🟠 **Banglalink (MyBL)** | 790 | **199** *(Lifetime total)* | **79,889** | Nov 2014 – Aug 2026 (12 yrs) |
+     | **Total Ecosystem** | **135,461** | **1,199** | **245,862** | — |
+
+   * **Why iOS is Methodologically Excluded**:
+     1. **Apple's Hard 500-Review Ceiling**: Apple strictly caps public customer review RSS endpoints to 10 pages (500 reviews maximum), making historical or high-volume scraping impossible without private Apple Developer Console access.
+     2. **Storefront Partitioning**: The Bangladesh storefront (`country='bd'`) returned 0 customer reviews; all 1,199 reviews reside in the US storefront (`country='us'`) due to local iPhone users registering US Apple IDs.
+     3. **Severe Temporal Distortion**: Banglalink required 12 years (2014–2026) to accumulate 199 reviews, while Grameenphone reached its 500 ceiling in 24 months. Comparing these directly would introduce extreme temporal confounding.
+     4. **Demographic / Socioeconomic Skew**: Bangladeshi iOS users represent a high-income, urban demographic whose feedback centers on UI aesthetics and biometric authentication, omitting key mass-market friction points like micro-pack pricing and emergency balance deductions.
 
 ---
 *Report generated from the Telecom VoC Intelligence Pipeline.*  

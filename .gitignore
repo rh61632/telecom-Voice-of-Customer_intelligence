@@ -10,3 +10,8 @@ __pycache__/
 
 # Environment/secret variables
 .env
+
+# Temporary helper packages & archives
+friend_annotation_pack/
+scratch/
+*.zip
