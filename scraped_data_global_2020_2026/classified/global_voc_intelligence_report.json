@@ -1,0 +1,128 @@
+{
+  "Banglalink": {
+    "total_reviews": 36598,
+    "net_sentiment_score": 73.91,
+    "sentiment_distribution": {
+      "Positive": {
+        "count": 30170,
+        "pct": 82.44
+      },
+      "Negative": {
+        "count": 3120,
+        "pct": 8.53
+      },
+      "Neutral": {
+        "count": 3308,
+        "pct": 9.04
+      }
+    },
+    "category_distribution": {
+      "General Appreciation / Other": {
+        "count": 33018,
+        "pct": 90.22
+      },
+      "Offers & Data Packs": {
+        "count": 1228,
+        "pct": 3.36
+      },
+      "App Login & Technical Bugs": {
+        "count": 1088,
+        "pct": 2.97
+      },
+      "Network Speed & 4G Latency": {
+        "count": 1032,
+        "pct": 2.82
+      },
+      "Billing & Airtime Deductions": {
+        "count": 232,
+        "pct": 0.63
+      }
+    },
+    "avg_sentiment_confidence": 0.879,
+    "avg_category_confidence": 0.8845
+  },
+  "Grameenphone": {
+    "total_reviews": 161461,
+    "net_sentiment_score": 69.76,
+    "sentiment_distribution": {
+      "Positive": {
+        "count": 128639,
+        "pct": 79.67
+      },
+      "Negative": {
+        "count": 16005,
+        "pct": 9.91
+      },
+      "Neutral": {
+        "count": 16817,
+        "pct": 10.42
+      }
+    },
+    "category_distribution": {
+      "General Appreciation / Other": {
+        "count": 144699,
+        "pct": 89.62
+      },
+      "Offers & Data Packs": {
+        "count": 8559,
+        "pct": 5.3
+      },
+      "App Login & Technical Bugs": {
+        "count": 3725,
+        "pct": 2.31
+      },
+      "Network Speed & 4G Latency": {
+        "count": 2500,
+        "pct": 1.55
+      },
+      "Billing & Airtime Deductions": {
+        "count": 1978,
+        "pct": 1.23
+      }
+    },
+    "avg_sentiment_confidence": 0.8746,
+    "avg_category_confidence": 0.881
+  },
+  "Robi": {
+    "total_reviews": 155655,
+    "net_sentiment_score": 65.63,
+    "sentiment_distribution": {
+      "Positive": {
+        "count": 120843,
+        "pct": 77.64
+      },
+      "Negative": {
+        "count": 18691,
+        "pct": 12.01
+      },
+      "Neutral": {
+        "count": 16121,
+        "pct": 10.36
+      }
+    },
+    "category_distribution": {
+      "General Appreciation / Other": {
+        "count": 135353,
+        "pct": 86.96
+      },
+      "Offers & Data Packs": {
+        "count": 7922,
+        "pct": 5.09
+      },
+      "App Login & Technical Bugs": {
+        "count": 6926,
+        "pct": 4.45
+      },
+      "Network Speed & 4G Latency": {
+        "count": 4239,
+        "pct": 2.72
+      },
+      "Billing & Airtime Deductions": {
+        "count": 1215,
+        "pct": 0.78
+      }
+    },
+    "avg_sentiment_confidence": 0.8671,
+    "avg_category_confidence": 0.8729
+  }
+}

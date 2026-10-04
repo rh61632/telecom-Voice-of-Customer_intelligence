@@ -1,0 +1,184 @@
+{
+  "2020": {
+    "Robi": {
+      "total": 32333,
+      "nss": 63.64,
+      "positive_pct": 76.6,
+      "negative_pct": 12.9,
+      "top_complaints": {
+        "Offers & Data Packs": 5.3,
+        "App Login & Technical Bugs": 4.5,
+        "Network Speed & 4G Latency": 3.6,
+        "Billing & Airtime Deductions": 0.7
+      }
+    }
+  },
+  "2021": {
+    "Robi": {
+      "total": 30296,
+      "nss": 63.78,
+      "positive_pct": 76.8,
+      "negative_pct": 13.0,
+      "top_complaints": {
+        "App Login & Technical Bugs": 5.2,
+        "Offers & Data Packs": 4.3,
+        "Network Speed & 4G Latency": 3.2,
+        "Billing & Airtime Deductions": 0.7
+      }
+    }
+  },
+  "2022": {
+    "Robi": {
+      "total": 34416,
+      "nss": 68.42,
+      "positive_pct": 79.4,
+      "negative_pct": 10.9,
+      "top_complaints": {
+        "App Login & Technical Bugs": 4.2,
+        "Offers & Data Packs": 3.9,
+        "Network Speed & 4G Latency": 2.6,
+        "Billing & Airtime Deductions": 0.6
+      }
+    }
+  },
+  "2023": {
+    "Grameenphone": {
+      "total": 19829,
+      "nss": 73.19,
+      "positive_pct": 81.0,
+      "negative_pct": 7.8,
+      "top_complaints": {
+        "Offers & Data Packs": 4.1,
+        "App Login & Technical Bugs": 1.9,
+        "Network Speed & 4G Latency": 1.1,
+        "Billing & Airtime Deductions": 0.8
+      }
+    },
+    "Robi": {
+      "total": 16784,
+      "nss": 48.68,
+      "positive_pct": 68.2,
+      "negative_pct": 19.5,
+      "top_complaints": {
+        "App Login & Technical Bugs": 8.2,
+        "Offers & Data Packs": 6.9,
+        "Network Speed & 4G Latency": 2.7,
+        "Billing & Airtime Deductions": 1.1
+      }
+    }
+  },
+  "2024": {
+    "Banglalink": {
+      "total": 4612,
+      "nss": 52.75,
+      "positive_pct": 68.9,
+      "negative_pct": 16.1,
+      "top_complaints": {
+        "App Login & Technical Bugs": 6.8,
+        "Offers & Data Packs": 4.6,
+        "Network Speed & 4G Latency": 2.8,
+        "Billing & Airtime Deductions": 0.8
+      }
+    },
+    "Grameenphone": {
+      "total": 75046,
+      "nss": 70.58,
+      "positive_pct": 79.3,
+      "negative_pct": 8.7,
+      "top_complaints": {
+        "Offers & Data Packs": 4.1,
+        "App Login & Technical Bugs": 2.2,
+        "Network Speed & 4G Latency": 1.4,
+        "Billing & Airtime Deductions": 1.0
+      }
+    },
+    "Robi": {
+      "total": 6816,
+      "nss": 52.13,
+      "positive_pct": 69.5,
+      "negative_pct": 17.4,
+      "top_complaints": {
+        "Offers & Data Packs": 6.7,
+        "App Login & Technical Bugs": 6.5,
+        "Network Speed & 4G Latency": 2.7,
+        "Billing & Airtime Deductions": 1.5
+      }
+    }
+  },
+  "2025": {
+    "Banglalink": {
+      "total": 10235,
+      "nss": 66.38,
+      "positive_pct": 78.5,
+      "negative_pct": 12.1,
+      "top_complaints": {
+        "App Login & Technical Bugs": 4.6,
+        "Offers & Data Packs": 3.8,
+        "Network Speed & 4G Latency": 3.3,
+        "Billing & Airtime Deductions": 0.9
+      }
+    },
+    "Grameenphone": {
+      "total": 54244,
+      "nss": 70.32,
+      "positive_pct": 81.0,
+      "negative_pct": 10.7,
+      "top_complaints": {
+        "Offers & Data Packs": 6.2,
+        "App Login & Technical Bugs": 2.3,
+        "Network Speed & 4G Latency": 1.7,
+        "Billing & Airtime Deductions": 1.4
+      }
+    },
+    "Robi": {
+      "total": 16112,
+      "nss": 78.04,
+      "positive_pct": 84.1,
+      "negative_pct": 6.0,
+      "top_complaints": {
+        "Offers & Data Packs": 5.6,
+        "App Login & Technical Bugs": 1.2,
+        "Network Speed & 4G Latency": 1.2,
+        "Billing & Airtime Deductions": 0.7
+      }
+    }
+  },
+  "2026": {
+    "Banglalink": {
+      "total": 21751,
+      "nss": 81.94,
+      "positive_pct": 87.2,
+      "negative_pct": 5.2,
+      "top_complaints": {
+        "Offers & Data Packs": 2.9,
+        "Network Speed & 4G Latency": 2.6,
+        "App Login & Technical Bugs": 1.4,
+        "Billing & Airtime Deductions": 0.5
+      }
+    },
+    "Grameenphone": {
+      "total": 12342,
+      "nss": 56.81,
+      "positive_pct": 74.2,
+      "negative_pct": 17.4,
+      "top_complaints": {
+        "Offers & Data Packs": 10.2,
+        "App Login & Technical Bugs": 3.8,
+        "Billing & Airtime Deductions": 2.7,
+        "Network Speed & 4G Latency": 2.4
+      }
+    },
+    "Robi": {
+      "total": 18898,
+      "nss": 76.24,
+      "positive_pct": 83.5,
+      "negative_pct": 7.3,
+      "top_complaints": {
+        "Offers & Data Packs": 5.7,
+        "App Login & Technical Bugs": 2.2,
+        "Network Speed & 4G Latency": 1.9,
+        "Billing & Airtime Deductions": 0.9
+      }
+    }
+  }
+}
