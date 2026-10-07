@@ -147,8 +147,8 @@ def train_epoch(model, dataloader, optimizer, scheduler, criterion, device, scal
         attention_mask = batch["attention_mask"].to(device)
         labels = batch["label"].to(device)
 
-        if scaler is not None:
-            with torch.amp.autocast(device_type=device.type):
+        if scaler is not None and device.type == "cuda":
+            with torch.cuda.amp.autocast():
                 outputs = model(input_ids=input_ids, attention_mask=attention_mask)
                 loss = criterion(outputs.logits, labels)
             scaler.scale(loss).backward()
@@ -229,7 +229,7 @@ def run_cv_experiment(df, task, label_map, args, device, tokenizer):
         warmup_steps = int(total_steps * 0.1)
         scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=warmup_steps, num_training_steps=total_steps)
 
-        scaler = torch.amp.GradScaler(device_type=device.type) if device.type == "cuda" else None
+        scaler = torch.cuda.amp.GradScaler() if device.type == "cuda" else None
 
         best_val_f1 = 0.0
         best_val_acc = 0.0
@@ -297,7 +297,7 @@ def train_production_checkpoint(df, task, label_map, args, device, tokenizer):
     total_steps = len(train_loader) * args.epochs
     warmup_steps = int(total_steps * 0.1)
     scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=warmup_steps, num_training_steps=total_steps)
-    scaler = torch.amp.GradScaler(device_type=device.type) if device.type == "cuda" else None
+    scaler = torch.cuda.amp.GradScaler() if device.type == "cuda" else None
 
     for epoch in range(1, args.epochs + 1):
         loss = train_epoch(model, train_loader, optimizer, scheduler, criterion, device, scaler)
@@ -365,3 +365,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
