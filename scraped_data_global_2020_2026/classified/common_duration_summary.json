@@ -2,27 +2,27 @@
   "common_window_start": "2023-10-24 14:56:05",
   "common_window_end": "2026-10-06 22:22:02",
   "common_duration_days": 1078,
-  "total_reviews": 249268,
+  "total_reviews": 285878,
   "operators": {
     "Grameenphone": {
       "total_reviews": 161737,
-      "share_percent": 64.88,
+      "share_percent": 56.58,
       "positive_percent": 79.65,
       "neutral_percent": 10.42,
       "negative_percent": 9.93,
       "net_sentiment_score": 69.72
     },
     "Robi": {
-      "total_reviews": 44193,
-      "share_percent": 17.73,
-      "positive_percent": 80.68,
-      "neutral_percent": 10.28,
-      "negative_percent": 9.04,
-      "net_sentiment_score": 71.64
+      "total_reviews": 80803,
+      "share_percent": 28.26,
+      "positive_percent": 82.51,
+      "neutral_percent": 9.52,
+      "negative_percent": 7.98,
+      "net_sentiment_score": 74.53
     },
     "Banglalink": {
       "total_reviews": 43338,
-      "share_percent": 17.39,
+      "share_percent": 15.16,
       "positive_percent": 80.85,
       "neutral_percent": 9.55,
       "negative_percent": 9.6,
