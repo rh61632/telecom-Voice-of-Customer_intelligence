@@ -1,5 +1,9 @@
+# ── Classical ML sub-module dependencies ──────────────────────────────────────
+# Install: pip install -r ml/requirements.txt
+# For full-stack install use the root: pip install -r requirements.txt
+# ──────────────────────────────────────────────────────────────────────────────
 scikit-learn>=1.4.0
-pandas>=2.0.0
-numpy>=1.24.0
 scipy>=1.10.0
 joblib>=1.3.0
+pandas>=2.0.0
+numpy>=1.24.0

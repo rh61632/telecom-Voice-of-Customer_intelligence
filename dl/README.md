@@ -16,8 +16,21 @@ This folder contains the complete Deep Learning pipeline, neural model architect
     ```
 
 ### Specialized Single-Task Notebooks
-2. [**`telecom_voc_deep_learning_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_deep_learning_colab.ipynb): Focused **Sentiment Classification** (Positive, Neutral, Negative).
-3. [**`telecom_voc_comment_type_classification_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_comment_type_classification_colab.ipynb): Focused **Comment Type / Operational Category** (5 Classes).
+2. [**`telecom_voc_banglabert_finetuning_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_banglabert_finetuning_colab.ipynb): 🇧🇩 **BUET BanglaBERT Full End-to-End Fine-Tuning** (`csebuetnlp/banglabert` 110M params). Performs 5-Fold Stratified CV and production model training with backpropagation through all 12 transformer layers.
+   * **Direct Colab Link**:
+     ```text
+     https://colab.research.google.com/github/rh61632/telecom-Voice-of-Customer_intelligence/blob/main/dl/telecom_voc_banglabert_finetuning_colab.ipynb
+     ```
+3. [**`telecom_voc_deep_learning_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_deep_learning_colab.ipynb): Focused **Sentiment Classification** (Positive, Neutral, Negative).
+4. [**`telecom_voc_comment_type_classification_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_comment_type_classification_colab.ipynb): Focused **Comment Type / Operational Category** (5 Classes).
+
+---
+
+### 💻 Local / CLI Training Scripts
+* `dl/finetune_banglabert.py`: CLI for full fine-tuning of BanglaBERT (`--task both --epochs 4 --batch_size 32`).
+* `dl/train_bilstm.py`: PyTorch BiLSTM + Attention training for Sentiment.
+* `dl/train_bilstm_category.py`: PyTorch BiLSTM + Attention training for Operational Categories.
+* `dl/train_transformer.py`: Pretrained Multilingual MiniLM sentence embeddings + classifier head.
 
 ---
 

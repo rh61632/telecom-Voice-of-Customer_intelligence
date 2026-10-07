@@ -11,6 +11,7 @@
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Data Last Scraped](https://img.shields.io/badge/Data%20Last%20Scraped-Sep%2030%2C%202026-informational)](scraped_data_global_2020_2026/raw/)
 [![Common Period Benchmark: 248.5k Reviews](https://img.shields.io/badge/Active%20Benchmark-248%2C501%20Reviews-emerald.svg)](scraped_data_global_2020_2026/classified/all_operators_common_duration_classified.csv)
 [![Master Corpus: 398.2k](https://img.shields.io/badge/Master%20Corpus-398%2C193%20Reviews-blueviolet.svg)](scraped_data_global_2020_2026/classified/all_operators_classified_global_2020_2026.csv)
 [![Common Window: 1,072 Days](https://img.shields.io/badge/Common%20Window-Oct%202023--Sep%202026-teal.svg)](scraped_data_global_2020_2026/classified/)
@@ -217,12 +218,22 @@ source ml/.venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Extract Deduplicated Common Duration Window
+### 2. Refresh Data (Incremental — only fetches reviews newer than last scrape)
+```bash
+# Full re-scrape from scratch (first-time or reset):
+python scraped_data_global_2020_2026/pipeline/run_parallel_scrapers.py
+
+# Incremental update (appends only new reviews since last run — much faster):
+python scraped_data_global_2020_2026/pipeline/run_parallel_scrapers.py --incremental
+```
+> After re-scraping, update the **"Data Last Scraped"** badge at the top of this README to reflect the new end date.
+
+### 3. Merge, Deduplicate & Re-Classify New Reviews
 ```bash
 python scraped_data_global_2020_2026/pipeline/merge_and_sync_all_datasets.py
 ```
 
-### 3. Render 300 DPI Visualizations
+### 4. Render 300 DPI Visualizations
 ```bash
 python scraped_data_global_2020_2026/pipeline/generate_global_visualizations.py
 ```

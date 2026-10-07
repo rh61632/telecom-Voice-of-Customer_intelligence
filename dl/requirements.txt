@@ -1,8 +1,12 @@
+# ── Deep Learning sub-module dependencies ─────────────────────────────────────
+# Install: pip install -r dl/requirements.txt
+# For full-stack install use the root: pip install -r requirements.txt
+# ──────────────────────────────────────────────────────────────────────────────
 torch>=2.2.0
 torchvision>=0.17.0
 torchaudio>=2.2.0
 transformers>=4.40.0
 sentence-transformers>=2.7.0
-pandas>=2.0.0
 scikit-learn>=1.4.0
+pandas>=2.0.0
 numpy>=1.24.0

@@ -6,6 +6,15 @@ Strict Operator Serial:
   1. Grameenphone (GP, #0090ff)
   2. Robi (Robi, #e60000)
   3. Banglalink (BL, #ff7a00)
+
+Plots generated (all at 300 DPI):
+  1. operator_sentiment_distribution_bars.png   — Grouped sentiment share per operator
+  2. net_sentiment_score_comparison_bars.png     — NSS bar chart (incl. industry avg)
+  3. monthly_sentiment_trend_line.png            — Yearly NSS trajectory (2023–2026)
+  4. multi_year_sentiment_trend_line.png         — Same as #3 (alt filename for README)
+  5. operator_category_complaint_distribution_bars.png — Complaint rates by category
+  6. category_sentiment_stacked_bars.png         — Sentiment mix within each category
+  7. monthly_nss_trend_line.png                  — Monthly-granularity NSS (48 pts, Oct 2023–Sep 2026)
 """
 
 import os
@@ -381,6 +390,117 @@ def plot_category_sentiment_stacked(df):
     save_plot(fig, "category_sentiment_stacked_bars.png")
 
 
+def plot_monthly_nss_trend(df):
+    """Plot 6: Monthly-granularity Net Sentiment Score (Oct 2023 – Sep 2026).
+
+    Produces ~36 monthly data points per operator across the 1,072-day common
+    window, exposing intra-year signals such as Eid offer surges, app-update
+    friction windows, and post-holiday churn spikes that annual averages hide.
+
+    Thresholds:
+      - min_reviews = 30  — months with fewer reviews are skipped (sparse data)
+    Eid windows shaded (approximate):
+      - Eid ul-Fitr 2024: Apr 2024
+      - Eid ul-Adha 2024: Jun 2024
+      - Eid ul-Fitr 2025: Mar 2025
+      - Eid ul-Adha 2025: Jun 2025
+      - Eid ul-Fitr 2026: Mar 2026
+    """
+    print("Generating Plot 6: Monthly-Granularity NSS Trend (Oct 2023 – Sep 2026)...")
+
+    MIN_REVIEWS = 30  # skip months with too few data points to be meaningful
+
+    # Build sorted list of all year-month labels in the common window
+    all_ym = sorted(df["ym"].dropna().unique())
+
+    monthly = {}  # op -> list of (ym_label, nss)
+    for op in OPERATOR_SERIAL:
+        op_df = df[df["operator"] == op]
+        pts = []
+        for ym in all_ym:
+            sub = op_df[op_df["ym"] == ym]
+            if len(sub) < MIN_REVIEWS:
+                continue
+            pos = (sub["predicted_sentiment"] == "Positive").sum()
+            neg = (sub["predicted_sentiment"] == "Negative").sum()
+            nss = ((pos - neg) / len(sub)) * 100
+            pts.append((ym, nss))
+        monthly[op] = pts
+
+    # Convert ym strings to matplotlib-friendly x positions
+    # Use a global sorted index of all ym that appear for at least one operator
+    seen_yms = sorted({ym for pts in monthly.values() for ym, _ in pts})
+    ym_to_x = {ym: i for i, ym in enumerate(seen_yms)}
+
+    # Eid window shading: (start_ym_idx, end_ym_idx) approximate
+    EID_WINDOWS = [
+        ("2024-04", "2024-04", "Eid ul-Fitr '24"),
+        ("2024-06", "2024-06", "Eid ul-Adha '24"),
+        ("2025-03", "2025-03", "Eid ul-Fitr '25"),
+        ("2025-06", "2025-06", "Eid ul-Adha '25"),
+        ("2026-03", "2026-03", "Eid ul-Fitr '26"),
+    ]
+
+    markers = {"Grameenphone": "^", "Robi": "s", "Banglalink": "o"}
+
+    fig, ax = plt.subplots(figsize=(16, 6), dpi=300)
+
+    # Shade Eid windows
+    eid_labeled = False
+    for eid_start, eid_end, label in EID_WINDOWS:
+        if eid_start in ym_to_x:
+            x0 = ym_to_x[eid_start] - 0.4
+            x1 = ym_to_x.get(eid_end, ym_to_x[eid_start]) + 0.4
+            ax.axvspan(
+                x0, x1,
+                color="#F39C12", alpha=0.13,
+                label="Eid Window (approx.)" if not eid_labeled else "_nolegend_"
+            )
+            eid_labeled = True
+            ax.text(
+                (x0 + x1) / 2, 92, label,
+                ha="center", va="top", fontsize=7, color="#b7770d",
+                rotation=90, style="italic"
+            )
+
+    # Plot each operator line
+    for op in OPERATOR_SERIAL:
+        pts = monthly[op]
+        if not pts:
+            continue
+        xs = [ym_to_x[ym] for ym, _ in pts]
+        ys = [nss for _, nss in pts]
+        ax.plot(
+            xs, ys,
+            marker=markers[op],
+            linewidth=1.8,
+            markersize=5,
+            alpha=0.9,
+            label=f"{op} ({'MyGP' if op == 'Grameenphone' else 'MyRobi' if op == 'Robi' else 'MyBL'})",
+            color=BRAND_COLORS[op],
+        )
+
+    # X-axis: show one tick label per quarter to avoid crowding
+    quarter_ticks = [i for i, ym in enumerate(seen_yms) if ym.endswith(("-01", "-04", "-07", "-10"))]
+    quarter_labels = [seen_yms[i] for i in quarter_ticks]
+    ax.set_xticks(quarter_ticks)
+    ax.set_xticklabels(quarter_labels, rotation=35, ha="right", fontsize=8.5)
+
+    ax.set_title(
+        "Monthly Net Sentiment Score (NSS) Trajectory — Common Period (Oct 2023 – Sep 2026)\n"
+        "Continuous 1,072-Day Benchmark · 248,501 Reviews · Grameenphone | Robi | Banglalink",
+        fontsize=13, fontweight="bold", pad=12
+    )
+    ax.set_xlabel("Month (Year-Month)", fontweight="bold")
+    ax.set_ylabel("Net Sentiment Score (%)", fontweight="bold")
+    ax.set_ylim(25, 100)
+    ax.grid(True, linestyle="--", alpha=0.5)
+    ax.legend(frameon=True, facecolor="white", edgecolor="gray", loc="lower left", fontsize=9)
+
+    plt.tight_layout()
+    save_plot(fig, "monthly_nss_trend_line.png")
+
+
 def main():
     print("=" * 75)
     print("GENERATING GLOBAL COMMON PERIOD PUBLICATION PLOTS (N=248,501)")
@@ -392,7 +512,8 @@ def main():
     plot_yearly_sentiment_trajectory(df)
     plot_operator_category_complaints(df)
     plot_category_sentiment_stacked(df)
-    print("\n✓ ALL 5 MASTER VISUALIZATIONS GENERATED AT 300 DPI SUCCESSFULLY!")
+    plot_monthly_nss_trend(df)
+    print("\n✓ ALL 6 MASTER VISUALIZATIONS GENERATED AT 300 DPI SUCCESSFULLY!")
 
 
 if __name__ == "__main__":
