@@ -65,10 +65,14 @@ build/
 scraped_data_global_2020_2026/progress_*.json
 
 # ──────────────────────────────────────────────
-# Large transformer weights exceeding GitHub 100MB limit
+# Large consolidated files exceeding GitHub limits / recommended sizes
+# (Note: consolidated datasets are locally reconstructed on demand by
+# merge_and_sync_all_datasets.py from the 3 tracked operator CSVs)
 # ──────────────────────────────────────────────
 *.safetensors
 *.bin
+scraped_data_global_2020_2026/classified/all_operators_classified_global_2020_2026.csv
+scraped_data_global_2020_2026/classified/all_operators_common_duration_classified.csv
 
 # ──────────────────────────────────────────────
 # NOTE: The following are intentionally tracked
@@ -76,6 +80,9 @@ scraped_data_global_2020_2026/progress_*.json
 # artifacts committed by design:
 #   - ml/models/*.joblib
 #   - dl/models/*.pt  / *.joblib (lightweight heads)
-#   - scraped_data_global_2020_2026/**/*.csv
+#   - scraped_data_global_2020_2026/raw/*.csv
+#   - scraped_data_global_2020_2026/classified/my*_classified_global_2020_2026.csv
 #   - assets/plots/*.png
 # ──────────────────────────────────────────────
+
+

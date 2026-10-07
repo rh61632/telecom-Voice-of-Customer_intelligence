@@ -11,10 +11,10 @@
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Data Last Scraped](https://img.shields.io/badge/Data%20Last%20Scraped-Sep%2030%2C%202026-informational)](scraped_data_global_2020_2026/raw/)
-[![Common Period Benchmark: 248.5k Reviews](https://img.shields.io/badge/Active%20Benchmark-248%2C501%20Reviews-emerald.svg)](scraped_data_global_2020_2026/classified/all_operators_common_duration_classified.csv)
-[![Master Corpus: 398.2k](https://img.shields.io/badge/Master%20Corpus-398%2C193%20Reviews-blueviolet.svg)](scraped_data_global_2020_2026/classified/all_operators_classified_global_2020_2026.csv)
-[![Common Window: 1,072 Days](https://img.shields.io/badge/Common%20Window-Oct%202023--Sep%202026-teal.svg)](scraped_data_global_2020_2026/classified/)
+[![Data Last Scraped](https://img.shields.io/badge/Data%20Last%20Scraped-Oct%2007%2C%202026-informational)](scraped_data_global_2020_2026/raw/)
+[![Common Period Benchmark: 249.3k Reviews](https://img.shields.io/badge/Active%20Benchmark-249%2C268%20Reviews-emerald.svg)](scraped_data_global_2020_2026/classified/all_operators_common_duration_classified.csv)
+[![Master Corpus: 399.0k](https://img.shields.io/badge/Master%20Corpus-398%2C958%20Reviews-blueviolet.svg)](scraped_data_global_2020_2026/classified/all_operators_classified_global_2020_2026.csv)
+[![Common Window: 1,078 Days](https://img.shields.io/badge/Common%20Window-Oct%202023--Oct%202026-teal.svg)](scraped_data_global_2020_2026/classified/)
 [![Sentiment SOTA: BUET BanglaBERT](https://img.shields.io/badge/Sentiment%20SOTA-BanglaBERT%20(91.6%25%20Acc)-success.svg)](dl/)
 [![Category Hero: Soft--Voting Ensemble](https://img.shields.io/badge/Category%20Hero-Ensemble%20(87.4%25%20Acc)-brightgreen.svg)](ml/)
 
@@ -32,24 +32,24 @@ This flagship project provides an empirical, end-to-end Voice-of-Customer (VoC) 
 *(Throughout this document, operators are subsequently referred to as **Grameenphone**, **Robi**, and **Banglalink**).*
 
 > **Methodological Note on Common Duration Window**:  
-> To guarantee strict statistical equity and eliminate temporal selection bias (ensuring no operator has missing historical windows in comparative analytics), all published benchmarks, comparative scorecards, trendlines, and category distributions strictly analyze the continuous **1,072-Day Common Duration Period** (**October 24, 2023 – September 30, 2026**, $N = 248,501$) where all three operators coexist simultaneously. The full multi-year corpus ($N = 398,193$, January 2020 – September 2026) is preserved in storage for extended longitudinal modeling.
+> To guarantee strict statistical equity and eliminate temporal selection bias (ensuring no operator has missing historical windows in comparative analytics), all published benchmarks, comparative scorecards, trendlines, and category distributions strictly analyze the continuous **1,078-Day Common Duration Period** (**October 24, 2023 – October 6, 2026**, $N = 249,268$) where all three operators coexist simultaneously. The full multi-year corpus ($N = 398,958$, January 2020 – October 2026) is preserved in storage for extended longitudinal modeling.
 
-### 📊 Common Duration Performance Scorecard ($N = 248,501$, October 24, 2023 – September 30, 2026)
+### 📊 Common Duration Performance Scorecard ($N = 249,268$, October 24, 2023 – October 6, 2026)
 
-Every review was scored by our production **Hero Soft-Voting Ensemble** (calibrated on 4,500 human-annotated multi-operator reviews, achieving **87.5% CV Accuracy** on Sentiment and **87.3%** on Operational Categories), cross-verified with **PyTorch BiLSTM + Attention**, **Balanced Logistic Regression**, and **Calibrated LinearSVC**.
+Every review was scored by our production **Hero Soft-Voting Ensemble** (calibrated on 4,500 human-annotated multi-operator reviews, achieving **87.5% CV Accuracy** on Sentiment and **87.3%** on Operational Categories), cross-verified with **PyTorch BiLSTM + Attention**, **Balanced Logistic Regression**, **Calibrated LinearSVC**, and SOTA **BUET BanglaBERT** (**91.6% CV Accuracy**).
 
 ```
 +---------------------------------------------------------------------------------------------------------+
 |                                COMMON DURATION VoC PERFORMANCE SCORECARD                                |
-|                                (October 24, 2023 – September 30, 2026 | 1,072 Days)                      |
+|                                (October 24, 2023 – October 6, 2026 | 1,078 Days)                        |
 +----+----------------------+---------------+------------+-----------+------------+-----------------------+
 | #  | Operator             | Total Reviews | Positive % | Neutral % | Negative % | Net Sentiment (NSS)   |
 +----+----------------------+---------------+------------+-----------+------------+-----------------------+
-| 1  | Grameenphone (MyGP)  | 161,491       | 79.7%      | 10.4%     | 9.9%       | +69.8% (Volume Scale) |
-| 2  | Robi (MyRobi)        | 43,720        | 80.7%      | 10.2%     | 9.1%       | +71.7% (NSS Leader)   |
-| 3  | Banglalink (MyBL)    | 43,290        | 80.9%      | 9.5%      | 9.6%       | +71.3% (Agile Growth) |
+| 1  | Grameenphone (MyGP)  | 161,737       | 79.7%      | 10.4%     | 9.9%       | +69.7% (Volume Scale) |
+| 2  | Robi (MyRobi)        | 44,193        | 80.7%      | 10.3%     | 9.0%       | +71.6% (NSS Leader)   |
+| 3  | Banglalink (MyBL)    | 43,338        | 80.8%      | 9.6%      | 9.6%       | +71.2% (Agile Growth) |
 +----+----------------------+---------------+------------+-----------+------------+-----------------------+
-| -- | Industry Benchmark   | 248,501       | 80.1%      | 10.2%     | 9.7%       | +70.4%                |
+| -- | Industry Benchmark   | 249,268       | 80.1%      | 10.2%     | 9.7%       | +70.3%                |
 +----+----------------------+---------------+------------+-----------+------------+-----------------------+
 ```
 
