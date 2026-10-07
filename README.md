@@ -15,7 +15,8 @@
 [![Common Period Benchmark: 248.5k Reviews](https://img.shields.io/badge/Active%20Benchmark-248%2C501%20Reviews-emerald.svg)](scraped_data_global_2020_2026/classified/all_operators_common_duration_classified.csv)
 [![Master Corpus: 398.2k](https://img.shields.io/badge/Master%20Corpus-398%2C193%20Reviews-blueviolet.svg)](scraped_data_global_2020_2026/classified/all_operators_classified_global_2020_2026.csv)
 [![Common Window: 1,072 Days](https://img.shields.io/badge/Common%20Window-Oct%202023--Sep%202026-teal.svg)](scraped_data_global_2020_2026/classified/)
-[![Hero Model: Soft--Voting Ensemble](https://img.shields.io/badge/Hero%20Model-Ensemble%20(87.5%25%20Acc)-brightgreen.svg)](ml/)
+[![Sentiment SOTA: BUET BanglaBERT](https://img.shields.io/badge/Sentiment%20SOTA-BanglaBERT%20(91.6%25%20Acc)-success.svg)](dl/)
+[![Category Hero: Soft--Voting Ensemble](https://img.shields.io/badge/Category%20Hero-Ensemble%20(87.4%25%20Acc)-brightgreen.svg)](ml/)
 
 </div>
 
@@ -76,6 +77,11 @@ All visualizations are generated natively in Python at publication-grade **300 D
 | Actionable Complaint Rates by Operator | Sentiment Composition per Comment Type |
 | :---: | :---: |
 | <img src="assets/plots/operator_category_complaint_distribution_bars.png" width="450"/> | <img src="assets/plots/category_sentiment_stacked_bars.png" width="450"/> |
+
+### D. Monthly-Granularity Sentiment Dynamics & Seasonality (Oct 2023 – Sep 2026)
+<div align="center">
+  <img src="assets/plots/monthly_nss_trend_line.png" width="900" alt="Monthly Net Sentiment Trajectory with Seasonal Windows"/>
+</div>
 
 ---
 
@@ -153,9 +159,17 @@ telecom-Voice-of-Customer_intelligence/
 │   └── plots/                                # Publication-grade 300 DPI visualizations
 │       ├── net_sentiment_score_comparison_bars.png
 │       ├── operator_sentiment_distribution_bars.png
+│       ├── monthly_sentiment_trend_line.png
 │       ├── multi_year_sentiment_trend_line.png
 │       ├── operator_category_complaint_distribution_bars.png
-│       └── category_sentiment_stacked_bars.png
+│       ├── category_sentiment_stacked_bars.png
+│       └── monthly_nss_trend_line.png        # 📈 Monthly-granularity trajectory (48 pts)
+│
+├── data/                                     # Curated Ground-Truth Training Dataset
+│   └── processed/                            # 4,500 Multi-Operator Labeled Reviews (GP, Robi, BL)
+│       ├── mygp_classified_reviews.csv
+│       ├── myrobi_classified_reviews.csv
+│       └── mybl_classified_reviews.csv
 │
 ├── scraped_data_global_2020_2026/            # 🌟 MASTER DATASET SUITE (N=398,193)
 │   ├── raw/                                  # 1. Scraped raw reviews (2020 - Sep 2026)
@@ -175,10 +189,11 @@ telecom-Voice-of-Customer_intelligence/
 │   │   └── yearly_intelligence_trends.json
 │   │
 │   └── pipeline/                             # 3. High-Throughput Production Scripts
-│       ├── run_parallel_scrapers.py
+│       ├── run_parallel_scrapers.py          # Parallel scrapers (supports --incremental)
+│       ├── scraper_worker.py                 # Multi-operator worker script
 │       ├── merge_and_sync_all_datasets.py    # Strict deduplication & common window extraction
 │       ├── classify_global_dataset.py        # Batch classifies reviews (~1,000 rev/s)
-│       └── generate_global_visualizations.py # Renders 300 DPI publication plots
+│       └── generate_global_visualizations.py # Renders 300 DPI publication plots (6 plots)
 │
 ├── ml/                                       # Classical Machine Learning Engine
 │   ├── models/
@@ -189,21 +204,28 @@ telecom-Voice-of-Customer_intelligence/
 │   └── predict.py                            # CLI dual prediction utility
 │
 ├── dl/                                       # Deep Learning & Neural Models (Colab GPU Suites)
+│   ├── telecom_voc_banglabert_finetuning_colab.ipynb # 🇧🇩 BUET BanglaBERT Fine-Tuning Suite (91.6% Acc)
 │   ├── telecom_voc_master_unified_colab.ipynb # 🏆 Master Unified Colab: ALL ML + DL Models
+│   ├── finetune_banglabert.py                # Standalone end-to-end BanglaBERT fine-tuning CLI
 │   ├── models/
+│   │   ├── banglabert_finetuned_sentiment/   # 🥇 SOTA Sentiment Model (91.60% CV Acc)
+│   │   ├── banglabert_finetuned_category/    # 🥈 Category Model (85.27% CV Acc)
 │   │   ├── bilstm_sentiment_model.pt         # Hybrid BiLSTM + Attention (Sentiment)
 │   │   ├── bilstm_category_model.pt          # Hybrid BiLSTM + Attention (Category)
 │   │   ├── bilstm_vocab.joblib               # Model vocabulary dictionary
 │   │   └── minilm_sent_head.joblib           # Multilingual MiniLM Head
+│   ├── reports/
+│   │   └── banglabert_finetuning_report.txt  # Detailed classification metrics
 │   └── README.md                             # Deep learning documentation
 │
 ├── archive/                                  # 🗄️ ARCHIVED DATASETS & PROBES
+│   ├── seed_pipeline_groq/                   # Phase 1 Groq LLM seed pipeline & datasets
 │   └── scraped_data_2020/                    # Historical 402-day common window (N=83,417)
 │       ├── common_duration/                  # Archived 83.4k common duration cohort
 │       ├── gold_set/                         # Human Gold Standard benchmark (N=600)
 │       └── ios_probe/                        # Apple App Store empirical probe (N=1,199)
 │
-├── requirements.txt                          # Top-level dependencies
+├── requirements.txt                          # Top-level unified dependencies
 └── README.md                                 # Master Repository Documentation
 ```
 
