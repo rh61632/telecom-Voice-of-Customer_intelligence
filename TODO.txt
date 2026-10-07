@@ -1,0 +1,119 @@
+================================================================================
+TELECOM VOICE-OF-CUSTOMER (VoC) INTELLIGENCE — FUTURE ROADMAP & PENDING TASKS
+================================================================================
+Generated: October 2026
+Location : Project Root Directory (telecom-Voice-of-Customer_intelligence/)
+
+This document outlines the priority tasks, architectural enhancements, and
+research milestones deferred for subsequent development cycles.
+
+--------------------------------------------------------------------------------
+1. MODEL CHECKPOINT HOSTING & MULTI-MACHINE PORTABILITY (HIGH PRIORITY)
+--------------------------------------------------------------------------------
+Context:
+  Fine-tuned BUET BanglaBERT checkpoints (91.60% Sentiment, 85.27% Category)
+  are currently stored locally in `dl/models/` and packaged in:
+  `banglabert_finetuned_models (1).zip` (784 MB).
+  GitHub commits reject files >100 MB, so `model.safetensors` (423 MB each)
+  are ignored by `.gitignore`.
+
+Action Options:
+  Option A: Hugging Face Model Hub (Recommended)
+    - Create free Hugging Face model repositories:
+      * `rh61632/telecom-voc-banglabert-sentiment`
+      * `rh61632/telecom-voc-banglabert-category`
+    - Push using `model.push_to_hub(...)` from transformers.
+    - Enables 1-line loading on any machine without downloading local files:
+      `AutoModelForSequenceClassification.from_pretrained("rh61632/...")`
+    - Adds `🤗 Hugging Face Models` badge to GitHub README.
+
+  Option B: GitHub Releases
+    - Create release tag `v1.0.0` on GitHub.
+    - Drag and drop `banglabert_finetuned_models (1).zip` (784 MB) into the
+      release binaries attachment area (GitHub allows up to 2.0 GB per asset).
+    - Restore on new machine via `wget <release-url>` and `unzip`.
+
+--------------------------------------------------------------------------------
+2. HUMAN GOLD STANDARD EXPANSION & COHEN'S KAPPA AGREEMENT
+--------------------------------------------------------------------------------
+Context:
+  Currently verified on initial human ground truth. A multi-reviewer protocol
+  is planned to establish publication-grade inter-annotator reliability.
+
+Action Plan:
+  - Add an independent second annotator for a blind review sample (N = 300-600).
+  - Calculate Cohen's Kappa score (inter-rater agreement metric) using:
+    `archive/scraped_data_2020/gold_set/calculate_agreement.py`.
+  - Resolve disputed edge cases (sarcasm, star-rating mismatch, ambiguous Banglish)
+    via an adjudication rulebook to produce the definitive Gold Standard v2.
+
+--------------------------------------------------------------------------------
+3. FILTERED VS. UNFILTERED MODEL DEPLOYMENT RESOLUTION
+--------------------------------------------------------------------------------
+Context:
+  Ablation study (`ml/reports/short_text_filtering_ablation_study.md`) proved:
+  - Filtered model (>=3 words, dropping 1-2 word noise) jumped from 0.6737 to
+    0.7318 Macro-F1 (+5.81% F1) on human edge cases.
+  - Full-dataset model (N = 4,499) has higher cross-validation accuracy (87.44%
+    vs 85.98%) due to trivial easy reviews ("Good", "valo").
+  - The 398k production corpus currently uses the full-dataset model.
+
+Action Plan:
+  - Once the expanded Gold Standard v2 (with Cohen's Kappa) is completed:
+    Evaluate both models on the new gold ground truth.
+  - Choose between:
+    (a) Re-classifying the 398k corpus with the filtered model for better
+        precision on actionable categories (Billing, App Bugs).
+    (b) Formally publishing the trade-off in the paper/report: explaining why
+        the full model was kept for inference coverage while documenting the
+        filtered model's edge-case advantage.
+
+--------------------------------------------------------------------------------
+4. INTERACTIVE LIVE WEB DEMO (STREAMLIT / GRADIO ON HUGGING FACE SPACES)
+--------------------------------------------------------------------------------
+Context:
+  Currently all insights are presented as static reports and 300 DPI plots.
+  A live web app allows recruiters, reviewers, and users to test reviews directly.
+
+Action Plan:
+  - Build `app.py` using Streamlit or Gradio.
+  - Load the trained models (either the lightweight Ensemble or BanglaBERT).
+  - Interactive UI: Text area for Bengali/Banglish review -> Real-time display of:
+    * Sentiment: Positive / Neutral / Negative + confidence gauge.
+    * Operational Category: 5 Classes + probability distribution bar chart.
+  - Deploy to Hugging Face Spaces (free public URL for portfolio linking).
+
+--------------------------------------------------------------------------------
+5. MODEL CONFIDENCE CALIBRATION & RELIABILITY DIAGRAM
+--------------------------------------------------------------------------------
+Context:
+  The master classified corpus contains `sentiment_confidence` (avg: 87.3%) and
+  `category_confidence` (avg: 87.9%). A calibration study will prove whether
+  these confidence probabilities correspond to true empirical accuracy.
+
+Action Plan:
+  - Use `sklearn.calibration.calibration_curve`.
+  - Plot reliability curves (confidence bin vs. empirical accuracy).
+  - Compute Expected Calibration Error (ECE) and Brier Score.
+  - Save publication plot in `assets/plots/model_confidence_calibration.png`.
+
+--------------------------------------------------------------------------------
+6. ROUTINE DATA REFRESH CADENCE (MANUAL INCREMENTAL RE-SCRAPE)
+--------------------------------------------------------------------------------
+Cadence: Once every 1–3 months (or as desired).
+
+Commands:
+  1. Fetch only new reviews since last scrape date:
+     python scraped_data_global_2020_2026/pipeline/run_parallel_scrapers.py --incremental
+
+  2. Merge, deduplicate by review_id, and classify new reviews:
+     python scraped_data_global_2020_2026/pipeline/merge_and_sync_all_datasets.py
+
+  3. Re-render all 6 publication plots:
+     python scraped_data_global_2020_2026/pipeline/generate_global_visualizations.py
+
+  4. Update `Data Last Scraped` date badge in `README.md` and commit to git.
+
+================================================================================
+END OF ROADMAP DOCUMENT
+================================================================================
