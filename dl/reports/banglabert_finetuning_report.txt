@@ -1,0 +1,33 @@
+
+======================================================================
+BUET BanglaBERT Fine-Tuned Report: SENTIMENT
+Date: Wed Oct  7 15:58:59 2026
+======================================================================
+              precision    recall  f1-score   support
+
+    Negative     0.8956    0.8763    0.8859       186
+     Neutral     0.6092    0.7260    0.6625        73
+    Positive     0.9606    0.9375    0.9489       416
+
+    accuracy                         0.8978       675
+   macro avg     0.8218    0.8466    0.8324       675
+weighted avg     0.9047    0.8978    0.9006       675
+
+
+======================================================================
+BUET BanglaBERT Fine-Tuned Report: CATEGORY
+Date: Wed Oct  7 16:09:01 2026
+======================================================================
+                              precision    recall  f1-score   support
+
+General Appreciation / Other     0.9632    0.8927    0.9266       410
+         Offers & Data Packs     0.8739    0.8220    0.8472       118
+  App Login & Technical Bugs     0.7857    0.9167    0.8462        60
+  Network Speed & 4G Latency     0.6324    0.7818    0.6992        55
+Billing & Airtime Deductions     0.5870    0.8438    0.6923        32
+
+                    accuracy                         0.8711       675
+                   macro avg     0.7684    0.8514    0.8023       675
+                weighted avg     0.8870    0.8711    0.8759       675
+
+

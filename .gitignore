@@ -65,11 +65,17 @@ build/
 scraped_data_global_2020_2026/progress_*.json
 
 # ──────────────────────────────────────────────
+# Large transformer weights exceeding GitHub 100MB limit
+# ──────────────────────────────────────────────
+*.safetensors
+*.bin
+
+# ──────────────────────────────────────────────
 # NOTE: The following are intentionally tracked
 # and NOT excluded, because they are production
 # artifacts committed by design:
 #   - ml/models/*.joblib
-#   - dl/models/*.pt  / *.joblib
+#   - dl/models/*.pt  / *.joblib (lightweight heads)
 #   - scraped_data_global_2020_2026/**/*.csv
 #   - assets/plots/*.png
 # ──────────────────────────────────────────────

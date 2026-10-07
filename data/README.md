@@ -16,3 +16,4 @@ Each review contains dual annotations:
    - `General Appreciation / Other`
 
 > ℹ️ **Note**: The master multi-year corpus ($N = 398,193$, 2020–2026) and the 1,072-day common window benchmark ($N = 248,501$) are maintained in [`scraped_data_global_2020_2026/`](../scraped_data_global_2020_2026/).
+
