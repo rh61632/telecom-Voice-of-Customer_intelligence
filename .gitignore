@@ -1,17 +1,75 @@
+# ──────────────────────────────────────────────
 # Virtual environments
+# ──────────────────────────────────────────────
 venv/
 .venv/
 env/
 ENV/
 
+# ──────────────────────────────────────────────
 # Python byte-code & cache
+# ──────────────────────────────────────────────
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+*.pyd
+*.so
 
-# Environment/secret variables
+# ──────────────────────────────────────────────
+# Environment & secrets
+# ──────────────────────────────────────────────
 .env
+.env.*
+*.env
 
-# Temporary helper packages & archives
+# ──────────────────────────────────────────────
+# Jupyter Notebook checkpoints
+# ──────────────────────────────────────────────
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# ──────────────────────────────────────────────
+# Temporary / scratch files
+# ──────────────────────────────────────────────
 friend_annotation_pack/
 scratch/
 *.zip
+
+# ──────────────────────────────────────────────
+# OS noise
+# ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ──────────────────────────────────────────────
+# IDE & editor files
+# ──────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ──────────────────────────────────────────────
+# Build / dist artifacts
+# ──────────────────────────────────────────────
+dist/
+build/
+*.egg-info/
+*.egg
+
+# ──────────────────────────────────────────────
+# Large progress/state files (scraper state)
+# ──────────────────────────────────────────────
+scraped_data_global_2020_2026/progress_*.json
+
+# ──────────────────────────────────────────────
+# NOTE: The following are intentionally tracked
+# and NOT excluded, because they are production
+# artifacts committed by design:
+#   - ml/models/*.joblib
+#   - dl/models/*.pt  / *.joblib
+#   - scraped_data_global_2020_2026/**/*.csv
+#   - assets/plots/*.png
+# ──────────────────────────────────────────────
