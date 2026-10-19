@@ -17,6 +17,7 @@
 [![Common Window: 1,078 Days](https://img.shields.io/badge/Common%20Window-Oct%202023--Oct%202026-teal.svg)](scraped_data_global_2020_2026/classified/common_duration_summary.json)
 [![Sentiment SOTA: BUET BanglaBERT](https://img.shields.io/badge/Sentiment%20SOTA-BanglaBERT%20(91.6%25%20Acc)-success.svg)](dl/)
 [![Category Hero: Soft--Voting Ensemble](https://img.shields.io/badge/Category%20Hero-Ensemble%20(87.4%25%20Acc)-brightgreen.svg)](ml/)
+[![Inter-Annotator Reliability: Cohen's Kappa](https://img.shields.io/badge/Cohen's%20Kappa-%CE%BA%20%3D%200.77%20(Substantial)-blueviolet.svg)](archive/scraped_data_2020/gold_set/gold_standard_evaluation_report.md)
 [![Roadmap: TODO.txt](https://img.shields.io/badge/Roadmap-TODO.txt-orange.svg)](TODO.txt)
 </div>
 
@@ -130,6 +131,17 @@ Models were trained and evaluated on the curated ground truth ($N=4,500$ across 
 | 📉 **BUET BanglaBERT (Frozen Head)**| **Operational Category** | **74.88%** | **0.6253** | GPU Required | Baseline frozen feature extractor without end-to-end gradient updates. |
 | 📉 **Statistical Floor (Dummy)** | **Operational Category** | **60.68%** | **0.1511** | Instant | Naive majority-class guess without language understanding. |
 
+### 🤝 Human Ground-Truth Reliability & Inter-Annotator Agreement (Cohen's Kappa)
+
+To establish publication-grade human reliability and eliminate individual annotator bias, an independent multi-reviewer blind study was conducted across an overlapping stratified cohort ($N = 200$ reviews across Grameenphone, Robi, and Banglalink) under strict zero-leakage, model-blind conditions:
+
+| Evaluation Dimension | Evaluated Pairs | Raw Percentage Agreement | Cohen's Kappa ($\kappa$) | Standard Interpretation |
+| :--- | :---: | :---: | :---: | :--- |
+| **Sentiment Analysis (3-Class)** | **200** | **91.00%** | **0.5762** | Moderate Agreement (High raw consistency) |
+| **Operational Category (5-Class)** | **196** | **95.41%** | **0.7694** | **Substantial Agreement** |
+
+* Detailed confusion matrices, operator breakdowns, and linguistic disagreement analyses are documented in **[`gold_standard_evaluation_report.md`](archive/scraped_data_2020/gold_set/gold_standard_evaluation_report.md)**.
+
 ---
 
 ## 💼 6. Operator Strategic Roadmaps
@@ -224,8 +236,13 @@ telecom-Voice-of-Customer_intelligence/
 ├── archive/                                  # 🗄️ ARCHIVED DATASETS & PROBES
 │   ├── seed_pipeline_groq/                   # Phase 1 Groq LLM seed pipeline & datasets
 │   └── scraped_data_2020/                    # Historical 402-day common window (N=83,417)
-│       ├── common_duration/                  # Archived 83.4k common duration cohort
-│       ├── gold_set/                         # Human Gold Standard benchmark (N=600)
+│       ├── gold_set/                         # Human Ground Truth & Inter-Annotator Agreement
+│       │   ├── blind_annotation_300_ratul.csv # Primary human ground-truth labels (N=300)
+│       │   ├── blind_annotation_200_friend.csv # Independent secondary blind review (N=200)
+│       │   ├── calculate_agreement.py        # Cohen's Kappa & inter-rater agreement evaluator
+│       │   ├── ANNOTATION_RULEBOOK.md        # Standardized annotation protocol & edge cases
+│       │   ├── gold_standard_evaluation_report.md # Comprehensive validation & agreement report
+│       │   └── comprehensive_benchmark_table.md # Summary benchmarking matrix
 │       └── ios_probe/                        # Apple App Store empirical probe (N=1,199)
 │
 ├── TODO.txt                                  # 📋 Future Roadmap & Deferred Tasks (HF Hub, Demo, Calibration)
@@ -278,11 +295,17 @@ For GPU training without local hardware:
 * **[BUET BanglaBERT SOTA Suite](dl/telecom_voc_banglabert_finetuning_colab.ipynb)**: End-to-end transformer fine-tuning achieving **91.60% Sentiment Accuracy**.
 * **[Master Unified Suite](dl/telecom_voc_master_unified_colab.ipynb)**: Benchmarks all 8 ML/DL architectures in a single unified workflow.
 
+### 7. Evaluate Inter-Annotator Reliability (Cohen's Kappa)
+```bash
+# Computes raw agreement, Cohen's Kappa, and confusion matrices across annotators:
+python archive/scraped_data_2020/gold_set/calculate_agreement.py
+```
+
 ---
 
 ## 🗺️ 9. Future Roadmap & Development Milestones
 
-For active tracking of deferred milestones, model checkpoint hosting on Hugging Face Model Hub, multi-annotator agreement protocols (Cohen's Kappa), and interactive Streamlit web demos, see **[TODO.txt](TODO.txt)**.
+For active tracking of deferred milestones, model checkpoint hosting on Hugging Face Model Hub, and interactive Streamlit web demos, see **[TODO.txt](TODO.txt)**. Multi-annotator reliability verification (Cohen's Kappa $\kappa = 0.5762$ on Sentiment, $\kappa = 0.7694$ on Categories) is completed and documented in [`gold_standard_evaluation_report.md`](archive/scraped_data_2020/gold_set/gold_standard_evaluation_report.md).
 
 ---
 

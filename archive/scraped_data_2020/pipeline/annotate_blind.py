@@ -9,13 +9,28 @@ Features:
   - Back/Skip/Quit options.
 """
 
+import os
 import sys
 import argparse
 import csv
 from pathlib import Path
 
+# Ensure UTF-8 support on Windows terminals
+if sys.platform == "win32":
+    try:
+        os.system("chcp 65001 > nul 2>&1")
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8")
+        if hasattr(sys.stderr, "reconfigure"):
+            sys.stderr.reconfigure(encoding="utf-8")
+        if hasattr(sys.stdin, "reconfigure"):
+            sys.stdin.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-DEFAULT_CSV = PROJECT_ROOT / "scraped_data_2020" / "gold_set" / "blind_annotation_600_ratul.csv"
+GOLD_DIR = PROJECT_ROOT / "archive" / "scraped_data_2020" / "gold_set"
+DEFAULT_CSV = GOLD_DIR / "blind_annotation_300_ratul.csv"
 
 SENTIMENT_MAP = {
     "1": "Positive",
@@ -181,21 +196,21 @@ def resolve_target_file(arg_file: str = None) -> Path:
         sys.exit(1)
 
     # 1. Look in current working directory
-    for name in ["blind_annotation_200_friend.csv", "blind_annotation_600_ratul.csv"]:
+    for name in ["blind_annotation_300_ratul.csv", "blind_annotation_200_friend.csv", "blind_annotation_600_ratul.csv"]:
         cwd_candidate = Path.cwd() / name
         if cwd_candidate.exists():
             return cwd_candidate
 
     # 2. Look beside this script file
     script_dir = Path(__file__).resolve().parent
-    for name in ["blind_annotation_200_friend.csv", "blind_annotation_600_ratul.csv"]:
+    for name in ["blind_annotation_300_ratul.csv", "blind_annotation_200_friend.csv", "blind_annotation_600_ratul.csv"]:
         beside_candidate = script_dir / name
         if beside_candidate.exists():
             return beside_candidate
 
     # 3. Look in repo structure
-    for name in ["blind_annotation_600_ratul.csv", "blind_annotation_200_friend.csv"]:
-        repo_candidate = PROJECT_ROOT / "scraped_data_2020" / "gold_set" / name
+    for name in ["blind_annotation_300_ratul.csv", "blind_annotation_200_friend.csv", "blind_annotation_600_ratul.csv"]:
+        repo_candidate = GOLD_DIR / name
         if repo_candidate.exists():
             return repo_candidate
 

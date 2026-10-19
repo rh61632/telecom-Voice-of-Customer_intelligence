@@ -4,12 +4,61 @@ Purpose: Compute Cohen's Kappa and inter-annotator agreement between Ratul and s
 """
 
 from pathlib import Path
-import pandas as pd
-from sklearn.metrics import cohen_kappa_score, confusion_matrix
+import csv
+from collections import Counter
 
 GOLD_DIR = Path(__file__).resolve().parent
-RATUL_CSV = GOLD_DIR / "blind_annotation_600_ratul.csv"
-FRIEND_CSV = GOLD_DIR / "blind_annotation_200_friend.csv"
+PROJECT_ROOT = GOLD_DIR.parent.parent
+
+
+def count_annotations(filepath):
+    try:
+        with open(filepath, "r", encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            return sum(1 for r in reader if r.get("sentiment_label", "").strip())
+    except Exception:
+        return -1
+
+
+def resolve_best_file(candidates):
+    existing = [c for c in candidates if c.exists()]
+    if not existing:
+        return None
+    # Pick the candidate file with the most completed annotations
+    existing.sort(key=lambda p: count_annotations(p), reverse=True)
+    return existing[0]
+
+
+def resolve_files():
+    ratul_candidates = [
+        GOLD_DIR / "blind_annotation_300_ratul.csv",
+        GOLD_DIR.parent / "pipeline" / "blind_annotation_300_ratul.csv",
+        Path.cwd() / "blind_annotation_300_ratul.csv",
+        PROJECT_ROOT / "blind_annotation_300_ratul.csv",
+        GOLD_DIR / "blind_annotation_600_ratul.csv",
+        Path.cwd() / "blind_annotation_600_ratul.csv",
+        PROJECT_ROOT / "blind_annotation_600_ratul.csv",
+    ]
+    friend_candidates = [
+        GOLD_DIR / "blind_annotation_200_friend.csv",
+        GOLD_DIR.parent / "pipeline" / "blind_annotation_200_friend.csv",
+        Path.cwd() / "blind_annotation_200_friend.csv",
+        PROJECT_ROOT / "blind_annotation_200_friend.csv",
+    ]
+    return resolve_best_file(ratul_candidates), resolve_best_file(friend_candidates)
+
+
+def compute_kappa(y1, y2, categories):
+    n = len(y1)
+    if n == 0:
+        return 0.0, 0.0
+    po = sum(1 for a, b in zip(y1, y2) if a == b) / n
+    pe = sum((y1.count(c) / n) * (y2.count(c) / n) for c in categories)
+    if pe >= 1.0:
+        kappa = 1.0
+    else:
+        kappa = (po - pe) / (1.0 - pe)
+    return po * 100, kappa
 
 
 def evaluate_agreement():
@@ -17,52 +66,64 @@ def evaluate_agreement():
     print("      INTER-ANNOTATOR AGREEMENT & COHEN'S KAPPA EVALUATION")
     print("=" * 70)
 
-    if not RATUL_CSV.exists() or not FRIEND_CSV.exists():
+    ratul_csv, friend_csv = resolve_files()
+    if not ratul_csv or not friend_csv:
         print("Missing annotation CSV files.")
+        print(f"Ratul file found : {ratul_csv}")
+        print(f"Friend file found: {friend_csv}")
         return
 
-    df_r = pd.read_csv(RATUL_CSV)
-    df_f = pd.read_csv(FRIEND_CSV)
+    print(f"Ratul CSV : {ratul_csv}")
+    print(f"Friend CSV: {friend_csv}")
 
-    merged = pd.merge(
-        df_r[["sample_id", "operator", "rating", "review_text", "sentiment_label"]],
-        df_f[["sample_id", "sentiment_label"]],
-        on="sample_id",
-        suffixes=("_ratul", "_friend"),
-    )
+    with open(ratul_csv, "r", encoding="utf-8-sig") as f:
+        r_rows = list(csv.DictReader(f))
+    with open(friend_csv, "r", encoding="utf-8-sig") as f:
+        f_rows = list(csv.DictReader(f))
 
-    # Filter to annotated rows
-    r_valid = df_r["sentiment_label"].fillna("").astype(str).str.strip()
-    f_valid = df_f["sentiment_label"].fillna("").astype(str).str.strip()
+    r_dict = {r["sample_id"]: r for r in r_rows if "sample_id" in r}
+    f_dict = {r["sample_id"]: r for r in f_rows if "sample_id" in r}
 
-    r_annotated_count = (r_valid != "").sum()
-    f_annotated_count = (f_valid != "").sum()
+    r_annotated_count = sum(1 for r in r_rows if r.get("sentiment_label", "").strip())
+    f_annotated_count = sum(1 for r in f_rows if r.get("sentiment_label", "").strip())
 
-    m_r = merged["sentiment_label_ratul"].fillna("").astype(str).str.strip()
-    m_f = merged["sentiment_label_friend"].fillna("").astype(str).str.strip()
-    annotated = merged[(m_r != "") & (m_f != "")].copy()
+    common_ids = [sid for sid in r_dict if sid in f_dict]
+    paired = []
+    for sid in common_ids:
+        s_r = r_dict[sid].get("sentiment_label", "").strip()
+        s_f = f_dict[sid].get("sentiment_label", "").strip()
+        if s_r and s_f:
+            paired.append({
+                "sample_id": sid,
+                "operator": r_dict[sid].get("operator", ""),
+                "rating": r_dict[sid].get("rating", ""),
+                "review_text": r_dict[sid].get("review_text", ""),
+                "sentiment_ratul": s_r,
+                "sentiment_friend": s_f,
+                "category_ratul": r_dict[sid].get("category_label", "").strip(),
+                "category_friend": f_dict[sid].get("category_label", "").strip(),
+            })
 
-    total_paired = len(annotated)
+    total_paired = len(paired)
     if total_paired == 0:
         print("No overlapping reviews have been annotated by both annotators yet.")
-        print(f"Ratul completed : {r_annotated_count} / {len(df_r)}")
-        print(f"Friend completed: {f_annotated_count} / {len(df_f)}")
+        print(f"Ratul completed : {r_annotated_count} / {len(r_rows)}")
+        print(f"Friend completed: {f_annotated_count} / {len(f_rows)}")
         return
 
-    print(f"Total overlapping reviews evaluated: {total_paired} / {len(merged)}")
+    print(f"\nTotal overlapping reviews evaluated: {total_paired} / {len(common_ids)}")
 
-    y_ratul = annotated["sentiment_label_ratul"]
-    y_friend = annotated["sentiment_label_friend"]
+    # 1. Sentiment Agreement
+    y_r = [p["sentiment_ratul"] for p in paired]
+    y_f = [p["sentiment_friend"] for p in paired]
+    labels = ["Positive", "Neutral", "Negative"]
 
-    # Compute Agreement & Kappa
-    raw_agreement = (y_ratul == y_friend).mean() * 100
-    kappa = cohen_kappa_score(y_ratul, y_friend)
+    raw_agreement, kappa = compute_kappa(y_r, y_f, labels)
 
-    print(f"\n📊 RESULTS:")
+    print(f"\n📊 SENTIMENT RESULTS:")
     print(f"  • Raw Percentage Agreement : {raw_agreement:.2f}%")
     print(f"  • Cohen's Kappa (κ)         : {kappa:.4f}")
 
-    # Interpret Kappa
     if kappa > 0.80:
         interp = "Near Perfect Agreement"
     elif kappa > 0.60:
@@ -73,19 +134,60 @@ def evaluate_agreement():
         interp = "Fair / Slight Agreement"
     print(f"  • Interpretation            : {interp}")
 
-    labels = ["Positive", "Neutral", "Negative"]
-    cm = confusion_matrix(y_ratul, y_friend, labels=labels)
-    cm_df = pd.DataFrame(cm, index=[f"Ratul_{l}" for l in labels], columns=[f"Friend_{l}" for l in labels])
-    print(f"\nConfusion Matrix:\n{cm_df}")
+    # Confusion matrix
+    print("\nConfusion Matrix (Rows: Ratul, Columns: Friend):")
+    header = f"{'':15s}" + "".join([f"{l:>12s}" for l in labels])
+    print(header)
+    for l_r in labels:
+        row_str = f"{'Ratul_' + l_r:15s}"
+        for l_f in labels:
+            c = sum(1 for a, b in zip(y_r, y_f) if a == l_r and b == l_f)
+            row_str += f"{c:>12d}"
+        print(row_str)
 
     # Disagreements
-    disagreements = annotated[y_ratul != y_friend]
-    if len(disagreements) > 0:
-        print(f"\nDisagreements ({len(disagreements)} cases):")
-        for _, row in disagreements.head(10).iterrows():
-            print(f"  [{row['sample_id']}] Ratul: {row['sentiment_label_ratul']} vs Friend: {row['sentiment_label_friend']}")
-            print(f"    Rating: {row['rating']}★ | \"{row['review_text']}\"\n")
+    disagreements = [p for p in paired if p["sentiment_ratul"] != p["sentiment_friend"]]
+    if disagreements:
+        print(f"\nSentiment Disagreements ({len(disagreements)} cases):")
+        for p in disagreements[:10]:
+            print(f"  [{p['sample_id']}] Ratul: {p['sentiment_ratul']} vs Friend: {p['sentiment_friend']}")
+            print(f"    Rating: {p['rating']}★ | \"{p['review_text']}\"\n")
+
+    # 2. Category Agreement
+    paired_cat = [p for p in paired if p["category_ratul"] and p["category_friend"]]
+    if paired_cat:
+        y_r_c = [p["category_ratul"] for p in paired_cat]
+        y_f_c = [p["category_friend"] for p in paired_cat]
+        cat_labels = [
+            "Billing & Airtime Deductions",
+            "App Login & Technical Bugs",
+            "Network Speed & 4G Latency",
+            "Offers & Data Packs",
+            "General Appreciation / Other",
+        ]
+        raw_c, kappa_c = compute_kappa(y_r_c, y_f_c, cat_labels)
+        print(f"\n📊 OPERATIONAL CATEGORY RESULTS (N={len(paired_cat)}):")
+        print(f"  • Raw Percentage Agreement : {raw_c:.2f}%")
+        print(f"  • Cohen's Kappa (κ)         : {kappa_c:.4f}")
+
+        if kappa_c > 0.80:
+            interp_c = "Near Perfect Agreement"
+        elif kappa_c > 0.60:
+            interp_c = "Substantial Agreement"
+        elif kappa_c > 0.40:
+            interp_c = "Moderate Agreement"
+        else:
+            interp_c = "Fair / Slight Agreement"
+        print(f"  • Interpretation            : {interp_c}")
+
+        disagreements_c = [p for p in paired_cat if p["category_ratul"] != p["category_friend"]]
+        if disagreements_c:
+            print(f"\nCategory Disagreements ({len(disagreements_c)} cases):")
+            for p in disagreements_c[:10]:
+                print(f"  [{p['sample_id']}] Ratul: {p['category_ratul']} vs Friend: {p['category_friend']}")
+                print(f"    Rating: {p['rating']}★ | \"{p['review_text']}\"\n")
 
 
 if __name__ == "__main__":
     evaluate_agreement()
+

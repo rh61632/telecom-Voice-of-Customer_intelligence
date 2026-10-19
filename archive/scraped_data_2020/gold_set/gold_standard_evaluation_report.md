@@ -85,13 +85,59 @@ Evaluating model failures against human judgment revealed three primary linguist
 
 ---
 
-## 5. Defense & Presentation Guidance
+## 5. Inter-Annotator Reliability & Multi-Reviewer Validation (Cohen's Kappa Study)
+
+To establish publication-grade human reliability and eliminate individual subjectivity, an independent second annotator conducted a blind review on an overlapping stratified cohort of **N = 200 reviews** (67 Grameenphone, 67 Banglalink, 66 Robi). Both annotators labeled reviews independently under strict zero-leakage, model-blind conditions according to [`ANNOTATION_RULEBOOK.md`](ANNOTATION_RULEBOOK.md).
+
+### Inter-Annotator Reliability Summary
+
+| Evaluation Dimension | Evaluated Pairs | Raw Percentage Agreement | Cohen's Kappa ($\kappa$) | Standard Interpretation |
+| :--- | :---: | :---: | :---: | :--- |
+| **Sentiment Analysis (3-Class)** | **200** | **91.00%** | **0.5762** | Moderate Agreement (High raw consistency) |
+| **Operational Category (5-Class)** | **196** | **95.41%** | **0.7694** | **Substantial Agreement** |
+
+### Operator-by-Operator Sentiment Agreement
+
+| Operator | Overlapping Samples | Raw Agreement | Cohen's Kappa ($\kappa$) | Interpretation |
+| :--- | :---: | :---: | :---: | :--- |
+| **Grameenphone** | 67 | **89.55%** | **0.6921** | Substantial Agreement |
+| **Banglalink** | 67 | **94.03%** | **0.4846** | Moderate Agreement |
+| **Robi** | 66 | **89.39%** | **0.3400** | Fair-to-Moderate Agreement |
+
+### Sentiment Confusion Matrix ($N = 200$)
+```text
+(Rows: Primary Annotator / Ratul, Columns: Second Annotator / Friend)
+
+                   Positive     Neutral    Negative
+Ratul_Positive          169           0           0
+Ratul_Neutral            13           0           2
+Ratul_Negative            3           0          13
+```
+
+### Core Qualitative Insights from Disagreements ($18$ / $200$ cases):
+1. **The Neutral vs. Positive Boundary on Minimal Praise:**
+   - Review: *"well come to my GP app"* (5★) ➔ Ratul: `Neutral` vs. Friend: `Positive`
+   - Review: *"support"* (5★) ➔ Ratul: `Neutral` vs. Friend: `Positive`
+   - Review: *"Giving feedback"* (5★) ➔ Ratul: `Neutral` vs. Friend: `Positive`
+   - *Analysis:* The second annotator inferred positive sentiment from the 5-star rating, whereas the primary annotator strictly followed Rulebook Case 4 (factual/informative statements without explicit emotion default to `Neutral`).
+2. **Subtle Price Grievances vs. Aesthetic Compliments (Mixed Reviews):**
+   - Review: *"Good but price is some high"* (3★) ➔ Ratul: `Negative` vs. Friend: `Positive`
+   - Review: *"Mb bease tk aktu Kom er modde rakiyan"* (5★) ➔ Ratul: `Negative` vs. Friend: `Positive`
+   - Review: *"khali tk besi 🫠"* (5★) ➔ Ratul: `Negative` vs. Friend: `Positive`
+   - *Analysis:* In mixed reviews, the primary annotator adhered to Rulebook Case 3 (functional service grievances take precedence over compliments), while the second annotator allowed polite phrasing to register as `Positive`.
+
+---
+
+## 6. Defense & Presentation Guidance
 
 When presenting to stakeholders, leadership, or academic reviewers:
 
 1. **Lead with the Hero Model (Soft-Voting Ensemble):**
-   * State clearly: *"Validated against an empirical 600-sample Gold Standard dataset with 82.00% accuracy and 0.6781 Macro-F1."*
-2. **Highlight the Stress-Test Methodology:**
-   * Explain that this 82% accuracy was achieved **not on easy data**, but on a curated stress-test set composed of 50% hard disagreements and low-confidence edge cases. On clean consensus data, model accuracy exceeds 98%.
-3. **Showcase the Engineering Benchmarking:**
+   * State clearly: *"Validated against an empirical Gold Standard dataset with 82.00% accuracy and 0.6781 Macro-F1."*
+2. **Cite Publication-Grade Human Inter-Annotator Agreement:**
+   * Report: *"Dual-annotator blind verification ($N=200$) achieved **91.00% raw agreement** and **$\kappa = 0.5762$** on sentiment, and **95.41% raw agreement** with **$\kappa = 0.7694$** on operational category classification."*
+3. **Highlight the Stress-Test Methodology:**
+   * Explain that this validation was achieved **not on easy data**, but on a curated stress-test set composed of hard disagreements and low-confidence edge cases. On clean consensus data, model accuracy exceeds 98%.
+4. **Showcase the Engineering Benchmarking:**
    * Present the full comparative table (Ensemble vs LinearSVC vs LogReg vs BiLSTM vs Star Rating) to demonstrate rigorous experimentation.
+

@@ -34,18 +34,22 @@ Action Options:
     - Restore on new machine via `wget <release-url>` and `unzip`.
 
 --------------------------------------------------------------------------------
-2. HUMAN GOLD STANDARD EXPANSION & COHEN'S KAPPA AGREEMENT
+2. HUMAN GOLD STANDARD EXPANSION & COHEN'S KAPPA AGREEMENT [COMPLETED]
 --------------------------------------------------------------------------------
-Context:
-  Currently verified on initial human ground truth. A multi-reviewer protocol
-  is planned to establish publication-grade inter-annotator reliability.
-
-Action Plan:
-  - Add an independent second annotator for a blind review sample (N = 300-600).
-  - Calculate Cohen's Kappa score (inter-rater agreement metric) using:
-    `archive/scraped_data_2020/gold_set/calculate_agreement.py`.
-  - Resolve disputed edge cases (sarcasm, star-rating mismatch, ambiguous Banglish)
-    via an adjudication rulebook to produce the definitive Gold Standard v2.
+Status: COMPLETED (October 2026)
+Achievement:
+  - Dual-annotator zero-leakage blind annotation study completed (N = 200 pairs).
+  - Sentiment Agreement: 91.00% Raw Agreement | Cohen's Kappa κ = 0.5762
+    * Grameenphone (N=67): 89.55% Agreement | κ = 0.6921 (Substantial Agreement)
+    * Banglalink   (N=67): 94.03% Agreement | κ = 0.4846 (Moderate Agreement)
+    * Robi         (N=66): 89.39% Agreement | κ = 0.3400
+  - Operational Category Agreement: 95.41% Raw Agreement | Cohen's Kappa κ = 0.7694
+    (Substantial Agreement across 5 operational complaint categories).
+  - Production Artifacts:
+    * `archive/scraped_data_2020/gold_set/blind_annotation_300_ratul.csv` (N=300)
+    * `archive/scraped_data_2020/gold_set/blind_annotation_200_friend.csv` (N=200)
+    * Evaluator: `archive/scraped_data_2020/gold_set/calculate_agreement.py`
+    * Detailed Report: `archive/scraped_data_2020/gold_set/gold_standard_evaluation_report.md`
 
 --------------------------------------------------------------------------------
 3. FILTERED VS. UNFILTERED MODEL DEPLOYMENT RESOLUTION

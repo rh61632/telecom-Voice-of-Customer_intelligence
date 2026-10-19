@@ -34,6 +34,8 @@ __pycache__/
 friend_annotation_pack/
 scratch/
 *.zip
+/blind_annotation_300_ratul.csv
+archive/scraped_data_2020/pipeline/blind_annotation_300_ratul.csv
 
 # ──────────────────────────────────────────────
 # OS noise
