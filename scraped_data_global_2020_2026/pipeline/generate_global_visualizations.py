@@ -16,6 +16,8 @@ Plots generated (all at 300 DPI, zero-collision legends positioned cleanly above
   5. operator_category_complaint_distribution_bars.png — Complaint rates by category
   6. category_sentiment_stacked_bars.png         — Sentiment mix within each category
   7. monthly_nss_trend_line.png                  — Monthly-granularity NSS (clean, no Eid noise)
+  8. sentiment_model_benchmark_bars.png          — 3-Class Sentiment model benchmark (Acc & Macro-F1)
+  9. category_model_benchmark_bars.png           — 5-Class Operational Category model benchmark (Acc & Macro-F1)
 """
 
 import os
@@ -514,6 +516,142 @@ def plot_monthly_nss_trend(df):
     save_plot(fig, "monthly_nss_trend_line.png")
 
 
+def plot_sentiment_model_benchmark():
+    """Plot 7: 3-Class Sentiment Analysis Model Benchmark (Acc & Macro-F1)."""
+    print("Generating Plot 7: Sentiment Model Benchmark Bars...")
+    models = [
+        "BUET BanglaBERT (Fine-Tuned)",
+        "Hero Soft-Voting ML Ensemble",
+        "Multilingual MiniLM Head",
+        "Hybrid BiLSTM + Attention",
+    ]
+    labels = [
+        "[SOTA] BUET BanglaBERT (Fine-Tuned)\n(Full 12-Layer Transformer · GPU)",
+        "[Production Hero] Soft-Voting ML Ensemble\n(Dual-Gram TF-IDF · ~17.5k rev/s CPU)",
+        "Multilingual MiniLM Head\n(384-dim Dense Embeddings · ~2.1k rev/s)",
+        "Hybrid BiLSTM + Attention (GPU)\n(Recurrent Context Modeling · PyTorch)",
+    ]
+    acc = [91.60, 87.47, 82.33, 81.50]
+    f1_raw = [0.8598, 0.7684, 0.7475, 0.7180]
+    f1_pct = [v * 100 for v in f1_raw]
+
+    fig, ax = plt.subplots(figsize=(11.0, 5.5), dpi=300)
+    y = np.arange(len(models))
+    y_rev = y[::-1]
+    h = 0.35
+
+    bars_acc = ax.barh(y_rev + h / 2, acc, h, label="CV Accuracy (%)", color="#1F77B4", edgecolor="black", alpha=0.92)
+    bars_f1 = ax.barh(y_rev - h / 2, f1_pct, h, label="Macro-F1 (×100)", color="#2CA02C", edgecolor="black", alpha=0.92)
+
+    ax.set_title(
+        "Sentiment Analysis Model Benchmark (3-Class Polarity)\n"
+        "5-Fold Stratified Cross-Validation on Multi-Operator Ground Truth (N = 4,500)",
+        fontsize=13, fontweight="bold", pad=48
+    )
+    ax.set_yticks(y_rev)
+    ax.set_yticklabels(labels, fontweight="bold", fontsize=9.5)
+    ax.set_xlabel("Metric Score (%)", fontweight="bold")
+    ax.set_xlim(0, 106)
+    ax.grid(axis="x", linestyle="--", alpha=0.5)
+
+    ax.legend(
+        frameon=True,
+        facecolor="white",
+        edgecolor="#BDC3C7",
+        loc="lower center",
+        bbox_to_anchor=(0.5, 1.02),
+        ncol=2,
+        fontsize=10.5
+    )
+
+    for bar, val in zip(bars_acc, acc):
+        ax.annotate(
+            f"{val:.2f}%",
+            xy=(val + 1.0, bar.get_y() + bar.get_height() / 2),
+            va="center", fontsize=9, fontweight="bold", color="#0E4B75"
+        )
+
+    for bar, r, scaled in zip(bars_f1, f1_raw, f1_pct):
+        ax.annotate(
+            f"{r:.4f} ({scaled:.1f}%)",
+            xy=(scaled + 1.0, bar.get_y() + bar.get_height() / 2),
+            va="center", fontsize=9, fontweight="bold", color="#145A14"
+        )
+
+    plt.tight_layout()
+    save_plot(fig, "sentiment_model_benchmark_bars.png")
+
+
+def plot_category_model_benchmark():
+    """Plot 8: 5-Class Operational Category Model Benchmark (Acc & Macro-F1)."""
+    print("Generating Plot 8: Operational Category Model Benchmark Bars...")
+    models = [
+        "Hero Soft-Voting ML Ensemble",
+        "BUET BanglaBERT (Fine-Tuned)",
+        "Multilingual MiniLM Head",
+        "Hybrid BiLSTM + Attention",
+        "BUET BanglaBERT (Frozen Head)",
+        "Statistical Floor (Dummy)",
+    ]
+    labels = [
+        "[Champion] Hero Soft-Voting ML Ensemble\n(Dual-Gram TF-IDF · ~18.2k rev/s CPU)",
+        "BUET BanglaBERT (Fine-Tuned)\n(End-to-End Contextual Transformer · GPU)",
+        "Multilingual MiniLM Head\n(384-dim Dense Vector Embeddings)",
+        "Hybrid BiLSTM + Attention (GPU)\n(Recurrent Context + Class Weighting)",
+        "BUET BanglaBERT (Frozen Head)\n(Pretrained Feature Extractor Baseline)",
+        "Statistical Floor (Dummy Baseline)\n(Majority-Class Guess · Zero NLP)",
+    ]
+    acc = [87.44, 85.27, 81.15, 80.84, 74.88, 60.68]
+    f1_raw = [0.7845, 0.7624, 0.7247, 0.7106, 0.6253, 0.1511]
+    f1_pct = [v * 100 for v in f1_raw]
+
+    fig, ax = plt.subplots(figsize=(11.5, 6.8), dpi=300)
+    y = np.arange(len(models))
+    y_rev = y[::-1]
+    h = 0.35
+
+    bars_acc = ax.barh(y_rev + h / 2, acc, h, label="CV Accuracy (%)", color="#E67E22", edgecolor="black", alpha=0.92)
+    bars_f1 = ax.barh(y_rev - h / 2, f1_pct, h, label="Macro-F1 (×100)", color="#9B59B6", edgecolor="black", alpha=0.92)
+
+    ax.set_title(
+        "Operational Category Model Benchmark (5-Class Taxonomy)\n"
+        "5-Fold Stratified Cross-Validation on Multi-Operator Ground Truth (N = 4,500)",
+        fontsize=13, fontweight="bold", pad=48
+    )
+    ax.set_yticks(y_rev)
+    ax.set_yticklabels(labels, fontweight="bold", fontsize=9.5)
+    ax.set_xlabel("Metric Score (%)", fontweight="bold")
+    ax.set_xlim(0, 106)
+    ax.grid(axis="x", linestyle="--", alpha=0.5)
+
+    ax.legend(
+        frameon=True,
+        facecolor="white",
+        edgecolor="#BDC3C7",
+        loc="lower center",
+        bbox_to_anchor=(0.5, 1.02),
+        ncol=2,
+        fontsize=10.5
+    )
+
+    for bar, val in zip(bars_acc, acc):
+        ax.annotate(
+            f"{val:.2f}%",
+            xy=(val + 1.0, bar.get_y() + bar.get_height() / 2),
+            va="center", fontsize=9, fontweight="bold", color="#7E3B06"
+        )
+
+    for bar, r, scaled in zip(bars_f1, f1_raw, f1_pct):
+        ax.annotate(
+            f"{r:.4f} ({scaled:.1f}%)",
+            xy=(scaled + 1.0, bar.get_y() + bar.get_height() / 2),
+            va="center", fontsize=9, fontweight="bold", color="#4A154B"
+        )
+
+    plt.tight_layout()
+    save_plot(fig, "category_model_benchmark_bars.png")
+
+
 def main():
     print("=" * 75)
     print("GENERATING GLOBAL COMMON PERIOD PUBLICATION PLOTS (N=285,111)")
@@ -527,7 +665,9 @@ def main():
     plot_operator_category_complaints(df)
     plot_category_sentiment_stacked(df)
     plot_monthly_nss_trend(df)
-    print("\n✓ ALL 6 MASTER VISUALIZATIONS GENERATED AT 300 DPI SUCCESSFULLY (SEP 2026 CUTOFF)!")
+    plot_sentiment_model_benchmark()
+    plot_category_model_benchmark()
+    print("\n✓ ALL 8 MASTER VISUALIZATIONS GENERATED AT 300 DPI SUCCESSFULLY (SEP 2026 CUTOFF)!")
 
 
 if __name__ == "__main__":

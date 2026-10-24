@@ -45,19 +45,38 @@ This folder contains the complete Deep Learning pipeline, neural model architect
 
 ## 🧠 Model Architectures & GPU Benchmarks
 
-Evaluated on the 4,500 curated ground-truth reviews across **Grameenphone**, **Robi**, and **Banglalink** using **5-Fold Stratified Cross-Validation**:
+Evaluated on the 4,500 curated ground-truth reviews across **Grameenphone**, **Robi**, and **Banglalink** using **5-Fold Stratified Cross-Validation**. Evaluated separately across the two distinct NLP tasks:
 
-| Model Architecture | Task | CV Accuracy | Macro-F1 | Status / Implementation |
-| :--- | :---: | :---: | :---: | :--- |
-| 🥇 **BUET BanglaBERT (Fine-Tuned)** | **Sentiment Analysis** | **91.60%** | **0.8598** | Full 12-layer backpropagation (`csebuetnlp/banglabert`) |
-| 🥇 **Hero Soft-Voting ML Ensemble** | **Operational Category** | **87.44%** | **0.7845** | Dual-Gram TF-IDF + Logistic Regression + LinearSVC + ComplementNB |
-| 🥈 **Hero Soft-Voting ML Ensemble** | **Sentiment Analysis** | **87.47%** | **0.7684** | Calibrated probability soft-voting classifier |
-| 🥈 **BUET BanglaBERT (Fine-Tuned)** | **Operational Category** | **85.27%** | **0.7624** | Full 12-layer backpropagation; +10.4% leap over frozen baseline |
-| 🚀 **Multilingual MiniLM Head** | **Sentiment Analysis** | **82.33%** | **0.7475** | Multilingual sentence semantic representations |
-| 🚀 **Multilingual MiniLM Head** | **Operational Category** | **81.15%** | **0.7247** | `paraphrase-multilingual-MiniLM-L12-v2` 384-dim dense vectors |
-| 🧠 **Hybrid BiLSTM + Attention (GPU)**| **Sentiment Analysis** | **81.50%** | **0.7180** | Sequential context modeling with sub-word token embeddings |
-| 🧠 **Hybrid BiLSTM + Attention (GPU)**| **Operational Category** | **80.84%** | **0.7106** | PyTorch BiLSTM + Bahdanau Attention with class-weighted loss |
-| 📉 **BUET BanglaBERT (Frozen Head)**| **Operational Category** | **74.88%** | **0.6253** | `csebuetnlp/banglabert` 768-dim contextual representations (Frozen baseline) |
+### 1. Sentiment Analysis Model Leaderboard (3-Class Polarity)
+> Evaluated on 3-class sentiment polarity: **Positive**, **Neutral**, and **Negative**.
+
+<div align="center">
+  <img src="../assets/plots/sentiment_model_benchmark_bars.png" width="780" alt="Sentiment Analysis Model Benchmark"/>
+</div>
+
+| Rank | Model Architecture | CV Accuracy | Macro-F1 | Status / Implementation |
+| :---: | :--- | :---: | :---: | :--- |
+| 🥇 | **BUET BanglaBERT (Fine-Tuned)** | **91.60%** | **0.8598** | Full 12-layer backpropagation (`csebuetnlp/banglabert`) |
+| 🥈 | **Hero Soft-Voting ML Ensemble** | **87.47%** | **0.7684** | Calibrated probability soft-voting classifier (~17.5k rev/s CPU) |
+| 🥉 | **Multilingual MiniLM Head** | **82.33%** | **0.7475** | Multilingual sentence semantic representations (`paraphrase-multilingual-MiniLM-L12-v2`) |
+| 4 | **Hybrid BiLSTM + Attention (GPU)** | **81.50%** | **0.7180** | Sequential context modeling with sub-word token embeddings |
+
+---
+
+### 2. Operational Category Model Leaderboard (5-Class Taxonomy)
+> Evaluated on 5 operational complaint domains: **Offers & Data Packs**, **App Login & Technical Bugs**, **Network Speed & 4G Latency**, **Billing & Airtime Deductions**, and **General Appreciation / Other**.
+
+<div align="center">
+  <img src="../assets/plots/category_model_benchmark_bars.png" width="780" alt="Operational Category Model Benchmark"/>
+</div>
+
+| Rank | Model Architecture | CV Accuracy | Macro-F1 | Status / Implementation |
+| :---: | :--- | :---: | :---: | :--- |
+| 🥇 | **Hero Soft-Voting ML Ensemble** | **87.44%** | **0.7845** | Dual-Gram TF-IDF + Logistic Regression + LinearSVC + ComplementNB |
+| 🥈 | **BUET BanglaBERT (Fine-Tuned)** | **85.27%** | **0.7624** | Full 12-layer backpropagation; +10.4% leap over frozen baseline |
+| 🥉 | **Multilingual MiniLM Head** | **81.15%** | **0.7247** | `paraphrase-multilingual-MiniLM-L12-v2` 384-dim dense vectors |
+| 4 | **Hybrid BiLSTM + Attention (GPU)** | **80.84%** | **0.7106** | PyTorch BiLSTM + Bahdanau Attention with class-weighted loss |
+| 5 | **BUET BanglaBERT (Frozen Head)** | **74.88%** | **0.6253** | `csebuetnlp/banglabert` 768-dim contextual representations (Frozen baseline) |
 
 ---
 

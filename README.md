@@ -114,22 +114,43 @@ Every review was classified into **5 operational domains** by our Soft-Voting Ca
 
 ---
 
-## 🏆 5. Empirical Multi-Paradigm Benchmark Matrix
+## 🏆 5. Empirical Multi-Paradigm Benchmark Suite
 
-Models were trained and evaluated on the curated multi-operator seed dataset ($N=4,500$ across Grameenphone, Robi, and Banglalink, annotated via the Groq LLM API and validated against human benchmarks) using **5-Fold Stratified Cross-Validation**:
+Models were trained and evaluated on the curated multi-operator seed dataset ($N=4,500$ across Grameenphone, Robi, and Banglalink, annotated via the Groq LLM API and validated against human benchmarks) using **5-Fold Stratified Cross-Validation**.
 
-| Model Architecture | Task | CV Accuracy | Macro-F1 | Inference Throughput | Key Strengths / Characteristics |
-| :--- | :---: | :---: | :---: | :---: | :--- |
-| 🥇 **BUET BanglaBERT (Fine-Tuned)** | **Sentiment Analysis** | **91.60%** | **0.8598** | GPU Batched | **Overall Sentiment SOTA**: End-to-end transformer fine-tuning (+4.1% Acc, +9.1% F1 over Ensemble). |
-| 🥇 **Hero Soft-Voting ML Ensemble** | **Operational Category** | **87.44%** | **0.7845** | **~18,200 rev/s** | **Category Champion**: Sub-word character n-grams excel on Romanized Banglish (*"mb"*, *"kete niyeche"*, *"otp"*). |
-| 🥈 **Hero Soft-Voting ML Ensemble** | **Sentiment Analysis** | **87.47%** | **0.7684** | **~17,500 rev/s** | High-throughput CPU production engine (LR + Calibrated LinearSVC + ComplementNB). |
-| 🥈 **BUET BanglaBERT (Fine-Tuned)** | **Operational Category** | **85.27%** | **0.7624** | GPU Batched | Contextual transformer representations; massive leap from 74.88% frozen baseline (+10.4% Acc). |
-| 🚀 **Multilingual MiniLM Head** | **Sentiment Analysis** | **82.33%** | **0.7475** | ~2,100 rev/s | 384-dim multilingual dense embeddings; cross-lingual semantic transfer. |
-| 🚀 **Multilingual MiniLM Head** | **Operational Category** | **81.15%** | **0.7247** | ~2,100 rev/s | Multilingual sentence semantic representations. |
-| 🧠 **Hybrid BiLSTM + Attention (GPU)**| **Sentiment Analysis** | **81.50%** | **0.7180** | Fast GPU Batched | PyTorch bidirectional recurrent architecture with Bahdanau attention. |
-| 🧠 **Hybrid BiLSTM + Attention (GPU)**| **Operational Category** | **80.84%** | **0.7106** | Fast GPU Batched | Sequential token context + inverse frequency class weighting. |
-| 📉 **BUET BanglaBERT (Frozen Head)**| **Operational Category** | **74.88%** | **0.6253** | GPU Required | Baseline frozen feature extractor without end-to-end gradient updates. |
-| 📉 **Statistical Floor (Dummy)** | **Operational Category** | **60.68%** | **0.1511** | Instant | Naive majority-class guess without language understanding. |
+To eliminate task ambiguity between 3-class sentiment polarity and 5-class departmental taxonomy, the benchmark results are presented in two dedicated leaderboards and publication-grade visualizations below:
+
+### A. Sentiment Analysis Model Leaderboard (3-Class Polarity)
+> Evaluated on 3-class sentiment polarity: **Positive**, **Neutral**, and **Negative**.
+
+<div align="center">
+  <img src="assets/plots/sentiment_model_benchmark_bars.png?v=1" width="850" alt="Sentiment Analysis Model Benchmark (3-Class Polarity)"/>
+</div>
+
+| Rank | Model Architecture | CV Accuracy | Macro-F1 | Inference Throughput | Key Strengths / Characteristics |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| 🥇 | **BUET BanglaBERT (Fine-Tuned)** | **91.60%** | **0.8598** | GPU Batched | **Overall Sentiment SOTA**: End-to-end 12-layer transformer fine-tuning (+4.1% Acc, +9.1% F1 over Ensemble). |
+| 🥈 | **Hero Soft-Voting ML Ensemble** | **87.47%** | **0.7684** | **~17,500 rev/s** | **Production Hero Engine**: High-throughput CPU classifier (LR + Calibrated LinearSVC + ComplementNB). |
+| 🥉 | **Multilingual MiniLM Head** | **82.33%** | **0.7475** | ~2,100 rev/s | 384-dim multilingual dense embeddings; cross-lingual semantic transfer. |
+| 4 | **Hybrid BiLSTM + Attention (GPU)** | **81.50%** | **0.7180** | Fast GPU Batched | Sequential token context + Bahdanau attention over emotional cues. |
+
+---
+
+### B. Operational Category Model Leaderboard (5-Class Taxonomy)
+> Evaluated on 5 operational complaint domains: **Offers & Data Packs**, **App Login & Technical Bugs**, **Network Speed & 4G Latency**, **Billing & Airtime Deductions**, and **General Appreciation / Other**.
+
+<div align="center">
+  <img src="assets/plots/category_model_benchmark_bars.png?v=1" width="850" alt="Operational Category Model Benchmark (5-Class Taxonomy)"/>
+</div>
+
+| Rank | Model Architecture | CV Accuracy | Macro-F1 | Inference Throughput | Key Strengths / Characteristics |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| 🥇 | **Hero Soft-Voting ML Ensemble** | **87.44%** | **0.7845** | **~18,200 rev/s** | **Category Champion**: Sub-word character n-grams excel on Romanized Banglish (*"mb"*, *"kete niyeche"*, *"otp"*). |
+| 🥈 | **BUET BanglaBERT (Fine-Tuned)** | **85.27%** | **0.7624** | GPU Batched | Contextual transformer representations; massive leap from 74.88% frozen baseline (+10.4% Acc). |
+| 🥉 | **Multilingual MiniLM Head** | **81.15%** | **0.7247** | ~2,100 rev/s | Multilingual sentence semantic representations with regularized head. |
+| 4 | **Hybrid BiLSTM + Attention (GPU)** | **80.84%** | **0.7106** | Fast GPU Batched | Sequential token context + inverse frequency class weighting. |
+| 5 | **BUET BanglaBERT (Frozen Head)** | **74.88%** | **0.6253** | GPU Required | Baseline frozen feature extractor without end-to-end gradient updates. |
+| 6 | **Statistical Floor (Dummy)** | **60.68%** | **0.1511** | Instant | Naive majority-class guess without language understanding. |
 
 ### 🤝 Human Ground-Truth Validation & Inter-Annotator Reliability (Cohen's Kappa)
 
@@ -176,7 +197,9 @@ telecom-Voice-of-Customer_intelligence/
 │       ├── multi_year_sentiment_trend_line.png
 │       ├── operator_category_complaint_distribution_bars.png
 │       ├── category_sentiment_stacked_bars.png
-│       └── monthly_nss_trend_line.png        # 📈 Monthly-granularity trajectory (36 pts)
+│       ├── monthly_nss_trend_line.png        # 📈 Monthly-granularity trajectory (36 pts)
+│       ├── sentiment_model_benchmark_bars.png # 🏆 3-Class Sentiment model benchmark
+│       └── category_model_benchmark_bars.png  # 🏷️ 5-Class Operational Category benchmark
 │
 ├── data/                                     # Curated Seed Training Dataset (Groq LLM Annotated)
 │   └── processed/                            # 4,500 Multi-Operator Labeled Reviews (GP, Robi, BL)
