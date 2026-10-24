@@ -1,95 +1,97 @@
-# 📘 Telecom Voice-of-Customer (VoC) Intelligence: The Complete End-to-End Guide
+# 📘 Telecom Voice-of-Customer (VoC) Intelligence: System Design & Architecture Guide
 
-> *"Imagine you run a mobile telecom company with 40 million customers. Every day, thousands of people write reviews on Google Play. Some write in English, some in Bengali, and most in 'Banglish' (Bengali words typed in English letters like 'MB er dam onek beshi'). How do you know what they are truly feeling? Who is losing customers, and why?"*
+> *"Imagine managing digital products for a telecommunications provider serving 40 million subscribers. Every day, thousands of customers publish reviews on the Google Play Store in English, formal Bengali, and phonetic 'Banglish' (Bengali written in Latin script, e.g., 'MB er dam onek beshi, balance kete ney'). How does an enterprise detect real customer pain points, benchmark cross-operator sentiment shifts, and diagnose functional department failures before they trigger subscriber churn?"*
 
-This guide explains this entire project from start to finish in plain, simple English — no PhD required!
+This guide provides an end-to-end architectural walkthrough of the **Telecom Voice-of-Customer (VoC) Intelligence Engine**—designed for software engineers, data scientists, machine learning practitioners, and executive stakeholders exploring how this production NLP pipeline turns hundreds of thousands of unstructured customer reviews into actionable corporate strategy.
 
 ---
 
 ## 🧭 Table of Contents
-1. [The Big Picture: What is this project?](#1-the-big-picture-what-is-this-project)
-2. [The Core Real-World Challenge](#2-the-core-real-world-challenge)
-3. [The End-to-End System Architecture](#3-the-end-to-end-system-architecture)
-4. [Step 1: Harvesting the Reviews (Data Collection)](#step-1-harvesting-the-reviews-data-collection)
-5. [Step 2: Fair Comparison & The "Common Duration Window"](#step-2-fair-comparison--the-common-duration-window)
-6. [Step 3: Creating the Ground Truth (AI Bootstrapping + Human Review)](#step-3-creating-the-ground-truth-ai-bootstrapping--human-review)
-7. [Step 4: The Machine Learning & Deep Learning Battle](#step-4-the-machine-learning--deep-learning-battle)
-8. [Step 5: Scoring 430,000+ Reviews at Scale](#step-5-scoring-430000-reviews-at-scale)
-9. [Step 6: Business Intelligence & Net Sentiment Score (NSS)](#step-6-business-intelligence--net-sentiment-score-nss)
-10. [Key Strategic Discoveries (The Real Insights)](#10-key-strategic-discoveries-the-real-insights)
-11. [Tour of the Codebase](#11-tour-of-the-codebase)
-12. [How to Run It Yourself (Cheat Sheet)](#12-how-to-run-it-yourself-cheat-sheet)
+1. [Executive Overview: Project Mission & Scope](#1-executive-overview-project-mission--scope)
+2. [The Core Natural Language Challenges](#2-the-core-natural-language-challenges)
+3. [End-to-End System Architecture](#3-end-to-end-system-architecture)
+4. [Step 1: Harvesting Unstructured Customer Reviews (Data Ingestion)](#step-1-harvesting-unstructured-customer-reviews-data-ingestion)
+5. [Step 2: Methodological Equity & The 1,072-Day Common Duration Window](#step-2-methodological-equity--the-1072-day-common-duration-window)
+6. [Step 3: Ground-Truth Engineering (Weak Supervision & Blind Human Review)](#step-3-ground-truth-engineering-weak-supervision--blind-human-review)
+7. [Step 4: Multi-Paradigm Machine Learning & Benchmark Suites](#step-4-multi-paradigm-machine-learning--benchmark-suites)
+8. [Step 5: High-Throughput Batch Scoring at Scale (434k+ Reviews)](#step-5-high-throughput-batch-scoring-at-scale-434k-reviews)
+9. [Step 6: Business Intelligence & Net Sentiment Score (NSS) Formulation](#step-6-business-intelligence--net-sentiment-score-nss-formulation)
+10. [Key Strategic Discoveries & Market Intelligence](#10-key-strategic-discoveries--market-intelligence)
+11. [Tour of the Repository Architecture](#11-tour-of-the-repository-architecture)
+12. [Reproduction & Execution Guide (Cheat Sheet)](#12-reproduction--execution-guide-cheat-sheet)
 
 ---
 
-## 1. The Big Picture: What is this project?
+## 1. Executive Overview: Project Mission & Scope
 
-In Bangladesh, the telecommunications market is dominated by three major operators:
-1. **Grameenphone (MyGP)** — `#0090ff` (Blue) — The incumbent giant with the largest user base.
-2. **Robi Axiata (MyRobi)** — `#e60000` (Red) — The aggressive challenger.
-3. **Banglalink (MyBL)** — `#ff7a00` (Orange) — The digital-first, agile contender.
+In Bangladesh, the digital self-care landscape is anchored by three mobile network operators:
+1. **Grameenphone Ltd. (MyGP)** — Brand `#0090ff` (Blue) — The telecommunications market leader by overall subscriber volume.
+2. **Robi Axiata Limited (MyRobi)** — Brand `#e60000` (Red) — The digital lifestyle challenger and aggressive product innovator.
+3. **Banglalink Digital Communications Limited (MyBL)** — Brand `#ff7a00` (Orange) — The digital-first, value-focused competitor.
 
-Each operator has a self-care mobile app on Google Play where users recharge, buy internet packs, check balances, and file complaints. 
+Each provider operates a flagship Android self-care application on the Google Play Store, where subscribers purchase data bundles, recharge airtime, inspect call records, and voice grievances.
 
-**Voice-of-Customer (VoC)** intelligence is the science of turning messy, unstructured public customer feedback into actionable corporate strategy. Instead of guessing why customers churn or switch SIM cards, this project reads over **434,000 customer reviews** across 6 years (2020 – 2026) and automatically answers two critical questions for every single review:
-1. **Sentiment**: Is this customer **Positive**, **Neutral**, or **Negative**?
-2. **Operational Category**: What department inside the company needs to fix this problem?
-   - 📦 *Offers & Data Packs* (Pricing, package validity, data limits)
-   - 🐛 *App Login & Technical Bugs* (Crashing, OTP not arriving, biometric errors)
-   - 📶 *Network Speed & 4G Latency* (Slow browsing, call drops, indoor coverage)
-   - 💳 *Billing & Airtime Deductions* (Unexpected balance cuts, VAS charges)
-   - ❤️ *General Appreciation / Other* (Praise, emoji comments, general feedback)
-
----
-
-## 2. The Core Real-World Challenge
-
-Why couldn't you just use an off-the-shelf sentiment tool or basic keywords?
-
-### A. The Trilingual "Banglish" Linguistic Nightmare
-In Bangladesh, users write in three distinct formats:
-- **Pure Bengali**: `"নেটওয়ার্ক খুব বাজে, বারবার কল ড্রপ হয়"`
-- **Pure English**: `"Excellent user experience and smooth UI!"`
-- **Banglish (Code-Mixed / Phonetic)**: `"bhai MB er dam ato baralen keno? balance kete ney!"`
-
-Standard NLP models trained on formal English or formal Bengali completely fail on Banglish. Words like *"faltu"*, *"valo na"*, *"baje"*, *"onek beshi"* contain critical sentiment signals that generic tools do not recognize.
-
-### B. Rating Does Not Equal Sentiment
-A user might give **5 stars** but write: *"App is good but internet speed is horribly slow, please fix!"*  
-Or they might give **1 star** simply because they forgot their password. The machine learning pipeline must inspect the **semantic meaning of the words**, not just the star rating.
+**Voice-of-Customer (VoC)** intelligence transforms this massive, noisy stream of public customer feedback into strategic business intelligence. Across a master corpus of **434,803 customer reviews** spanning six years (2020 – 2026), the engine automatically classifies every review along two critical analytical dimensions:
+1. **Customer Sentiment (3-Class Polarity)**: Is the subscriber **Positive**, **Neutral**, or **Negative**?
+2. **Operational Category (5-Class Functional Taxonomy)**: Which departmental team inside the enterprise is responsible for resolving the underlying root cause?
+   - 📦 **Offers & Data Packs**: Pricing perception, bundle allowances, package expiration, and validity confiscation.
+   - 🐛 **App Login & Technical Bugs**: Biometric authentication failures, OTP arrival latency, crashes, and UI freezes.
+   - 📶 **Network Speed & 4G Latency**: Indoor coverage dead-zones, slow 4G browsing speeds, call drops, and buffering.
+   - 💳 **Billing & Airtime Deductions**: Involuntary value-added service (VAS) charges, unexplained airtime deductions.
+   - ❤️ **General Appreciation / Other**: Generic 5-star praise, emoji comments, informal greetings, and non-actionable chatter.
 
 ---
 
-## 3. The End-to-End System Architecture
+## 2. The Core Natural Language Challenges
 
-Here is how the entire system flows, from a user typing a review on Google Play to high-level executive charts:
+Traditional off-the-shelf sentiment packages (such as VADER or generic English/Bengali BERT models) fail when deployed directly on South Asian mobile app reviews due to two foundational linguistic hurdles:
+
+### A. The Trilingual "Banglish" Linguistic Mixture
+Customer feedback in Bangladesh is expressed across three interleaved formats:
+- **Formal Bengali**: `"নেটওয়ার্ক খুব বাজে, বারবার কল ড্রপ হয়"` *(Network is very poor, calls drop repeatedly)*
+- **Standard English**: `"Excellent user experience and smooth recharge flow!"`
+- **Banglish (Code-Mixed / Phonetic Romanized Bengali)**: `"bhai MB er dam ato baralen keno? balance kete ney!"` *(Brother, why did you increase data pack prices so much? My balance is getting deducted!)*
+
+Standard NLP toolkits lack vocabulary tokens for romanized phonetic variations (*"kharap"*, *"faltu"*, *"baje"*, *"valo na"*, *"churi"*). Without sub-word character representations, critical customer sentiment and billing complaints are missed entirely.
+
+### B. Rating-Text Divergence
+A subscriber frequently awards **5 stars** while detailing severe technical frustration:  
+> *"App interface is clean, but 4G data speeds in Chittagong are completely unusable. Please upgrade your towers!"*
+
+Conversely, another user awards **1 star** simply because they forgot their password. Relying exclusively on star ratings misrepresents operational performance. The machine learning pipeline inspects the **semantic meaning of the text**, decoupling actual user experience from star-rating heuristics.
+
+---
+
+## 3. End-to-End System Architecture
+
+The diagram below illustrates the end-to-end data lineage from raw Google Play ingestion to publication-grade analytics:
 
 ```mermaid
 flowchart TD
-    A["Google Play Store<br>(MyGP, MyRobi, MyBL)"] -->|Scraping Pipeline| B["Raw Review Corpus<br>(434,803 Reviews, 2020–2026)"]
+    A["Google Play Store<br>(MyGP, MyRobi, MyBL)"] -->|Scraping Engine| B["Raw Review Corpus<br>(434,803 Reviews, 2020–2026)"]
     
-    B -->|Fair Window Filtering| C["Common Duration Window<br>(Oct 24, 2023 – Sep 30, 2026 | 285,111 Reviews)"]
+    B -->|Temporal Harmonization| C["Common Duration Window<br>(Oct 24, 2023 – Sep 30, 2026 | 285,111 Reviews)"]
     
     subgraph S1 ["Phase 1: Seed Bootstrapping & Human Ground Truth"]
-        D["4,500 Multi-Operator Reviews"] -->|Groq LLM API| E["Automated Seed Annotations"]
-        F["Independent Blind Human Review<br>(N = 300 / N = 200)"] -->|Cohen's Kappa Reliability| G["Empirical Gold Standard<br>(κ = 0.77 Substantial)"]
-        E -.->|Validated Against| G
+        D["4,500 Multi-Operator Seed Reviews"] -->|Groq LLM API| E["Automated Weak Supervision"]
+        F["Dual-Annotator Blind Human Review<br>(N = 300 / N = 200 Pairs)"] -->|Cohen's Kappa Evaluation| G["Empirical Gold Standard<br>(κ = 0.77 Substantial Agreement)"]
+        E -.->|Empirically Validated Against| G
     end
     
     subgraph S2 ["Phase 2: Multi-Paradigm Machine Learning"]
-        E --> H["TF-IDF Character + Word n-grams"]
-        H --> I["Hero Soft-Voting Ensemble<br>(Logistic Regression + LinearSVC)"]
-        D --> J["PyTorch BiLSTM + Self-Attention"]
-        D --> K["BUET BanglaBERT Transformer<br>(91.6% CV Accuracy - SOTA)"]
+        E --> H["Dual-Gram TF-IDF (Word 1–3 + Char 2–5)"]
+        H --> I["Hero Soft-Voting ML Ensemble<br>(87.5% Sentiment / 87.4% Category)"]
+        D --> J["PyTorch BiLSTM + Bahdanau Attention"]
+        D --> K["BUET BanglaBERT Fine-Tuning<br>(91.6% Sentiment SOTA / 85.3% Category)"]
     end
     
-    C -->|Production Batch Inference| L["Ensemble Scoring Engine<br>(Predicts Sentiment & Departmental Category)"]
+    C -->|Production CPU Batch Inference| L["High-Throughput Scoring Engine<br>(~18,000 rev/s Dual Inference)"]
     I --> L
     
-    L --> M["Classified Production Corpus<br>(With Confidence & Multi-Model Agreement)"]
+    L --> M["Classified Production Corpus<br>(Enriched with Confidence & Model Agreement)"]
     
     subgraph S3 ["Phase 3: Executive Business Intelligence"]
-        M --> N["Net Sentiment Score (NSS) Scorecards"]
+        M --> N["Net Sentiment Score (NSS) Benchmarks"]
         M --> O["Longitudinal Trajectories (2023–2026)"]
         M --> P["Departmental Complaint Root Causes"]
         M --> Q["Publication Visualizations (300 DPI)"]
@@ -98,140 +100,155 @@ flowchart TD
 
 ---
 
-## Step 1: Harvesting the Reviews (Data Collection)
+## Step 1: Harvesting Unstructured Customer Reviews (Data Ingestion)
 
-The pipeline uses `google-play-scraper` to pull reviews directly from Google Play.
-- Each review captures:
-  - `review_id` (Unique cryptographic hash / ID)
-  - `review_date` (Timestamp)
-  - `user_name`
-  - `rating` (1 to 5 stars)
-  - `content` (Raw customer text)
-  - `thumbs_up` (Community upvotes)
-  - `app_version`
+The data collection layer leverages `google-play-scraper` across all three mobile app IDs:
+- **Grameenphone**: `com.portonics.mygp`
+- **Robi Axiata**: `net.omobio.robisc`
+- **Banglalink**: `com.arena.banglalinkmela.app`
 
-Across the entire multi-year collection (2020 through late 2026), the engine harvested **434,803 unique reviews**:
-- **Grameenphone**: 161,738 reviews
-- **Robi Axiata**: 192,747 reviews
-- **Banglalink**: 81,083 reviews
+Each harvested record captures:
+- `review_id`: Unique cryptographic identifier
+- `review_date`: UTC timestamp of publication
+- `user_name`: Anonymized user handle
+- `rating`: Customer star score (1 to 5)
+- `content`: Raw customer review text
+- `thumbs_up`: Community upvotes (measuring feedback resonance)
+- `app_version`: Application release build
+
+Across the six-year longitudinal span (2020 through October 2026), the ingestion pipeline collected **434,803 unique reviews**:
+* **Grameenphone (MyGP)**: 161,738 reviews
+* **Robi Axiata (MyRobi)**: 192,747 reviews
+* **Banglalink (MyBL)**: 81,083 reviews
 
 ---
 
-## Step 2: Fair Comparison & The "Common Duration Window"
+## Step 2: Methodological Equity & The 1,072-Day Common Duration Window
 
 > [!IMPORTANT]
-> **The Golden Rule of Statistics**: Never compare two entities across time periods where only one of them existed or had data.
+> **The Principle of Temporal Selection Equity**: Meaningful cross-operator benchmarking requires evaluating providers across identical time horizons. Comparing all-time historical aggregates creates statistical bias if one operator holds a massive volume of historical reviews from earlier years when public sentiment was systematically higher or lower.
 
-If Grameenphone had 100,000 reviews collected in 2020–2022 when telecom sentiment was generally higher, but Banglalink only had reviews starting in late 2023, comparing their all-time averages would create severe **temporal selection bias**.
-
-### What we did to ensure strict mathematical fairness:
-1. **Identified the Continuous Overlapping Window**:  
-   We found the continuous time window where **all three operators simultaneously had active data**:
-   **October 24, 2023 to September 30, 2026 (1,072 Days)**.
-2. **Backfilled the Robi Historical Gap**:  
-   During 2024–2025, Robi had an archival collection gap. We backfilled 37,153 reviews across all 5 star ratings with verified temporal timestamps to restore parity.
+### Methodological Protocol for Cross-Operator Benchmarking:
+1. **Continuous Shared Horizon**:  
+   The temporal boundary where **all three operators coexisted with continuous, uninterrupted review data** was identified:  
+   **October 24, 2023 to September 30, 2026 (1,072 Continuous Days)**.
+2. **Backfilling Historical Collection Gaps**:  
+   During 2024–2025, Robi had an archival collection gap. A targeted multi-rating backfill collected 37,153 reviews across all 5 star tiers to ensure balanced representation.
 3. **The Active Benchmark Cohort ($N = 285,111$)**:
-   - **Grameenphone**: 161,491 reviews (56.6% market share of voice)
-   - **Robi**: 80,330 reviews (28.2%)
-   - **Banglalink**: 43,290 reviews (15.2%)
+   - **Grameenphone (MyGP)**: 161,491 reviews (56.64% market voice share)
+   - **Robi Axiata (MyRobi)**: 80,330 reviews (28.18% market voice share)
+   - **Banglalink (MyBL)**: 43,290 reviews (15.18% market voice share)
 
-Every single chart, scorecard, and executive comparison in the main README is strictly derived from this 1,072-day common window.
-
----
-
-## Step 3: Creating the Ground Truth (AI Bootstrapping + Human Review)
-
-How do you train an AI model when you don't have thousands of pre-labeled reviews?
-
-### Phase 3A: Bootstrapping with Groq LLM
-We sampled 4,500 reviews (1,500 per operator) across all 5 star ratings. We fed them to the **Groq Cloud API** running ultra-fast LLMs with strict zero-shot and few-shot system prompts:
-- *System instruction*: "Classify this telecom review into Sentiment (positive/neutral/negative) and Operational Category (offers/bugs/network/billing/other). Return JSON."
-
-### Phase 3B: The Human Gold Standard Verification
-Can we trust an LLM blindly? **No.** Publication-grade research requires human verification.
-- To establish authentic ground truth under strict zero-leakage conditions:
-  - **Primary Annotator (Ratul)**: Blind-annotated **$N = 300$ reviews** ([`blind_annotation_300_ratul.csv`](archive/scraped_data_2020/gold_set/blind_annotation_300_ratul.csv)) with model suggestions and PII stripped.
-  - **Secondary Reviewer (Friend)**: Independently blind-annotated the overlapping **$N = 200$ reviews** ([`blind_annotation_200_friend.csv`](archive/scraped_data_2020/gold_set/blind_annotation_200_friend.csv)).
-- We evaluated agreement across the 200 overlapping pairs using **Cohen's Kappa ($\kappa$)**:
-  - **Sentiment Agreement**: **91.0%** raw agreement ($\kappa = 0.5762$, Moderate)
-  - **Operational Category Agreement**: **95.4%** raw agreement ($\kappa = 0.7694$, **Substantial Agreement**)
-- This proved that our operational category boundaries (Network vs. Billing vs. Offers vs. Login) are robust, objective, and match human cognitive consensus.
+All published scorecards, trendlines, and comparative bar charts strictly evaluate this 1,072-day common window.
 
 ---
 
-## Step 4: The Machine Learning & Deep Learning Battle
+## Step 3: Ground-Truth Engineering (Weak Supervision & Blind Human Review)
 
-We didn't just train one model and call it a day. We pit three distinct paradigms against each other:
+Training enterprise-grade models without pre-existing labeled telecom datasets required a two-phase data bootstrapping framework:
 
-```
-+-----------------------------------------------------------------------------------------+
-|                               MODEL PERFORMANCE COMPARISON                              |
-+--------------------+-----------------------------+--------------+-----------------------+
-| Architecture       | Paradigm                    | Accuracy     | Deployment Tradeoff   |
-+--------------------+-----------------------------+--------------+-----------------------+
-| BUET BanglaBERT    | Deep Transformer (SOTA)     | 91.60% (Sent)| Heavy GPU required    |
-| Soft-Voting Hero   | Classical ML Ensemble       | 87.50% (Sent)| Instant CPU inference |
-| PyTorch BiLSTM     | Recurrent Neural Net + Attn | 84.10% (Sent)| Moderate latency      |
-| Dummy Baseline     | Most-Frequent Class Guess   | 60.68%       | Zero intelligence     |
-+--------------------+-----------------------------+--------------+-----------------------+
-```
+### Phase 3A: Weak Supervision via Groq Cloud LLM API
+A stratified sample of 4,500 reviews (1,500 per operator, balanced across all 5 star ratings) was annotated using the **Groq Cloud API** (`qwen/qwen3.8-27b`) under few-shot system prompts enforcing strict JSON schemas for sentiment polarity and operational taxonomy.
 
-### 1. The Production Hero: Soft-Voting Ensemble (CPU Champion)
-- **Feature Extraction**: Combines word n-grams (1-3 words) and character n-grams (2-5 characters). Character n-grams are the secret sauce for handling Banglish typos (e.g., matching `"kharap"`, `"kharappp"`, and `"khrp"`).
-- **Ensemble Members**: Calibrated LinearSVC + Balanced Logistic Regression.
-- **Why it's in production**: It scores **thousands of reviews per second** on a standard CPU with 87.5% accuracy!
+### Phase 3B: Dual-Annotator Blind Human Ground Truth (Cohen's Kappa)
+To ensure automated weak labels reflect genuine human cognition rather than LLM hallucinations, a formal inter-annotator reliability study was conducted under strict zero-leakage conditions (model suggestions and star ratings stripped):
+* **Primary Human Annotator**: Blind-reviewed **$N = 300$ reviews** ([`blind_annotation_300_ratul.csv`](archive/scraped_data_2020/gold_set/blind_annotation_300_ratul.csv)).
+* **Secondary Independent Annotator**: Independently blind-reviewed the overlapping **$N = 200$ reviews** ([`blind_annotation_200_friend.csv`](archive/scraped_data_2020/gold_set/blind_annotation_200_friend.csv)).
 
-### 2. The Deep Learning Challenger: PyTorch BiLSTM + Bahdanau Self-Attention
-- Reads sequences forward and backward to capture context, using an attention mechanism to assign weights to the most emotionally charged words in the sentence.
+Inter-rater reliability was measured using **Cohen's Kappa ($\kappa$)**:
 
-### 3. The State-of-the-Art (SOTA): Fine-Tuned BUET BanglaBERT
-- Fine-tuned using Hugging Face Transformers with mixed-precision FP16 on Google Colab GPUs.
-- Achieves **91.60% Sentiment Accuracy** and **85.27% Category Accuracy**, setting the theoretical performance ceiling for Bengali NLP in telecom.
+| Evaluation Dimension | Evaluated Pairs | Raw Percentage Agreement | Cohen's Kappa ($\kappa$) | Standard Interpretation |
+| :--- | :---: | :---: | :---: | :--- |
+| **Sentiment Analysis (3-Class)** | 200 | **91.00%** | **0.5762** | Moderate Agreement (High Consistency) |
+| **Operational Category (5-Class)** | 196 | **95.41%** | **0.7694** | **Substantial Agreement** |
+
+The high Kappa score on operational categories ($\kappa = 0.7694$) validates that departmental taxonomy boundaries (Offers vs. Login Bugs vs. Network vs. Billing) are objective and consistent across human reviewers.
 
 ---
 
-## Step 5: Scoring 430,000+ Reviews at Scale
+## Step 4: Multi-Paradigm Machine Learning & Benchmark Suites
 
-With the production Hero Ensemble trained and validated, we ran batch inference across the entire dataset. Every review in the database was enriched with:
-- `predicted_sentiment`: (`positive`, `neutral`, `negative`)
-- `sentiment_confidence`: Softmax probability score (e.g., `0.94`)
-- `predicted_category`: Operational diagnosis
-- `category_confidence`: Confidence score
-- Auxiliary predictions from BiLSTM, Logistic Regression, and LinearSVC for cross-model agreement verification.
+Rather than relying on a single architecture, multiple machine learning and deep learning paradigms were evaluated using **5-Fold Stratified Cross-Validation** ($N = 4,500$). Because sentiment polarity (3 classes) and operational categories (5 classes) represent distinct NLP tasks, benchmarks are tracked independently:
+
+### Chart 1: Sentiment Analysis Model Leaderboard (3-Class Polarity)
+> Evaluated on: **Positive**, **Neutral**, **Negative**.
+
+| Rank | Model Architecture | CV Accuracy | Macro-F1 | Throughput / Latency | Architectural Role |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| 🥇 | **BUET BanglaBERT (Fine-Tuned)** | **91.60%** | **0.8598** | GPU Batched | **Overall SOTA**: End-to-end 12-layer transformer fine-tuning. |
+| 🥈 | **Hero Soft-Voting ML Ensemble** | **87.47%** | **0.7684** | **~17,500 rev/s** | **Production Hero Engine**: High-throughput CPU classifier (LR + LinearSVC + CNB). |
+| 🥉 | **Multilingual MiniLM Head** | **82.33%** | **0.7475** | ~2,100 rev/s | 384-dim dense embeddings; cross-lingual semantic transfer. |
+| 4 | **Hybrid BiLSTM + Attention (GPU)** | **81.50%** | **0.7180** | Fast GPU Batched | Sequential token context + Bahdanau attention. |
+
+### Chart 2: Operational Category Model Leaderboard (5-Class Taxonomy)
+> Evaluated on: **Offers & Data Packs**, **App Login & Technical Bugs**, **Network Speed & 4G Latency**, **Billing & Airtime Deductions**, **General Appreciation / Other**.
+
+| Rank | Model Architecture | CV Accuracy | Macro-F1 | Throughput / Latency | Architectural Role |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| 🥇 | **Hero Soft-Voting ML Ensemble** | **87.44%** | **0.7845** | **~18,200 rev/s** | **Category Champion**: Sub-word character n-grams excel on code-mixed Banglish keywords. |
+| 🥈 | **BUET BanglaBERT (Fine-Tuned)** | **85.27%** | **0.7624** | GPU Batched | Deep contextual representations; +10.4% leap over frozen baseline. |
+| 🥉 | **Multilingual MiniLM Head** | **81.15%** | **0.7247** | ~2,100 rev/s | Multilingual sentence semantic representations with regularized head. |
+| 4 | **Hybrid BiLSTM + Attention (GPU)** | **80.84%** | **0.7106** | Fast GPU Batched | Sequential recurrent context with class-weighted loss. |
+| 5 | **BUET BanglaBERT (Frozen Head)** | **74.88%** | **0.6253** | GPU Required | Baseline frozen feature extractor without end-to-end gradient updates. |
+| 6 | **Statistical Floor (Dummy)** | **60.68%** | **0.1511** | Instant | Naive majority-class baseline without semantic understanding. |
+
+### Deep-Dive on Core Architectures:
+
+1. **The Production Champion: Hero Soft-Voting Ensemble (CPU)**
+   - **Feature Pipeline**: Combines word n-grams (1–3 words) and character n-grams (2–5 characters). Character n-grams capture phonetic typos and code-mixed contractions (e.g., matching `"faltu"`, `"faltoo"`, `"faltuu"`).
+   - **Estimators**: Calibrated LinearSVC + Balanced Logistic Regression + Complement Naive Bayes.
+   - **Production Justification**: Processes **~18,000 reviews/second** on standard CPU instances with zero GPU operational costs, making large-scale offline batch scoring instantaneous.
+
+2. **The Deep Learning Sequence Model: PyTorch BiLSTM + Bahdanau Attention**
+   - Processes review tokens bidirectionally to capture linguistic context, applying an additive attention mechanism to assign higher mathematical weights to emotionally charged tokens (*"churi"*, *"baje"*, *"darun"*).
+
+3. **The State-of-the-Art (SOTA): Fine-Tuned BUET BanglaBERT**
+   - Fine-tuned using mixed-precision FP16 on Google Colab GPUs with backpropagation through all 12 transformer encoder layers (`csebuetnlp/banglabert`).
+   - Sets the theoretical performance ceiling on Bengali telecom NLP with **91.60% Sentiment Accuracy**.
 
 ---
 
-## Step 6: Business Intelligence & Net Sentiment Score (NSS)
+## Step 5: High-Throughput Batch Scoring at Scale (434k+ Reviews)
 
-How do you translate "positive" and "negative" into a metric that a CEO can track?
+With the production Hero Ensemble trained and cross-validated, batch inference was executed across the master database ($N = 434,803$ reviews). Every review record was enriched with structured metadata:
+* `predicted_sentiment`: (`Positive`, `Neutral`, `Negative`)
+* `sentiment_confidence`: Softmax probability score (e.g., `0.94`)
+* `predicted_category`: Operational department classification
+* `category_confidence`: Softmax probability score (e.g., `0.91`)
+* Multi-model auxiliary predictions from LinearSVC and BiLSTM for agreement auditing.
 
-### The Net Sentiment Score (NSS) Formula
+---
+
+## Step 6: Business Intelligence & Net Sentiment Score (NSS) Formulation
+
+To translate discrete sentiment categories into an executive metric suitable for C-suite performance scorecards, the pipeline computes the **Net Sentiment Score (NSS)**:
+
 $$\text{NSS} = \left(\frac{N_{\text{Positive}} - N_{\text{Negative}}}{N_{\text{Total}}}\right) \times 100$$
 
-- Range: From **-100%** (everyone is furious) to **+100%** (everyone is delighted).
-- Analogous to Net Promoter Score (NPS), but computed unobtrusively from authentic organic reviews.
+* **Metric Bounds**: Ranges from **-100.0%** (100% negative feedback) to **+100.0%** (100% positive feedback).
+* **Business Utility**: Functionally analogous to Net Promoter Score (NPS), but derived passively and continuously from organic customer behavior rather than intrusive surveys.
 
 ---
 
-## 10. Key Strategic Discoveries (The Real Insights)
+## 10. Key Strategic Discoveries & Market Intelligence
 
-Here is what the 285,111 common-duration reviews revealed about Bangladesh's telecom market:
+Evaluating 285,111 reviews across the continuous 1,072-day common window surfaced key market dynamics:
 
-### 1. Market Overview Scorecard
+### 1. Market Overview Scorecard (Oct 2023 – Sep 2026)
 
-| Rank | Operator | Reviews | Positive % | Negative % | Net Sentiment (NSS) | Market Position |
-| :---: | :--- | :---: | :---: | :---: | :---: | :--- |
-| **1** | **Robi Axiata (MyRobi)** | 80,330 | 82.5% | 8.0% | **+74.6%** | **NSS Quality Leader** |
-| **2** | **Banglalink (MyBL)** | 43,290 | 80.9% | 9.6% | **+71.2%** | **Agile Fast-Mover** |
-| **3** | **Grameenphone (MyGP)** | 161,491 | 79.7% | 9.9% | **+69.8%** | **Massive Volume Leader** |
-| -- | *Industry Benchmark* | 285,111 | 80.6% | 9.3% | **+71.3%** | *Overall Market Baseline* |
+| Rank | Operator | Reviews ($N$) | Positive % | Neutral % | Negative % | Net Sentiment (NSS) | Market Role |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **1** | **Robi Axiata (MyRobi)** | 80,330 | 82.5% | 9.5% | 8.0% | **+74.6%** | **NSS Quality Leader** |
+| **2** | **Banglalink (MyBL)** | 43,290 | 80.9% | 9.6% | 9.6% | **+71.2%** | **Agile Fast-Mover** |
+| **3** | **Grameenphone (MyGP)** | 161,491 | 79.7% | 10.4% | 9.9% | **+69.8%** | **Scale Anchor** |
+| -- | *Industry Benchmark* | 285,111 | 80.6% | 10.1% | 9.3% | **+71.3%** | *Industry Mean* |
 
 ---
 
-### 2. The 3 Historical Strategic Eras (2023 – 2026)
+### 2. Longitudinal Trajectory & The Three Strategic Eras
 
-```
-NSS Trajectory
+```text
+Net Sentiment Score (NSS) Trajectory
 100% |
      |                                                      ★ Banglalink (+81.9%)
  80% |                                      ● Robi (+78.6%)  ● Robi (+76.2%)
@@ -243,91 +260,119 @@ NSS Trajectory
         2023 (Q4)              2024            2025            2026 (Jan-Sep)
 ```
 
-1. **The 2023 Friction Point**: In late 2023, Robi (+41.9%) and Banglalink (+45.0%) suffered acute negative feedback over unexpected VAS balance cuts and onboarding crashes, while Grameenphone dominated (+73.2%).
-2. **The 2025 Robi Turnaround**: Robi rebuilt its backend self-care architecture and overhauled customer experience, rocketing its NSS to **+78.6%** and cutting negative reviews to an industry record low of 6.4%.
-3. **The 2026 Market Reversal**: In 2026, Banglalink surged to first place with **+81.9% NSS**, while Grameenphone experienced a severe drop to **+56.8% NSS** (17.5% negative complaints) triggered by data pack price hikes and login OTP timeouts.
+1. **The 2023 Friction Point**: In late 2023, Robi (+41.9% NSS) and Banglalink (+45.0% NSS) faced significant negative feedback regarding unauthorized VAS deductions and app login instability, while Grameenphone enjoyed high initial goodwill (+73.2% NSS).
+2. **The 2025 Robi Turnaround**: Robi re-architected its backend self-care infrastructure and resolved recurring VAS friction, driving its NSS to an industry-leading **+78.6%** and reducing negative feedback to an unprecedented 6.4%.
+3. **The 2026 Market Reversal**: In 2026, Banglalink surged to #1 market sentiment (**+81.9% NSS**), while Grameenphone dropped sharply to **+56.8% NSS** (17.5% negative reviews) following regulatory data package price increases and authentication OTP delays.
 
 ---
 
-### 3. Departmental Vulnerabilities (Where Each Operator Bleeds)
+### 3. Departmental Root-Cause Vulnerabilities
 
-Every operator has a distinct Achilles' heel:
-- **Grameenphone's Vulnerability: Billing & Airtime Loss (1.23%)**  
-  GP customers report unexpected VAS deductions and balance loss at **nearly double** the rate of Banglalink.
-- **Banglalink's Vulnerability: App Login & Technical Bugs (3.48%)**  
-  Banglalink suffers the highest app instability, biometric session timeouts, and login crashes among all three operators.
-- **Robi's Vulnerability: Offers & Data Pack Validity (5.67%)**  
-  Robi users are the most price-sensitive, frequently expressing frustration over internet pack expiration and validity limits.
+Each telecommunications operator exhibits a distinct operational failure mode:
+* **Grameenphone's Primary Vulnerability: Billing & Airtime Loss (1.23%)**  
+  Grameenphone subscribers register complaints regarding unexplained balance deductions at **nearly double** the rate of competing networks, signaling an urgent need for VAS subscription confirmation transparency.
+* **Banglalink's Primary Vulnerability: App Login & Technical Bugs (3.48%)**  
+  Banglalink experiences elevated rates of session token timeouts, biometric login failures, and update crashes.
+* **Robi's Primary Vulnerability: Offers & Data Pack Validity (5.67%)**  
+  Robi subscribers exhibit high price sensitivity, frequently criticizing short validity windows and unused data forfeiture.
 
 ---
 
-## 11. Tour of the Codebase
+## 11. Tour of the Repository Architecture
 
 ```text
 telecom-Voice-of-Customer_intelligence/
 ├── assets/
-│   ├── logos/                 # Official brand assets (GP, Robi, BL)
-│   └── plots/                 # 📊 The 6 publication-grade 300 DPI charts shown in README
+│   ├── logos/                                # Official corporate brand assets (GP, Robi, BL)
+│   └── plots/                                # 📊 Publication-grade 300 DPI visualizations
+│       ├── net_sentiment_score_comparison_bars.png
+│       ├── operator_sentiment_distribution_bars.png
+│       ├── monthly_sentiment_trend_line.png
+│       ├── multi_year_sentiment_trend_line.png
+│       ├── operator_category_complaint_distribution_bars.png
+│       ├── category_sentiment_stacked_bars.png
+│       ├── monthly_nss_trend_line.png
+│       ├── sentiment_model_benchmark_bars.png # 🏆 3-Class Sentiment model benchmark
+│       └── category_model_benchmark_bars.png  # 🏷️ 5-Class Operational Category benchmark
 │
 ├── data/
-│   └── processed/             # 4,500 labeled seed reviews (Groq LLM bootstrapped)
+│   └── processed/                            # 4,500 labeled seed reviews (Groq LLM bootstrapped)
 │
-├── ml/                        # 🧠 Classical Machine Learning Pipeline
-│   ├── models/                # Saved soft-voting models (.joblib)
-│   ├── train_classical_models.py # Trains Logistic Regression, LinearSVC, Voting Ensemble
-│   └── evaluate_models.py     # 5-fold cross-validation & confusion matrices
+├── ml/                                       # 🧠 Classical Machine Learning Engine
+│   ├── models/                               # Serialized voting ensembles & TF-IDF models (.joblib)
+│   ├── train_sentiment.py                    # Trains Sentiment models (LogReg, LinearSVC, Voting)
+│   ├── train_category.py                     # Trains Operational Category models
+│   ├── train_ensemble.py                     # Trains unified multi-target soft-voting ensemble
+│   ├── train_filtered_experiments.py         # Short-text filtering ablation runner
+│   └── predict.py                            # CLI dual-inference utility (~18,000 rev/s)
 │
-├── dl/                        # ⚡ Deep Learning Pipeline
-│   ├── finetune_banglabert.py # Fine-tunes BUET BanglaBERT transformer
-│   ├── train_bilstm.py        # PyTorch BiLSTM with Bahdanau attention
-│   └── telecom_voc_banglabert_finetuning_colab.ipynb # Google Colab GPU notebook
+├── dl/                                       # ⚡ Deep Learning & GPU Suites
+│   ├── finetune_banglabert.py                # Standalone CLI for BUET BanglaBERT fine-tuning
+│   ├── train_bilstm.py                       # PyTorch BiLSTM + Bahdanau attention (Sentiment)
+│   ├── train_bilstm_category.py              # PyTorch BiLSTM + Bahdanau attention (Category)
+│   ├── train_transformer.py                  # Pretrained Multilingual MiniLM sentence embeddings
+│   ├── telecom_voc_banglabert_finetuning_colab.ipynb # Google Colab SOTA fine-tuning notebook
+│   └── telecom_voc_master_unified_colab.ipynb # Master Colab running all ML & DL models
 │
-├── scraped_data_global_2020_2026/  # 🌟 Master Dataset Suite (434.8k Reviews)
-│   ├── raw/                   # Scraped raw review CSVs from Google Play
-│   ├── classified/            # Enriched datasets with predicted sentiments & categories
-│   │   ├── all_operators_common_duration_classified.csv  # 🏆 285.1k Active Benchmark
-│   │   └── common_duration_summary.json                  # Benchmark metadata
+├── scraped_data_global_2020_2026/            # 🌟 Master Dataset Suite (N = 434,803)
+│   ├── raw/                                  # Raw Google Play Store review CSVs
+│   ├── classified/                           # Enriched production CSVs with predicted labels
+│   │   ├── all_operators_common_duration_classified.csv  # 🏆 285.1k Active Benchmark Cohort
+│   │   └── common_duration_summary.json                  # Common period statistical metadata
 │   └── pipeline/
-│       ├── generate_global_visualizations.py             # Generates all publication plots
-│       └── backfill_robi_gap.py                          # Balanced temporal gap backfiller
+│       ├── run_parallel_scrapers.py          # Parallel scrapers with incremental update support
+│       ├── scraper_worker.py                 # Multi-operator worker script
+│       ├── backfill_robi_gap.py              # Balanced multi-rating historical backfill engine
+│       ├── merge_and_sync_all_datasets.py    # Strict deduplication & common window extraction
+│       ├── classify_global_dataset.py        # High-throughput batch inference pipeline
+│       └── generate_global_visualizations.py # Renders all publication-grade 300 DPI plots
 │
-├── archive/                   # Historical research, gold standard & Cohen's Kappa
+├── archive/                                  # 🗄️ Historical Research & Validation Studies
 │   └── scraped_data_2020/gold_set/
-│       ├── blind_annotation_300_ratul.csv
-│       ├── blind_annotation_200_friend.csv
-│       └── calculate_agreement.py # Inter-annotator Cohen's Kappa evaluator
+│       ├── blind_annotation_300_ratul.csv    # Primary human ground truth (N = 300)
+│       ├── blind_annotation_200_friend.csv   # Independent secondary blind review (N = 200)
+│       ├── calculate_agreement.py            # Cohen's Kappa evaluator engine
+│       ├── ANNOTATION_RULEBOOK.md            # Formal annotation protocol & linguistic edge cases
+│       └── gold_standard_evaluation_report.md# Comprehensive inter-annotator report
 │
-└── README.md                  # Project showcase for GitHub & public documentation
+├── requirements.txt                          # Top-level dependency requirements
+└── README.md                                 # Primary public repository documentation
 ```
 
 ---
 
-## 12. How to Run It Yourself (Cheat Sheet)
+## 12. Reproduction & Execution Guide (Cheat Sheet)
 
-All dependencies are easily managed via `uv` or Python 3.10+:
-
-### 1. Regenerate All 6 Publication Plots
-To re-create all 300 DPI figures with fresh data:
+### 1. Re-Generate All Publication Visualizations (300 DPI)
+Renders all 8 publication plots (operator distributions, Net Sentiment trajectories, complaint profiles, and model benchmark charts):
 ```bash
-uv run --with matplotlib --with pandas scraped_data_global_2020_2026/pipeline/generate_global_visualizations.py
+python scraped_data_global_2020_2026/pipeline/generate_global_visualizations.py
 ```
 
-### 2. Evaluate Human Inter-Annotator Reliability (Cohen's Kappa)
-To compute raw percentage agreement and Cohen's Kappa matrices:
+### 2. Verify Human Inter-Annotator Reliability (Cohen's Kappa)
+Computes raw percentage agreement, confusion matrices, and Cohen's Kappa coefficients across blind annotator pairs:
 ```bash
 python archive/scraped_data_2020/gold_set/calculate_agreement.py
 ```
 
-### 3. Re-Train the Classical ML Hero Ensemble
-To re-train the fast TF-IDF + Soft-Voting models:
+### 3. Re-Train the Production Hero Ensemble
+Trains dual-gram TF-IDF vectorizers and the calibrated soft-voting ensemble on multi-operator ground truth:
 ```bash
-python ml/train_classical_models.py
+python ml/train_ensemble.py
 ```
 
-### 4. Fine-Tune BanglaBERT on GPU
-Open `dl/telecom_voc_banglabert_finetuning_colab.ipynb` in Google Colab, select T4 GPU, and run all cells.
+### 4. Execute Real-Time Dual CLI Inference
+Scores any customer review across both sentiment polarity and operational taxonomy in milliseconds:
+```bash
+python ml/predict.py --text "নেটওয়ার্ক খুব বাজে কিন্তু অফার ভালো"
+```
+
+### 5. Reproduce BUET BanglaBERT Transformer SOTA on Google Colab (Free GPU)
+1. Open [`dl/telecom_voc_banglabert_finetuning_colab.ipynb`](dl/telecom_voc_banglabert_finetuning_colab.ipynb) in Google Colab.
+2. Select **Runtime** ➔ **Change runtime type** ➔ **T4 GPU**.
+3. Run all cells to replicate the **91.60% Sentiment SOTA** benchmark and download fine-tuned weights.
 
 ---
 
-### Summary Takeaway
-This project isn't just a toy model on a synthetic dataset; it's a **statistically rigorous, publication-grade enterprise intelligence engine** that solves real linguistic challenges (Banglish), enforces temporal equity (common duration windows), validates machine annotations against authentic human judgment, and delivers concrete business strategies for telecommunications leadership.
+### Final Takeaway
+This project bridges advanced natural language processing with empirical service management theory. By solving non-trivial code-mixed language challenges (Banglish), enforcing statistical window equity (the 1,072-day common duration period), validating models against human inter-annotator agreement (Cohen's $\kappa = 0.77$), and benchmarking CPU throughput versus GPU accuracy, the framework demonstrates how modern AI turns raw public consumer feedback into competitive intelligence.
