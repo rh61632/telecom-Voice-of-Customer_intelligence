@@ -35,9 +35,6 @@ def resolve_files():
         GOLD_DIR.parent / "pipeline" / "blind_annotation_300_ratul.csv",
         Path.cwd() / "blind_annotation_300_ratul.csv",
         PROJECT_ROOT / "blind_annotation_300_ratul.csv",
-        GOLD_DIR / "blind_annotation_600_ratul.csv",
-        Path.cwd() / "blind_annotation_600_ratul.csv",
-        PROJECT_ROOT / "blind_annotation_600_ratul.csv",
     ]
     friend_candidates = [
         GOLD_DIR / "blind_annotation_200_friend.csv",

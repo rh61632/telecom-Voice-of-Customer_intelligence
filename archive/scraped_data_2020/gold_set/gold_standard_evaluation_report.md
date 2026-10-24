@@ -11,7 +11,7 @@
 
 ## 1. Executive Summary & Verification Verdict
 
-The human ground-truth benchmark comprises **$N = 300$ primary blind annotations** ([`blind_annotation_300_ratul.csv`](blind_annotation_300_ratul.csv)) and an **$N = 200$ dual-annotator verification cohort** ([`blind_annotation_200_friend.csv`](blind_annotation_200_friend.csv)), sampled from the structured $N = 600$ stress-test candidate pool ([`gold_set_candidates.csv`](gold_set_candidates.csv) / [`gold_set_verified.csv`](gold_set_verified.csv)). This establishes an empirical ground-truth benchmark to validate all pre-trained machine learning and deep learning models deployed in the Voice-of-Customer pipeline under strict zero-leakage conditions.
+The human ground-truth benchmark comprises **$N = 300$ primary blind annotations** ([`blind_annotation_300_ratul.csv`](blind_annotation_300_ratul.csv)) and an **$N = 200$ dual-annotator verification cohort** ([`blind_annotation_200_friend.csv`](blind_annotation_200_friend.csv)). This establishes an empirical ground-truth benchmark to validate all pre-trained machine learning and deep learning models deployed in the Voice-of-Customer pipeline under strict zero-leakage conditions.
 
 ### Benchmark Leaderboard
 

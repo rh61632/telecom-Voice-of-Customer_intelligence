@@ -178,7 +178,7 @@ With verified human benchmarks established, the trained production models were e
 | Naive Star-Rating Baseline | Sentiment Analysis (3-Class) | 80.17% | 84.62% | 0.4102 | Heuristic (Fails on Sarcasm/Typos) |
 
 * On reviews where both human annotators reached 100% agreement, the Production Hero Ensemble achieved **94.12% agreement** on Operational Categories and **87.91% agreement** on Sentiment Polarity.
-* Under adversarial stress-testing (an $N = 600$ evaluation cohort loaded with 50% sarcastic Bengali expressions and rating misclicks), the Ensemble maintains **82.00% empirical accuracy**, confirming that the model captures true semantic understanding rather than memorizing trivial rating correlations.
+* Across the complete blind human evaluation cohort ($N = 300$, loaded with sarcastic Bengali expressions, informal Banglish slang, and rating-text misclicks), the Ensemble maintains **91.33% agreement** on Operational Categories and **83.67% agreement** on Sentiment Polarity (with Challenger LinearSVC reaching **89.00%**), confirming that the models capture true semantic understanding rather than memorizing trivial star-rating correlations.
 
 ---
 

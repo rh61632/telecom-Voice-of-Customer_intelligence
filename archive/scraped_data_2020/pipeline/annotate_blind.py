@@ -196,20 +196,20 @@ def resolve_target_file(arg_file: str = None) -> Path:
         sys.exit(1)
 
     # 1. Look in current working directory
-    for name in ["blind_annotation_300_ratul.csv", "blind_annotation_200_friend.csv", "blind_annotation_600_ratul.csv"]:
+    for name in ["blind_annotation_300_ratul.csv", "blind_annotation_200_friend.csv"]:
         cwd_candidate = Path.cwd() / name
         if cwd_candidate.exists():
             return cwd_candidate
 
     # 2. Look beside this script file
     script_dir = Path(__file__).resolve().parent
-    for name in ["blind_annotation_300_ratul.csv", "blind_annotation_200_friend.csv", "blind_annotation_600_ratul.csv"]:
+    for name in ["blind_annotation_300_ratul.csv", "blind_annotation_200_friend.csv"]:
         beside_candidate = script_dir / name
         if beside_candidate.exists():
             return beside_candidate
 
     # 3. Look in repo structure
-    for name in ["blind_annotation_300_ratul.csv", "blind_annotation_200_friend.csv", "blind_annotation_600_ratul.csv"]:
+    for name in ["blind_annotation_300_ratul.csv", "blind_annotation_200_friend.csv"]:
         repo_candidate = GOLD_DIR / name
         if repo_candidate.exists():
             return repo_candidate

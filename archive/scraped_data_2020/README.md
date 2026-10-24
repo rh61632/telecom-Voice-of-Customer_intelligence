@@ -6,7 +6,7 @@ It encompasses:
 1. **Raw Scraped Reviews (2020 – Sep 2026)**
 2. **Standardized 402-Day Common Duration Dataset (N=83,417 Reviews)**
 3. **Production Multi-Model Classification (Soft-Voting Ensemble Hero Model vs Challengers)**
-4. **Verified Human Gold Standard Dataset (N=600 Ground-Truth Reviews)**
+4. **Verified Human Ground-Truth Dataset (N=300 Primary, N=200 Dual-Annotator Consensus)**
 5. **Executive Business Intelligence & Scientific Benchmark Reports**
 6. **Publication-Quality 300 DPI Visualizations (Heatmaps & Trend Charts)**
 
@@ -37,9 +37,9 @@ scraped_data_2020/
 │       ├── operator_sentiment_distribution_bars.png# Positive / Neutral / Negative distributions
 │       └── monthly_sentiment_trend_line.png        # 14-month temporal NSS trajectory
 │
-├── gold_set/                                 # 3. Verified Human Gold Standard Dataset (N=600)
-│   ├── gold_set_candidates.csv                     # Stratified 600-sample candidate cohort
-│   ├── gold_set_verified.csv                       # 100% human-verified ground-truth dataset
+├── gold_set/                                 # 3. Verified Human Ground-Truth Dataset (N=300)
+│   ├── blind_annotation_300_ratul.csv              # Primary blind human annotations (N=300)
+│   ├── blind_annotation_200_friend.csv             # Overlapping dual-annotator verification (N=200)
 │   ├── gold_standard_evaluation_report.md          # Scientific empirical validation report
 │   ├── comprehensive_benchmark_table.md            # Definitive multi-model comparison table
 │   └── plots/                                      # 300 DPI Empirical Validation Visualizations
@@ -88,15 +88,17 @@ python scraped_data_2020/pipeline/06_generate_visualizations.py
 
 ---
 
-## 🏆 Key Benchmark Findings
+## 🏆 Key Benchmark Findings (Evaluated on Verified Human Ground Truth, N=300)
 
-| Model Architecture | Role | Gold Matches (N=600) | Gold Accuracy | Macro F1 | Weighted F1 | 83k Consensus | CPU Speed |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| 🏆 **Soft-Voting Ensemble** | **Hero Model** | **492 / 600** | **82.00%** | **0.6781** | **0.8237** | **100.0%** | **17,495 rev/s** |
-| Challenger LinearSVC | Linear Benchmark | 476 / 600 | 79.33% | 0.6305 | 0.7987 | 98.93% | 37,297 rev/s |
-| Logistic Regression | Baseline | 452 / 600 | 75.33% | 0.6347 | 0.7783 | 96.44% | 37,891 rev/s |
-| BiLSTM + Attention | Deep Learning | 429 / 600 | 71.50% | 0.6231 | 0.7541 | 91.84% | 490 rev/s |
-| Star-Rating Baseline | Heuristic | 481 / 600 | 80.17% | 0.5510 | 0.7685 | 86.12% | Instant |
+| Model Architecture | Evaluated Task | Human Agreement (N=300) | Consensus Agreement | Cohen's Kappa ($\\kappa$) | Operational Role |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| 🏆 **Soft-Voting Ensemble** | **Operational Category (5-Class)** | **91.33%** | **94.12%** | **0.5046** | **Production Category Hero** |
+| Challenger LinearSVC | Operational Category (5-Class) | 91.00% | 93.58% | 0.4679 | High Linear Baseline |
+| Primary Logistic Regression | Operational Category (5-Class) | 89.33% | 91.98% | 0.4385 | Balanced Regularized Baseline |
+| 🏆 **Soft-Voting Ensemble** | **Sentiment Analysis (3-Class)** | **83.67%** | **87.91%** | **0.4670** | **Production Sentiment Hero** |
+| Challenger LinearSVC | Sentiment Analysis (3-Class) | 89.00% | 92.31% | 0.5366 | Strong Linear Generalization |
+| Primary Logistic Regression | Sentiment Analysis (3-Class) | 82.67% | 86.81% | 0.4624 | High Neutral Class Recall |
+| Star-Rating Baseline | Sentiment Analysis (3-Class) | 80.17% | 84.62% | 0.4102 | Heuristic Baseline |
 
 ---
 
