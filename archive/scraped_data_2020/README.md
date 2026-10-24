@@ -37,16 +37,14 @@ scraped_data_2020/
 │       ├── operator_sentiment_distribution_bars.png# Positive / Neutral / Negative distributions
 │       └── monthly_sentiment_trend_line.png        # 14-month temporal NSS trajectory
 │
-├── gold_set/                                 # 3. Verified Human Ground-Truth Dataset (N=300)
+├── gold_set/                                 # 3. Verified Human Ground-Truth Dataset (N=300 Primary / N=200 Consensus)
 │   ├── blind_annotation_300_ratul.csv              # Primary blind human annotations (N=300)
 │   ├── blind_annotation_200_friend.csv             # Overlapping dual-annotator verification (N=200)
+│   ├── ANNOTATION_RULEBOOK.md                      # Standardized human annotation protocol
+│   ├── calculate_agreement.py                      # Cohen's Kappa & model-human agreement script
 │   ├── gold_standard_evaluation_report.md          # Scientific empirical validation report
 │   ├── comprehensive_benchmark_table.md            # Definitive multi-model comparison table
-│   └── plots/                                      # 300 DPI Empirical Validation Visualizations
-│       ├── confusion_matrix_hero_ensemble.png      # Hero Model vs Human Gold Truth heatmap
-│       ├── confusion_matrices_comparison_grid.png  # 2x2 multi-architecture comparison grid
-│       ├── model_benchmark_f1_accuracy_bars.png    # Accuracy, Macro-F1 & Weighted-F1 comparison
-│       └── operator_accuracy_gold_set_bars.png     # Gold Set accuracy broken down by operator
+│   └── archived_600_plan/                          # Archived exploratory 600-sample draft files & plots
 │
 └── pipeline/                                 # 4. End-to-End Pipeline Scripts (Numbered for sequential execution)
     ├── 01_scrape_2020_to_sep2026.py                # Scrapes Play Store reviews from 2020 to Sep 2026

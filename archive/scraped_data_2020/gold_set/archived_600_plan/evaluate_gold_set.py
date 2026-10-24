@@ -10,9 +10,9 @@ import numpy as np
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, f1_score, precision_score, recall_score
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-GOLD_DIR = SCRIPT_DIR if SCRIPT_DIR.name == "gold_set" else (SCRIPT_DIR.parent / "gold_set" if SCRIPT_DIR.name == "pipeline" else SCRIPT_DIR / "gold_set")
+GOLD_DIR = SCRIPT_DIR
 GOLD_CSV = GOLD_DIR / "gold_set_verified.csv"
-REPORT_MD = GOLD_DIR / "gold_standard_evaluation_report.md"
+REPORT_MD = GOLD_DIR / "archived_600_evaluation_report.md"
 
 def evaluate():
     if not GOLD_CSV.exists():
