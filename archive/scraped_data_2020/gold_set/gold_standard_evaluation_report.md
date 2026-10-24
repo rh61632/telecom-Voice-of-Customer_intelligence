@@ -2,7 +2,8 @@
 ## Gold Standard Dataset Validation & Empirical Model Benchmark Report
 
 **Dataset Date:** Common Duration Window (Aug 2025 – Sep 2026)  
-**Total Verified Reviews:** 600 / 600 reviews (100% Verified by Human Annotator)  
+**Primary Human Annotations:** $N = 300$ reviews (100% blind-annotated by primary reviewer Ratul)  
+**Dual-Review Reliability Cohort:** $N = 200$ overlapping reviews (blind-annotated by second reviewer Friend for Cohen's Kappa evaluation)  
 **Sampling Stratification:** 200 reviews per operator (Grameenphone, Banglalink, Robi)  
 *Sampling Composition:* 50% Consensus Reviews, 30% Model Disagreements (Stress-Test), 20% Low-Confidence Ambiguous Cases.
 
@@ -10,7 +11,7 @@
 
 ## 1. Executive Summary & Verification Verdict
 
-The human-verified **Gold Standard Dataset (N=600)** establishes an empirical ground-truth benchmark to validate all pre-trained machine learning and deep learning models deployed in the Voice-of-Customer pipeline.
+The human ground-truth benchmark comprises **$N = 300$ primary blind annotations** ([`blind_annotation_300_ratul.csv`](blind_annotation_300_ratul.csv)) and an **$N = 200$ dual-annotator verification cohort** ([`blind_annotation_200_friend.csv`](blind_annotation_200_friend.csv)), sampled from the structured $N = 600$ stress-test candidate pool ([`gold_set_candidates.csv`](gold_set_candidates.csv) / [`gold_set_verified.csv`](gold_set_verified.csv)). This establishes an empirical ground-truth benchmark to validate all pre-trained machine learning and deep learning models deployed in the Voice-of-Customer pipeline under strict zero-leakage conditions.
 
 ### Benchmark Leaderboard
 
@@ -87,7 +88,7 @@ Evaluating model failures against human judgment revealed three primary linguist
 
 ## 5. Inter-Annotator Reliability & Multi-Reviewer Validation (Cohen's Kappa Study)
 
-To establish publication-grade human reliability and eliminate individual subjectivity, an independent second annotator conducted a blind review on an overlapping stratified cohort of **N = 200 reviews** (67 Grameenphone, 67 Banglalink, 66 Robi). Both annotators labeled reviews independently under strict zero-leakage, model-blind conditions according to [`ANNOTATION_RULEBOOK.md`](ANNOTATION_RULEBOOK.md).
+To establish publication-grade human reliability and eliminate individual subjectivity, an independent second annotator conducted a blind review on an overlapping stratified cohort of **N = 200 reviews** (67 Grameenphone, 67 Banglalink, 66 Robi). The primary annotator (Ratul) independently annotated **N = 300 reviews** ([`blind_annotation_300_ratul.csv`](blind_annotation_300_ratul.csv)), and the secondary annotator (Friend) annotated the overlapping **N = 200 reviews** ([`blind_annotation_200_friend.csv`](blind_annotation_200_friend.csv)). Both annotators labeled reviews independently under strict zero-leakage, model-blind conditions according to [`ANNOTATION_RULEBOOK.md`](ANNOTATION_RULEBOOK.md).
 
 ### Inter-Annotator Reliability Summary
 
