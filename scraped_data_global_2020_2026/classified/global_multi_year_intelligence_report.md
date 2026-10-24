@@ -10,7 +10,7 @@
 
 ## 🏆 1. Executive Summary & Common Duration Operator Performance
 
-Across the shared 1,072-day common window (October 24, 2023 – September 30, 2026, $N = 248,501$ reviews where all three operators coexist simultaneously), every review was scored by the **Hero Soft-Voting Ensemble** (calibrated on 4,500 human-annotated multi-operator reviews, achieving **87.5% CV Accuracy** on Sentiment and **87.3%** on Operational Categories), cross-verified with **PyTorch BiLSTM + Attention**, **Logistic Regression**, and **LinearSVC**.
+Across the shared 1,072-day common window (October 24, 2023 – September 30, 2026, $N = 248,501$ reviews where all three operators coexist simultaneously), every review was scored by the **Hero Soft-Voting Ensemble** (trained on 4,500 Groq LLM-annotated seed reviews and benchmarked against an empirical human gold standard, achieving **87.5% CV Accuracy** on Sentiment and **87.3%** on Operational Categories), cross-verified with **PyTorch BiLSTM + Attention**, **Logistic Regression**, and **LinearSVC**.
 
 | Operator | Total Reviews Harvested | Positive (%) | Neutral (%) | Negative (%) | Net Sentiment Score (NSS) | Primary Customer Pain Point |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
@@ -32,7 +32,7 @@ Analyzing the longitudinal trajectory across the continuous shared horizon revea
 | Year | Operator | Volume | Net Sentiment Score (NSS) | Positive (%) | Negative (%) | Key Strategic Observation |
 | :---: | :--- | :---: | :---: | :---: | :---: | :--- |
 | **2023** *(Q4)* | **Grameenphone**<br>**Robi**<br>**Banglalink** | 19,829<br>1,888<br>1,384 | **+73.2%**<br>**+41.9%** ⚠️<br>**+45.0%** | 81.0%<br>64.4%<br>63.3% | 7.8%<br>**22.4%**<br>18.3% | **2023 Friction Point**: Robi and Banglalink faced acute onboarding and airtime deduction complaints in late 2023, while GP enjoyed strong baseline brand goodwill. |
-| **2024** | **Grameenphone**<br>**Robi**<br>**Banglalink** | 75,057<br>6,816<br>9,897 | **+70.6%**<br>**+52.1%**<br>**+56.6%** | 79.3%<br>69.5%<br>72.0% | 8.7%<br>17.4%<br>15.3% | GP consolidated massive review volume with steady 70%+ NSS; Robi and Banglalink initiated UX stability overhauls. |
+| **2024** | **Grameenphone**<br>**Robi**<br>**Banglalink** | 75,057<br>6,816<br>9,897 | **+70.6%**<br>**+52.1%**<br>**+56.6%** | 79.3%<br>69.5%<br>72.0% | 8.7%<br>17.4%<br>15.3% | GP demonstrated resilient customer sentiment at volume scale (75k reviews, +70.6% NSS); Robi and Banglalink stabilized self-care platforms to rebound from late-2023 lows. |
 | **2025** | **Grameenphone**<br>**Robi**<br>**Banglalink** | 54,258<br>16,115<br>10,238 | **+70.3%**<br>**+78.0%** 🚀<br>**+66.4%** | 81.0%<br>84.1%<br>78.5% | 10.7%<br>6.0%<br>12.1% | **The 2025 Robi Turnaround**: Robi resolved major backend latency, surging to +78.0% NSS (negative reviews dropping to just 6.0%). |
 | **2026** | **Grameenphone**<br>**Robi**<br>**Banglalink** | 12,347<br>18,901<br>21,771 | **+56.8%** 📉<br>**+76.2%**<br>**+81.9%** 🏆 | 74.2%<br>83.5%<br>87.2% | 17.4%<br>7.3%<br>5.2% | **2026 Reversal**: Banglalink surged to industry-leading **+81.9% NSS**; Grameenphone dropped sharply to **+56.8% NSS** (17.4% negative) driven by package price hikes and OTP login glitches. |
 

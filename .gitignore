@@ -88,3 +88,8 @@ scraped_data_global_2020_2026/classified/all_operators_common_duration_classifie
 # ──────────────────────────────────────────────
 
 
+
+# ──────────────────────────────────────────────
+# Academic paper drafts / submissions (local only)
+# ──────────────────────────────────────────────
+paper/

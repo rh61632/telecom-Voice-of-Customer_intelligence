@@ -51,7 +51,7 @@ seed_pipeline_groq/
 | Coverage | 2026 only (most recent) | 2020 – September 2026 |
 | Schema | No `review_id`, no `operator` col in raw | Full UUID + operator label |
 
-The trained ensemble models (`ml/models/sentiment_voting_classifier.joblib`, `category_voting_classifier.joblib`) replaced the Groq API as the production classifier after being calibrated on the human-annotated gold standard.
+The trained ensemble models (`ml/models/sentiment_voting_classifier.joblib`, `category_voting_classifier.joblib`) replaced the Groq API as the production classifier after being trained on the seed dataset and benchmarked against the human-annotated gold standard.
 
 ---
 
