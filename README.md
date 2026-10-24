@@ -152,16 +152,34 @@ To eliminate task ambiguity between 3-class sentiment polarity and 5-class depar
 | 5 | **BUET BanglaBERT (Frozen Head)** | **74.88%** | **0.6253** | GPU Required | Baseline frozen feature extractor without end-to-end gradient updates. |
 | 6 | **Statistical Floor (Dummy)** | **60.68%** | **0.1511** | Instant | Naive majority-class guess without language understanding. |
 
-### 🤝 Human Ground-Truth Validation & Inter-Annotator Reliability (Cohen's Kappa)
+### C. Human Ground-Truth Validation & Model Agreement (Zero-Leakage Study)
 
-To evaluate the validity and similarity of automated classifications against authentic human cognition and eliminate individual annotator bias, an independent multi-reviewer blind study was conducted across an overlapping stratified cohort ($N = 200$ reviews across Grameenphone, Robi, and Banglalink) under strict zero-leakage, model-blind conditions:
+To rigorously validate whether automated machine learning classifications genuinely reflect human cognitive perception (and eliminate self-reinforcing training feedback loops), a two-step validation framework was conducted under strict zero-leakage conditions (training seed reviews excluded, star ratings stripped, and model predictions hidden):
 
-| Evaluation Dimension | Evaluated Pairs | Raw Percentage Agreement | Cohen's Kappa ($\kappa$) | Standard Interpretation |
+#### 1. Inter-Annotator Reliability (Human vs. Human Consensus)
+Before measuring model accuracy, we established the validity and consistency of our operational taxonomy and sentiment boundaries across an overlapping stratified cohort ($N = 200$ reviews across Grameenphone, Robi, and Banglalink) evaluated by two independent human reviewers:
+
+| Evaluation Dimension | Evaluated Pairs | Raw Human Agreement | Cohen's Kappa ($\kappa$) | Standard Interpretation |
 | :--- | :---: | :---: | :---: | :--- |
 | **Sentiment Analysis (3-Class)** | **200** | **91.00%** | **0.5762** | Moderate Agreement (High raw consistency) |
 | **Operational Category (5-Class)** | **196** | **95.41%** | **0.7694** | **Substantial Agreement** |
 
-* Detailed confusion matrices, operator breakdowns, and linguistic disagreement analyses are documented in **[`gold_standard_evaluation_report.md`](archive/scraped_data_2020/gold_set/gold_standard_evaluation_report.md)**.
+#### 2. Trained Model Performance on Blind Human Ground Truth (Model vs. Human Agreement)
+The trained classifiers were then benchmarked directly against the blind human ground-truth cohort ($N = 300$ primary human reviews; $N = 182$ sentiment / $N = 187$ category dual-human consensus reviews):
+
+| Model Architecture | Evaluated Task | Human Raw Agreement (N=300) | Consensus Agreement (Dual-Human Agreed) | Cohen's Kappa ($\kappa$) | Status |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Hero Soft-Voting ML Ensemble** | **Operational Category (5-Class)** | **91.33%** | **94.12%** | **0.5046** | 🏆 Production Category Hero |
+| Challenger LinearSVC | Operational Category (5-Class) | 91.00% | 93.58% | 0.4679 | High Linear Baseline |
+| Primary Logistic Regression | Operational Category (5-Class) | 89.33% | 91.98% | 0.4385 | Balanced Regularized Baseline |
+| **Hero Soft-Voting ML Ensemble** | **Sentiment Analysis (3-Class)** | **83.67%** | **87.91%** | **0.4670** | 🏆 Production Sentiment Hero |
+| Challenger LinearSVC | Sentiment Analysis (3-Class) | 89.00% | 92.31% | 0.5366 | Strong Linear Generalization |
+| Primary Logistic Regression | Sentiment Analysis (3-Class) | 82.67% | 86.81% | 0.4624 | High Neutral Class Recall |
+| Naive Star-Rating Baseline | Sentiment Analysis (3-Class) | 80.17% | 84.62% | 0.4102 | Heuristic (Fails on Sarcasm/Typos) |
+
+> **Key Takeaway**: On clear human consensus reviews (where both human annotators agreed 100%), the Production Hero Ensemble reaches **94.12% agreement** on Operational Categories and **87.91% agreement** on Sentiment Polarity. Even under adversarial stress-testing (evaluating an $N = 600$ cohort loaded with 50% sarcastic Bengali expressions and rating misclicks), the Ensemble maintains **82.00% empirical accuracy**, confirming robust generalization to code-mixed Banglish feedback.
+
+* Detailed confusion matrices, operator breakdowns, and linguistic disagreement analyses are documented in **[`gold_standard_evaluation_report.md`](archive/scraped_data_2020/gold_set/gold_standard_evaluation_report.md)** and **[`comprehensive_benchmark_table.md`](archive/scraped_data_2020/gold_set/comprehensive_benchmark_table.md)**.
 
 ---
 
