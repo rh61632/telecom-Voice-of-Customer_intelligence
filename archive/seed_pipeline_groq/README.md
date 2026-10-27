@@ -10,7 +10,7 @@
 This directory contains the **original Phase 1 seed pipeline** — the earliest version of the VoC classification system, which used **Groq Cloud API (`qwen/qwen3-8b-27b`)** to zero-shot classify a small sample of reviews per operator.
 
 It served two key purposes:
-1. **Bootstrapping the gold standard dataset** — LLM-labeled reviews were used as starting candidates for human annotation (the human-verified gold set lives in [`archive/scraped_data_2020/gold_set/`](../scraped_data_2020/gold_set/)).
+1. **Bootstrapping the gold standard dataset** — LLM-labeled reviews were used as starting candidates for human annotation (the human-verified gold set lives in [`data/gold_set/`](../../data/gold_set/)).
 2. **Proof-of-concept** — Validated the 5-category taxonomy (`Billing & Airtime Deductions`, `Network Speed & 4G Latency`, `App Login & Technical Bugs`, `Offers & Data Packs`, `General Appreciation / Other`) before committing to full ML training.
 
 ---

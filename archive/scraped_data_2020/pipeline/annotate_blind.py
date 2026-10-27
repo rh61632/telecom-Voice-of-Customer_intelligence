@@ -29,7 +29,7 @@ if sys.platform == "win32":
         pass
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-GOLD_DIR = PROJECT_ROOT / "archive" / "scraped_data_2020" / "gold_set"
+GOLD_DIR = PROJECT_ROOT / "data" / "gold_set"
 DEFAULT_CSV = GOLD_DIR / "blind_annotation_300_ratul.csv"
 
 SENTIMENT_MAP = {

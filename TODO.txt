@@ -46,10 +46,10 @@ Achievement:
   - Operational Category Agreement: 95.41% Raw Agreement | Cohen's Kappa κ = 0.7694
     (Substantial Agreement across 5 operational complaint categories).
   - Production Artifacts:
-    * `archive/scraped_data_2020/gold_set/blind_annotation_300_ratul.csv` (N=300)
-    * `archive/scraped_data_2020/gold_set/blind_annotation_200_friend.csv` (N=200)
-    * Evaluator: `archive/scraped_data_2020/gold_set/calculate_agreement.py`
-    * Detailed Report: `archive/scraped_data_2020/gold_set/gold_standard_evaluation_report.md`
+    * `data/gold_set/blind_annotation_300_ratul.csv` (N=300)
+    * `data/gold_set/blind_annotation_200_friend.csv` (N=200)
+    * Evaluator: `data/gold_set/calculate_agreement.py`
+    * Detailed Report: `data/gold_set/gold_standard_evaluation_report.md`
 
 --------------------------------------------------------------------------------
 3. FILTERED VS. UNFILTERED MODEL DEPLOYMENT RESOLUTION

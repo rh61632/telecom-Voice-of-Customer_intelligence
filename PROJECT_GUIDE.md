@@ -152,8 +152,8 @@ A stratified sample of 4,500 reviews (1,500 per operator, balanced across all 5 
 
 ### Phase 3B: Dual-Annotator Blind Human Ground Truth (Cohen's Kappa)
 To ensure automated weak labels reflect genuine human cognition rather than LLM hallucinations, a formal inter-annotator reliability study was conducted under strict zero-leakage conditions (model suggestions and star ratings stripped):
-* **Primary Human Annotator**: Blind-reviewed **$N = 300$ reviews** ([`blind_annotation_300_ratul.csv`](archive/scraped_data_2020/gold_set/blind_annotation_300_ratul.csv)).
-* **Secondary Independent Annotator**: Independently blind-reviewed the overlapping **$N = 200$ reviews** ([`blind_annotation_200_friend.csv`](archive/scraped_data_2020/gold_set/blind_annotation_200_friend.csv)).
+* **Primary Human Annotator**: Blind-reviewed **$N = 300$ reviews** ([`blind_annotation_300_ratul.csv`](data/gold_set/blind_annotation_300_ratul.csv)).
+* **Secondary Independent Annotator**: Independently blind-reviewed the overlapping **$N = 200$ reviews** ([`blind_annotation_200_friend.csv`](data/gold_set/blind_annotation_200_friend.csv)).
 
 Inter-rater reliability was measured using **Cohen's Kappa ($\kappa$)**:
 
@@ -312,8 +312,15 @@ telecom-Voice-of-Customer_intelligence/
 │       ├── sentiment_model_benchmark_bars.png # 🏆 3-Class Sentiment model benchmark
 │       └── category_model_benchmark_bars.png  # 🏷️ 5-Class Operational Category benchmark
 │
-├── data/
-│   └── processed/                            # 4,500 labeled seed reviews (Groq LLM bootstrapped)
+├── data/                                     # 📊 Ground Truth & Human Validation Datasets
+│   ├── processed/                            # 4,500 labeled seed reviews (Groq LLM bootstrapped)
+│   └── gold_set/                             # 🏆 Verified Human Ground Truth (Cohen's Kappa κ = 0.77)
+│       ├── blind_annotation_300_ratul.csv    # Primary human ground truth (N = 300)
+│       ├── blind_annotation_200_friend.csv   # Independent secondary blind review (N = 200)
+│       ├── calculate_agreement.py            # Cohen's Kappa evaluator engine
+│       ├── ANNOTATION_RULEBOOK.md            # Formal annotation protocol & linguistic edge cases
+│       ├── gold_standard_evaluation_report.md# Comprehensive inter-annotator report
+│       └── comprehensive_benchmark_table.md  # Definitive multi-model comparison table
 │
 ├── ml/                                       # 🧠 Classical Machine Learning Engine
 │   ├── models/                               # Serialized voting ensembles & TF-IDF models (.joblib)
@@ -348,12 +355,7 @@ telecom-Voice-of-Customer_intelligence/
 │   ├── early_dl_experiments/                 # Early frozen head baseline exploration (superseded by fine-tuning)
 │   ├── powerbi_dashboard/                    # Initial prototype Power BI interface recordings (superseded by Python 300 DPI suite)
 │   ├── seed_pipeline_groq/                   # Phase 1 Groq LLM weak-supervision seed pipeline
-│   └── scraped_data_2020/gold_set/
-│       ├── blind_annotation_300_ratul.csv    # Primary human ground truth (N = 300)
-│       ├── blind_annotation_200_friend.csv   # Independent secondary blind review (N = 200)
-│       ├── calculate_agreement.py            # Cohen's Kappa evaluator engine
-│       ├── ANNOTATION_RULEBOOK.md            # Formal annotation protocol & linguistic edge cases
-│       └── gold_standard_evaluation_report.md# Comprehensive inter-annotator report
+│   └── scraped_data_2020/                    # Historical 402-day common duration cohort (N = 83,417)
 │
 ├── requirements.txt                          # Top-level dependency requirements
 └── README.md                                 # Primary public repository documentation
@@ -372,7 +374,7 @@ python scraped_data_global_2020_2026/pipeline/generate_global_visualizations.py
 ### 2. Verify Human Inter-Annotator Reliability (Cohen's Kappa)
 Computes raw percentage agreement, confusion matrices, and Cohen's Kappa coefficients across blind annotator pairs:
 ```bash
-python archive/scraped_data_2020/gold_set/calculate_agreement.py
+python data/gold_set/calculate_agreement.py
 ```
 
 ### 3. Re-Train the Production Hero Ensemble
