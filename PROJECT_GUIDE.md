@@ -202,11 +202,12 @@ Rather than relying on a single architecture, multiple machine learning and deep
 | Rank | Model Architecture | CV Accuracy | Macro-F1 | Throughput / Latency | Architectural Role |
 | :---: | :--- | :---: | :---: | :---: | :--- |
 | 🥇 | **Hero Soft-Voting ML Ensemble** | **87.44%** | **0.7845** | **~18,200 rev/s** | **Category Champion**: Sub-word character n-grams excel on code-mixed Banglish keywords. |
-| 🥈 | **BUET BanglaBERT (Fine-Tuned)** | **85.27%** | **0.7624** | GPU Batched | Deep contextual representations; +10.4% leap over frozen baseline. |
+| 🥈 | **BUET BanglaBERT (Fine-Tuned)** | **85.27%** | **0.7624** | GPU Batched | Deep contextual representations with full 12-layer backpropagation. |
 | 🥉 | **Multilingual MiniLM Head** | **81.15%** | **0.7247** | ~2,100 rev/s | Multilingual sentence semantic representations with regularized head. |
 | 4 | **Hybrid BiLSTM + Attention (GPU)** | **80.84%** | **0.7106** | Fast GPU Batched | Sequential recurrent context with class-weighted loss. |
-| 5 | **BUET BanglaBERT (Frozen Head)** | **74.88%** | **0.6253** | GPU Required | Baseline frozen feature extractor without end-to-end gradient updates. |
-| 6 | **Statistical Floor (Dummy)** | **60.68%** | **0.1511** | Instant | Naive majority-class baseline without semantic understanding. |
+
+> [!NOTE]
+> **Ablation Note on Frozen vs. Fine-Tuned Transformer**: In early baseline experiments, BUET BanglaBERT was tested as a frozen feature extractor (static 768-dim embeddings + linear head), achieving 74.88% Accuracy / 0.6253 Macro-F1. Full end-to-end fine-tuning delivered a **+10.39% accuracy leap** (85.27% / 0.7624 Macro-F1), proving that updating transformer self-attention layers is essential for adapting to Romanized Banglish tokens. Early frozen baseline notebooks are archived in [`archive/early_dl_experiments/`](archive/early_dl_experiments/).
 
 ### Deep-Dive on Core Architectures:
 
@@ -344,6 +345,9 @@ telecom-Voice-of-Customer_intelligence/
 │       └── generate_global_visualizations.py # Renders all publication-grade 300 DPI plots
 │
 ├── archive/                                  # 🗄️ Historical Research & Validation Studies
+│   ├── early_dl_experiments/                 # Early frozen head baseline exploration (superseded by fine-tuning)
+│   ├── powerbi_dashboard/                    # Initial prototype Power BI interface recordings (superseded by Python 300 DPI suite)
+│   ├── seed_pipeline_groq/                   # Phase 1 Groq LLM weak-supervision seed pipeline
 │   └── scraped_data_2020/gold_set/
 │       ├── blind_annotation_300_ratul.csv    # Primary human ground truth (N = 300)
 │       ├── blind_annotation_200_friend.csv   # Independent secondary blind review (N = 200)

@@ -22,7 +22,7 @@ This folder contains the complete Deep Learning pipeline, neural model architect
      https://colab.research.google.com/github/rh61632/telecom-Voice-of-Customer_intelligence/blob/main/dl/telecom_voc_banglabert_finetuning_colab.ipynb
      ```
 3. [**`telecom_voc_deep_learning_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_deep_learning_colab.ipynb): Focused **Sentiment Classification** (Positive, Neutral, Negative).
-4. [**`telecom_voc_comment_type_classification_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_comment_type_classification_colab.ipynb): Focused **Comment Type / Operational Category** (5 Classes).
+4. [**`archive/early_dl_experiments/telecom_voc_comment_type_classification_colab.ipynb`**](../archive/early_dl_experiments/telecom_voc_comment_type_classification_colab.ipynb): [Archived] Early exploratory frozen feature extractor notebook. Superseded by full fine-tuning notebook above.
 
 ---
 
@@ -73,10 +73,12 @@ Evaluated on the 4,500 curated ground-truth reviews across **Grameenphone**, **R
 | Rank | Model Architecture | CV Accuracy | Macro-F1 | Status / Implementation |
 | :---: | :--- | :---: | :---: | :--- |
 | 🥇 | **Hero Soft-Voting ML Ensemble** | **87.44%** | **0.7845** | Dual-Gram TF-IDF + Logistic Regression + LinearSVC + ComplementNB |
-| 🥈 | **BUET BanglaBERT (Fine-Tuned)** | **85.27%** | **0.7624** | Full 12-layer backpropagation; +10.4% leap over frozen baseline |
+| 🥈 | **BUET BanglaBERT (Fine-Tuned)** | **85.27%** | **0.7624** | Full 12-layer backpropagation (`csebuetnlp/banglabert`) |
 | 🥉 | **Multilingual MiniLM Head** | **81.15%** | **0.7247** | `paraphrase-multilingual-MiniLM-L12-v2` 384-dim dense vectors |
 | 4 | **Hybrid BiLSTM + Attention (GPU)** | **80.84%** | **0.7106** | PyTorch BiLSTM + Bahdanau Attention with class-weighted loss |
-| 5 | **BUET BanglaBERT (Frozen Head)** | **74.88%** | **0.6253** | `csebuetnlp/banglabert` 768-dim contextual representations (Frozen baseline) |
+
+> [!NOTE]
+> **Ablation Study (Frozen vs. Fine-Tuned)**: Evaluating BUET BanglaBERT as a static frozen feature extractor achieved 74.88% CV Accuracy / 0.6253 Macro-F1. End-to-end fine-tuning delivered a **+10.39% leap** to 85.27% CV Accuracy / 0.7624 Macro-F1, proving the necessity of fine-tuning for adapting to domain-specific Romanized Banglish. The original frozen head notebook is archived in [`archive/early_dl_experiments/`](../archive/early_dl_experiments/).
 
 ---
 

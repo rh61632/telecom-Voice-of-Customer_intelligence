@@ -590,22 +590,18 @@ def plot_category_model_benchmark():
         "BUET BanglaBERT (Fine-Tuned)",
         "Multilingual MiniLM Head",
         "Hybrid BiLSTM + Attention",
-        "BUET BanglaBERT (Frozen Head)",
-        "Statistical Floor (Dummy)",
     ]
     labels = [
         "[Champion] Hero Soft-Voting ML Ensemble\n(Dual-Gram TF-IDF · ~18.2k rev/s CPU)",
         "BUET BanglaBERT (Fine-Tuned)\n(End-to-End Contextual Transformer · GPU)",
         "Multilingual MiniLM Head\n(384-dim Dense Vector Embeddings)",
         "Hybrid BiLSTM + Attention (GPU)\n(Recurrent Context + Class Weighting)",
-        "BUET BanglaBERT (Frozen Head)\n(Pretrained Feature Extractor Baseline)",
-        "Statistical Floor (Dummy Baseline)\n(Majority-Class Guess · Zero NLP)",
     ]
-    acc = [87.44, 85.27, 81.15, 80.84, 74.88, 60.68]
-    f1_raw = [0.7845, 0.7624, 0.7247, 0.7106, 0.6253, 0.1511]
+    acc = [87.44, 85.27, 81.15, 80.84]
+    f1_raw = [0.7845, 0.7624, 0.7247, 0.7106]
     f1_pct = [v * 100 for v in f1_raw]
 
-    fig, ax = plt.subplots(figsize=(11.5, 6.8), dpi=300)
+    fig, ax = plt.subplots(figsize=(11.0, 5.5), dpi=300)
     y = np.arange(len(models))
     y_rev = y[::-1]
     h = 0.35
