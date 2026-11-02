@@ -1,32 +1,41 @@
 {
-  "common_window_start": "2023-10-24 14:56:05",
+  "common_window_start": "2016-07-28 22:36:00",
   "common_window_end": "2026-09-30 23:16:00",
-  "common_duration_days": 1072,
-  "total_reviews": 285111,
+  "common_duration_days": 3716,
+  "total_reviews": 655670,
   "operators": {
     "Grameenphone": {
-      "total_reviews": 161491,
-      "share_percent": 56.64,
-      "positive_percent": 79.67,
-      "neutral_percent": 10.41,
-      "negative_percent": 9.91,
-      "net_sentiment_score": 69.76
+      "total_reviews": 320143,
+      "share_percent": 48.83,
+      "positive_count": 246501,
+      "positive_percent": 77.0,
+      "neutral_count": 34747,
+      "neutral_percent": 10.85,
+      "negative_count": 38895,
+      "negative_percent": 12.15,
+      "net_sentiment_score": 64.85
     },
     "Robi": {
-      "total_reviews": 80330,
-      "share_percent": 28.17,
-      "positive_percent": 82.53,
-      "neutral_percent": 9.48,
-      "negative_percent": 7.98,
-      "net_sentiment_score": 74.55
+      "total_reviews": 198378,
+      "share_percent": 30.26,
+      "positive_count": 154477,
+      "positive_percent": 77.87,
+      "neutral_count": 20166,
+      "neutral_percent": 10.17,
+      "negative_count": 23735,
+      "negative_percent": 11.96,
+      "net_sentiment_score": 65.91
     },
     "Banglalink": {
-      "total_reviews": 43290,
-      "share_percent": 15.18,
-      "positive_percent": 80.88,
-      "neutral_percent": 9.54,
-      "negative_percent": 9.58,
-      "net_sentiment_score": 71.30
+      "total_reviews": 137149,
+      "share_percent": 20.92,
+      "positive_count": 96525,
+      "positive_percent": 70.38,
+      "neutral_count": 16853,
+      "neutral_percent": 12.29,
+      "negative_count": 23771,
+      "negative_percent": 17.33,
+      "net_sentiment_score": 53.05
     }
   }
 }
