@@ -1,6 +1,6 @@
 # Telecom Voice-of-Customer (VoC) Intelligence: 2020–2026 Extension & Gold Standard Pipeline
 
-This directory contains the complete multi-brand Voice-of-Customer (VoC) intelligence system across Bangladesh's top 3 mobile network operators: **Grameenphone (MyGP)**, **Banglalink (MyBL)**, and **Robi (MyRobi)**.
+This directory contains the complete multi-brand Voice-of-Customer (VoC) intelligence system across Bangladesh's top 3 mobile network operators: **Grameenphone (MyGP)**, **Banglalink (MyBL)**, and **Robi (My Robi)**.
 
 It encompasses:
 1. **Raw Scraped Reviews (2020 – Sep 2026)**
@@ -81,7 +81,7 @@ python scraped_data_2020/pipeline/06_generate_visualizations.py
 
 ## 🏆 Key Benchmark Findings (Evaluated on Verified Human Ground Truth, N=300)
 
-| Model Architecture | Evaluated Task | Human Agreement (N=300) | Consensus Agreement | Cohen's Kappa ($\\kappa$) | Operational Role |
+| Model Architecture | Evaluated Task | Human Agreement (N=300) | Consensus Agreement | Cohen's Kappa (κ) | Operational Role |
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | 🏆 **Soft-Voting Ensemble** | **Operational Category (5-Class)** | **91.33%** | **94.12%** | **0.5046** | **Production Category Hero** |
 | Challenger LinearSVC | Operational Category (5-Class) | 91.00% | 93.58% | 0.4679 | High Linear Baseline |
@@ -96,5 +96,5 @@ python scraped_data_2020/pipeline/06_generate_visualizations.py
 ## 📊 Business Intelligence Scorecard (N=83,417 Reviews)
 
 * **Banglalink (MyBL):** Net Sentiment Score = **+81.5%** (88.3% Pos, 6.8% Neg). *Agile value champion; high promotional dynamism.*
-* **Robi (MyRobi):** Net Sentiment Score = **+79.4%** (86.5% Pos, 7.1% Neg). *Digital lifestyle & high self-care UI engagement.*
+* **Robi (My Robi):** Net Sentiment Score = **+79.4%** (86.5% Pos, 7.1% Neg). *Digital lifestyle & high self-care UI engagement.*
 * **Grameenphone (MyGP):** Net Sentiment Score = **+56.6%** (75.0% Pos, 18.4% Neg). *Premium anchor; highest feature utility but higher price sensitivity.*

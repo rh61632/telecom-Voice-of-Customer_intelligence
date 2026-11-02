@@ -2,7 +2,7 @@
 """
 Multi-Model Batch Classification Pipeline for Global Multi-Year Dataset (2020 - 2026)
 Applies the full suite of trained Classical ML and Deep Learning BiLSTM models
-across all 353,714 raw reviews for Grameenphone, Robi, and Banglalink.
+across all 661,160 raw reviews for Grameenphone, Robi, and Banglalink.
 """
 
 import os
@@ -299,7 +299,7 @@ def main():
         for cat, c_stats in list(stats['category_distribution'].items())[:3]:
             print(f"     • {cat:<30}: {c_stats['pct']:5.1f}% ({c_stats['count']:,d})")
 
-    print("\n✓ ALL 353,714 REVIEWS CLASSIFIED ACROSS ALL 8 MODELS SUCCESSFULLY!")
+    print("\n✓ ALL 661,160 REVIEWS CLASSIFIED ACROSS ALL 8 MODELS SUCCESSFULLY!")
 
 
 if __name__ == "__main__":

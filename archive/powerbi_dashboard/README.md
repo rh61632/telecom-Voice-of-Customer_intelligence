@@ -24,7 +24,7 @@ This folder preserves screen recordings of the original prototype Power BI inter
 
 | Dimension | Initial Power BI Prototype | Current Python Production Pipeline |
 | :--- | :--- | :--- |
-| **Data Volume Capacity** | Slowed down on datasets >50k rows without import aggregation | Easily batch-scores and visualizes **434,803 records** (~18,000 rev/s) |
+| **Data Volume Capacity** | Slowed down on datasets >50k rows without import aggregation | Easily batch-scores and visualizes **661,160 records** (~18,000 rev/s) |
 | **Model Integration** | Relied on static pre-exported CSV columns | Integrates directly with trained PyTorch DL models and Scikit-Learn Voting Ensembles |
 | **Reproducibility** | Required manual UI clicks, proprietary Windows client, and manual dataset refreshes | Single-command reproduction (`python generate_global_visualizations.py`) |
 | **Portability** | Requires Microsoft Power BI Desktop license / installation | Fully open-source, runs cross-platform (Linux/macOS/Windows/Colab) |

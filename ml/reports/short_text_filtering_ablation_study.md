@@ -16,7 +16,7 @@ In mobile app review datasets, 1-word and 2-word reviews (e.g., *"Good"*, *"Nice
 ## Key Insights & Discoveries
 
 1. **Massive Surge in Gold Standard Macro-F1 (+6.55% to +7.80%):**
-   * On the **Human Gold Standard Ground Truth**, Macro-F1 jumped from **`0.6781`** on the full dataset up to **`0.7436`** when removing 1-2 word reviews ($\ge 3$ words).
+   * On the **Human Gold Standard Ground Truth**, Macro-F1 jumped from **`0.6781`** on the full dataset up to **`0.7436`** when removing 1-2 word reviews (≥ 3$ words).
    * **Why?** Very short reviews on the Play Store frequently contain user misclicks (giving 1 star while saying "Good" or giving 5 stars while writing "faltu"), ambiguous emojis without context, and isolated sarcastic words. When reviews have at least 3 words, syntactic context enables the NLP models to reliably separate true sentiment.
 
 2. **Improvement in Operational Category Precision:**
@@ -34,6 +34,6 @@ In mobile app review datasets, 1-word and 2-word reviews (e.g., *"Good"*, *"Nice
 - Full Production Models (Original):
   - `ml/models/ensemble_voting_classifier.joblib` (Sentiment)
   - `ml/models/category_voting_classifier.joblib` (Category)
-- Filtered Models ($\ge 3$ words):
+- Filtered Models (≥ 3$ words):
   - `ml/models/sentiment_ensemble_filtered_min3words.joblib`
   - `ml/models/category_ensemble_filtered_min3words.joblib`

@@ -5,8 +5,8 @@ Purpose:
 1. Merges raw reviews from US global scrape and BD archive scrape across Grameenphone, Robi, and Banglalink.
 2. Strictly deduplicates records: exact same operator, timestamp, text, and user.
 3. Reuses existing classifications for already processed reviews and runs the full model suite on any new reviews.
-4. Saves the complete multi-year master classified dataset (N=398,193).
-5. Isolates the common temporal duration where ALL THREE operators have simultaneous reviews (Oct 24, 2023 to Sep 30, 2026, N=248,507).
+4. Saves the complete multi-year master classified dataset (N=661,160).
+5. Isolates the common temporal duration where ALL THREE operators have simultaneous reviews (July 28, 2016 to September 30, 2026, 3,716 Days, N=655,670).
 """
 
 import sys

@@ -292,7 +292,7 @@ def generate_production_visuals():
     # 2. Net Sentiment Score (NSS) Comparison Bar Chart
     nss_data = {
         "Banglalink\n(MyBL)": 88.3 - 6.8,
-        "Robi\n(MyRobi)": 86.5 - 7.1,
+        "Robi\n(My Robi)": 86.5 - 7.1,
         "Industry Baseline\n(83.4k Reviews)": 84.1 - 9.9,
         "Grameenphone\n(MyGP)": 75.0 - 18.4,
     }
@@ -330,7 +330,7 @@ def generate_production_visuals():
     
     months = trend.index.tolist()
     ax.plot(months, trend["Banglalink"], marker="o", linewidth=2.5, label="Banglalink (MyBL)", color=COLOR_PALETTE["Banglalink"])
-    ax.plot(months, trend["Robi"], marker="s", linewidth=2.5, label="Robi (MyRobi)", color=COLOR_PALETTE["Robi"])
+    ax.plot(months, trend["Robi"], marker="s", linewidth=2.5, label="Robi (My Robi)", color=COLOR_PALETTE["Robi"])
     ax.plot(months, trend["Grameenphone"], marker="^", linewidth=2.5, label="Grameenphone (MyGP)", color=COLOR_PALETTE["Grameenphone"])
 
     ax.set_title("Monthly Net Sentiment Score (NSS) Trajectory\n(Aug 2025 – Sep 2026, Common Duration)", fontsize=13, fontweight="bold", pad=12)

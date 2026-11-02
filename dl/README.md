@@ -2,7 +2,7 @@
 
 This folder contains the complete Deep Learning pipeline, neural model architectures, and **GPU-accelerated Google Colab suites** for Bangladesh's telecommunications platforms:
 * **Grameenphone Ltd.** (MyGP)
-* **Robi Axiata Limited** (MyRobi)
+* **Robi Axiata Limited** (My Robi)
 * **Banglalink Digital Communications Limited** (MyBL)
 
 ---

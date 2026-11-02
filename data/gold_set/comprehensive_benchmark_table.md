@@ -9,13 +9,13 @@
 * **Annotation Mode:** 100% Blind (Model suggestions & metadata hidden)
 * **Rulebook:** Compliant with [`ANNOTATION_RULEBOOK.md`](ANNOTATION_RULEBOOK.md)
 
-| Dimension | Classes | Paired Reviews | Raw Agreement (%) | Cohen's Kappa ($\kappa$) | Standard Interpretation |
+| Dimension | Classes | Paired Reviews | Raw Agreement (%) | Cohen's Kappa (κ) | Standard Interpretation |
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | **Sentiment Analysis** | 3 (`Positive`, `Neutral`, `Negative`) | 200 | **91.00%** | **0.5762** | Moderate Agreement (High Consistency) |
 | **Operational Category** | 5 (`Billing`, `Bugs`, `Network`, `Offers`, `Other`) | 196 | **95.41%** | **0.7694** | **Substantial Agreement** |
 
 ### Operator-by-Operator Sentiment Reliability
-| Operator | Cohort Size ($N$) | Raw Agreement (%) | Cohen's Kappa ($\kappa$) | Reliability Tier |
+| Operator | Cohort Size ($N$) | Raw Agreement (%) | Cohen's Kappa (κ) | Reliability Tier |
 | :--- | :---: | :---: | :---: | :--- |
 | **Grameenphone** | 67 | 89.55% | **0.6921** | Substantial Agreement |
 | **Banglalink** | 67 | **94.03%** | **0.4846** | Moderate Agreement |

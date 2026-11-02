@@ -11,7 +11,7 @@ During early pipeline prototyping, an initial concept proposed drawing an $N = 6
 However, comprehensive manual human annotation for 600 reviews was **never performed**. The plan was formally discarded in favor of a scoped, rigorously controlled blind human study:
 
 * **Authentic Primary Ground Truth ($N = 300$)**: 300 reviews manually and independently annotated under blind conditions by Ratul ([`../blind_annotation_300_ratul.csv`](../blind_annotation_300_ratul.csv)).
-* **Dual-Annotator Reliability Benchmark ($N = 200$)**: 200 overlapping reviews independently annotated under blind conditions by a second reviewer ([`../blind_annotation_200_friend.csv`](../blind_annotation_200_friend.csv)) to measure inter-annotator reliability via Cohen's Kappa ($\kappa$).
+* **Dual-Annotator Reliability Benchmark ($N = 200$)**: 200 overlapping reviews independently annotated under blind conditions by a second reviewer ([`../blind_annotation_200_friend.csv`](../blind_annotation_200_friend.csv)) to measure inter-annotator reliability via Cohen's Kappa (κ).
 
 All active project reports, paper manuscripts, and repository documentation reference the authentic $N = 300$ / $N = 200$ human ground truth.
 

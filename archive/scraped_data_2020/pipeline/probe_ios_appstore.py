@@ -1,7 +1,7 @@
 """
 Pipeline Utility: probe_ios_appstore.py
 Purpose: Empirical evaluation and scraping of Apple App Store (iOS) customer reviews
-         for Grameenphone (MyGP), Banglalink (MyBL), and Robi (MyRobi).
+         for Grameenphone (MyGP), Banglalink (MyBL), and Robi (My Robi).
 Quantifies why iOS is methodologically excluded from the primary Voice-of-Customer dataset.
 """
 

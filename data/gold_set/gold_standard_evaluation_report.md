@@ -92,14 +92,14 @@ To establish publication-grade human reliability and eliminate individual subjec
 
 ### Inter-Annotator Reliability Summary
 
-| Evaluation Dimension | Evaluated Pairs | Raw Percentage Agreement | Cohen's Kappa ($\kappa$) | Standard Interpretation |
+| Evaluation Dimension | Evaluated Pairs | Raw Percentage Agreement | Cohen's Kappa (κ) | Standard Interpretation |
 | :--- | :---: | :---: | :---: | :--- |
 | **Sentiment Analysis (3-Class)** | **200** | **91.00%** | **0.5762** | Moderate Agreement (High raw consistency) |
 | **Operational Category (5-Class)** | **196** | **95.41%** | **0.7694** | **Substantial Agreement** |
 
 ### Operator-by-Operator Sentiment Agreement
 
-| Operator | Overlapping Samples | Raw Agreement | Cohen's Kappa ($\kappa$) | Interpretation |
+| Operator | Overlapping Samples | Raw Agreement | Cohen's Kappa (κ) | Interpretation |
 | :--- | :---: | :---: | :---: | :--- |
 | **Grameenphone** | 67 | **89.55%** | **0.6921** | Substantial Agreement |
 | **Banglalink** | 67 | **94.03%** | **0.4846** | Moderate Agreement |
@@ -136,7 +136,7 @@ When presenting to stakeholders, leadership, or academic reviewers:
 1. **Lead with the Hero Model (Soft-Voting Ensemble):**
    * State clearly: *"Validated against an empirical Gold Standard dataset with 82.00% accuracy and 0.6781 Macro-F1."*
 2. **Cite Publication-Grade Human Inter-Annotator Agreement:**
-   * Report: *"Dual-annotator blind verification ($N=200$) achieved **91.00% raw agreement** and **$\kappa = 0.5762$** on sentiment, and **95.41% raw agreement** with **$\kappa = 0.7694$** on operational category classification."*
+   * Report: *"Dual-annotator blind verification ($N=200$) achieved **91.00% raw agreement** and **κ = 0.5762$** on sentiment, and **95.41% raw agreement** with **κ = 0.7694$** on operational category classification."*
 3. **Highlight the Stress-Test Methodology:**
    * Explain that this validation was achieved **not on easy data**, but on a curated stress-test set composed of hard disagreements and low-confidence edge cases. On clean consensus data, model accuracy exceeds 98%.
 4. **Showcase the Engineering Benchmarking:**

@@ -5,7 +5,7 @@
 ---
 
 ## 🎯 Purpose of This Rulebook
-This rulebook establishes clear, consistent, and objective annotation standards for sorting ambiguous and complex customer reviews across **Grameenphone (MyGP)**, **Banglalink (MyBL)**, and **Robi (MyRobi)**. 
+This rulebook establishes clear, consistent, and objective annotation standards for sorting ambiguous and complex customer reviews across **Grameenphone (MyGP)**, **Banglalink (MyBL)**, and **Robi (My Robi)**. 
 
 To eliminate unintentional confirmation bias, **all model suggestions are hidden**. When annotating, base your decision strictly on the semantic content of the text using the principles below.
 

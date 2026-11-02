@@ -63,7 +63,7 @@ Rather than comparing raw volume across operators, evaluating each operator **re
 
 ### 3.1 Grameenphone Internal Voice ($N = 21,524$ Total Comments)
 * **Overall Sentiment**: 75.0% Positive, 6.6% Neutral, **18.4% Negative** (Net Sentiment: +56.6%)
-* **Substantive Sentiment ($\ge 3$ words, $N = 7,130$)**: **45.7% Positive vs. 44.1% Negative** (Net Sentiment: **+1.6%** — near parity!)
+* **Substantive Sentiment (≥ 3$ words, $N = 7,130$)**: **45.7% Positive vs. 44.1% Negative** (Net Sentiment: **+1.6%** — near parity!)
 * **Internal Complaint Breakdown (Share of its own 3,958 negative reviews)**:
   * **Offers & Data Packs**: **32.3%** (1,280 complaints) — #1 internal pain point
   * **App Login & Technical Bugs**: **20.1%** (797 complaints)
@@ -73,7 +73,7 @@ Rather than comparing raw volume across operators, evaluating each operator **re
 
 ### 3.2 Robi Internal Voice ($N = 33,825$ Total Comments)
 * **Overall Sentiment**: 86.5% Positive, 6.4% Neutral, 7.1% Negative (Net Sentiment: +79.4%)
-* **Substantive Sentiment ($\ge 3$ words, $N = 7,341$)**: **63.2% Positive vs. 24.4% Negative** (Net Sentiment: **+38.8%**)
+* **Substantive Sentiment (≥ 3$ words, $N = 7,341$)**: **63.2% Positive vs. 24.4% Negative** (Net Sentiment: **+38.8%**)
 * **Internal Complaint Breakdown (Share of its own 2,414 negative reviews)**:
   * **Offers & Data Packs**: **25.0%** (604 complaints)
   * **App Login & Technical Bugs**: **23.7%** (571 complaints)
@@ -83,7 +83,7 @@ Rather than comparing raw volume across operators, evaluating each operator **re
 
 ### 3.3 Banglalink Internal Voice ($N = 28,068$ Total Comments)
 * **Overall Sentiment**: **88.3% Positive**, 4.9% Neutral, 6.8% Negative (Net Sentiment: **+81.5%**)
-* **Substantive Sentiment ($\ge 3$ words, $N = 7,130$)**: **73.0% Positive vs. 19.0% Negative** (Net Sentiment: **+54.0%**)
+* **Substantive Sentiment (≥ 3$ words, $N = 7,130$)**: **73.0% Positive vs. 19.0% Negative** (Net Sentiment: **+54.0%**)
 * **Internal Complaint Breakdown (Share of its own 1,917 negative reviews)**:
   * **App Login & Technical Bugs**: **25.3%** (485 complaints) — #1 operational issue
   * **Network Speed & 4G Latency**: **17.9%** (343 complaints)
@@ -137,10 +137,10 @@ Banglalink has positioned itself as the agile digital challenger, capturing stro
 
 ---
 
-## 6. Robi (MyRobi): Lifestyle & Engagement Innovator
+## 6. Robi (My Robi): Lifestyle & Engagement Innovator
 
 ### 6.1 Operational Context & Brand Position
-Robi Axiata has established a strong digital presence centered on digital lifestyle integration, customized offer algorithms (*Amar Offer*), and high user engagement in the *MyRobi* application.
+Robi Axiata has established a strong digital presence centered on digital lifestyle integration, customized offer algorithms (*Amar Offer*), and high user engagement in the *My Robi* application.
 
 ### 6.2 Voice-of-Customer Strengths
 * **Largest Customer Review Engagement (33,825 Reviews)**: Robi generated the highest volume of consumer feedback during the benchmark window, indicating an active, digitally engaged customer base.
@@ -153,7 +153,7 @@ Robi Axiata has established a strong digital presence centered on digital lifest
 * **Notification Frequency**: Some users express a desire for more customizable in-app notification controls to minimize promotional alerts.
 
 ### 6.4 Actionable Business Recommendations
-1. **One-Click "VAS & Subscription Control Center"**: Establish a prominent, centralized dashboard inside *MyRobi* that lists all active recurring services, recurring debits, and promotional SMS subscriptions with instant one-tap deactivation.
+1. **One-Click "VAS & Subscription Control Center"**: Establish a prominent, centralized dashboard inside *My Robi* that lists all active recurring services, recurring debits, and promotional SMS subscriptions with instant one-tap deactivation.
 2. **Quality of Service (QoS) Optimization for Gaming/Streaming**: Introduce dedicated low-latency gaming and streaming micro-passes with guaranteed routing prioritization, catering to Robi's tech-savvy youth demographic.
 3. **Intelligent Notification Throttling**: Use machine learning to personalize in-app push notification schedules, delivering offers when individual subscribers are most receptive rather than broad time-based broadcasts.
 
@@ -161,13 +161,13 @@ Robi Axiata has established a strong digital presence centered on digital lifest
 
 ## 7. Comparative Business Intelligence Matrix
 
-| Dimension | Grameenphone (MyGP) | Banglalink (MyBL) | Robi (MyRobi) |
+| Dimension | Grameenphone (MyGP) | Banglalink (MyBL) | Robi (My Robi) |
 | :--- | :--- | :--- | :--- |
 | **Market Identity** | Established market leader; premium reliability | Agile value champion; high promotional dynamism | Digital lifestyle & personalized engagement |
 | **Primary Positive Driver** | Comprehensive app features & reliable utility | Exceptional data pricing & daily loyalty rewards | High engagement, intuitive UI & *Amar Offer* |
 | **Primary Customer Request** | More flexible bundle pricing & validity extensions | Broader indoor coverage & suburban speed stability | Simpler VAS subscription management & transparency |
 | **Net Sentiment (NSS)** | **+56.6%** | **+81.5%** | **+79.4%** |
-| **Substantive Net Sentiment ($\ge 3$w)** | **+1.6%** | **+54.0%** | **+38.8%** |
+| **Substantive Net Sentiment (≥ 3$w)** | **+1.6%** | **+54.0%** | **+38.8%** |
 | **Average Store Rating** | 4.17 ★ | 4.70 ★ | 4.56 ★ |
 | **Top Internal Complaint Category** | Offers & Data Packs (32.3%) | App Login & Bugs (25.3%) | Offers & Data Packs (25.0%) |
 | **Customer Retention Lever** | Enhanced price-to-value & balance transparency | Converting promotional buyers into monthly plans | Proactive service control & low-latency routing |
@@ -179,7 +179,7 @@ Robi Axiata has established a strong digital presence centered on digital lifest
 Analyzing 83,417 customer reviews across all three major telecom operators reveals three overarching industry trends:
 
 1. **Self-Service is the New Brand Ambassador**:  
-   Across all three operators, digital self-care apps (*MyGP*, *MyBL*, *MyRobi*) have largely superseded physical retail and customer care calls as the primary touchpoint. App stability, intuitive UI, and fast checkout directly drive customer sentiment.
+   Across all three operators, digital self-care apps (*MyGP*, *MyBL*, *My Robi*) have largely superseded physical retail and customer care calls as the primary touchpoint. App stability, intuitive UI, and fast checkout directly drive customer sentiment.
 2. **Transparency Overrides Absolute Pricing**:  
    While price sensitivity remains significant, customer dissatisfaction is driven disproportionately by **unexpected balance drops** or **complex validity rules** rather than headline tariffs. Operators that provide unvarnished billing transparency build resilient consumer trust.
 3. **Personalization Drives Loyalty**:  
@@ -199,7 +199,7 @@ For executive decision-makers, several core boundaries of Voice-of-Customer inte
 3. **Voluntary Reporting Bias:**  
    Customer feedback on digital app stores is voluntary and typically submitted during extreme satisfaction (e.g., promotional bonuses) or frustration (e.g., service disruption). The satisfied majority of daily users rarely leaves feedback.
 4. **Promotional Incentive Distortions:**  
-   Promotional campaigns offering free data bonuses (e.g., 500MB login rewards in MyBL/MyRobi) generate short positive reviews written primarily to claim rewards, creating an upward bias in positive volume.
+   Promotional campaigns offering free data bonuses (e.g., 500MB login rewards in MyBL/My Robi) generate short positive reviews written primarily to claim rewards, creating an upward bias in positive volume.
 5. **Channel Scope & Empirical iOS vs. Android Comparison:**  
    * **Market Asymmetry**: Android commands **~96% of the mobile operating system market share in Bangladesh** (StatCounter BD / BTRC data), while iOS represents under 4%. Google Play represents the true voice of the mainstream Bangladeshi telecom subscriber base.
    * **Empirical Apple App Store Probe ($N=1,199$)**: To evaluate whether iOS data could be synthesized, a live scraping probe was executed against Apple's iTunes APIs (`scraped_data_2020/pipeline/probe_ios_appstore.py`):
@@ -207,7 +207,7 @@ For executive decision-makers, several core boundaries of Voice-of-Customer inte
      | Operator | App Store Star Ratings | Scraped iOS Text Reviews | Scraped Google Play Reviews | iOS Date Span Retrieved |
      | :--- | :---: | :---: | :---: | :---: |
      | 🔵 **Grameenphone (MyGP)** | 108,947 | **500** *(Apple API cap)* | **132,148** | June 2024 – Oct 2026 (24 mos) |
-     | 🔴 **Robi (MyRobi)** | 25,724 | **500** *(Apple API cap)* | **33,825** | Sept 2021 – Oct 2026 (5 yrs) |
+     | 🔴 **Robi (My Robi)** | 25,724 | **500** *(Apple API cap)* | **33,825** | Sept 2021 – Oct 2026 (5 yrs) |
      | 🟠 **Banglalink (MyBL)** | 790 | **199** *(Lifetime total)* | **79,889** | Nov 2014 – Aug 2026 (12 yrs) |
      | **Total Ecosystem** | **135,461** | **1,199** | **245,862** | — |
 

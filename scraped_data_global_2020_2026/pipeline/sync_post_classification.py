@@ -147,7 +147,7 @@ def main():
         f"### Exhaustive Macro-Level Sentiment & Operational Category Analysis across Bangladesh Telecoms",
         f"**Common Duration Benchmark Scale**: $N = {len(common_df):,d}$ Verified Google Play Customer Reviews ({days:,d} Shared Days)  ",
         f"**Master Corpus in Storage**: $N = {len(master_df):,d}$ Unique Reviews (March 2014 – October 2026)  ",
-        f"**Operators Evaluated**: Grameenphone Ltd. (MyGP), Robi Axiata Limited (MyRobi), Banglalink Digital Communications Limited (MyBL)  ",
+        f"**Operators Evaluated**: Grameenphone Ltd. (MyGP), Robi Axiata Limited (My Robi), Banglalink Digital Communications Limited (MyBL)  ",
         f"**Strict Operator Serial**: Grameenphone, Robi, Banglalink  ",
         f"**Models Deployed**: 8 Model Architectures (Hero Soft-Voting Ensemble, Logistic Regression, LinearSVC, PyTorch BiLSTM + Bahdanau Attention)",
         "",
