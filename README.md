@@ -15,8 +15,8 @@
 [![Common Period Benchmark: 655.7k Reviews](https://img.shields.io/badge/Active%20Benchmark-655%2C670%20Reviews-emerald.svg)](scraped_data_global_2020_2026/classified/common_duration_summary.json)
 [![Master Corpus: 661.2k](https://img.shields.io/badge/Master%20Corpus-661%2C160%20Reviews-blueviolet.svg)](scraped_data_global_2020_2026/classified/)
 [![Common Window: 3,716 Days](https://img.shields.io/badge/Common%20Window-Jul%202016--Sep%202026-teal.svg)](scraped_data_global_2020_2026/classified/common_duration_summary.json)
-[![Sentiment SOTA: BUET BanglaBERT](https://img.shields.io/badge/Sentiment%20SOTA-BanglaBERT%20(91.6%25%20Acc)-success.svg)](dl/)
-[![Category Hero: Soft--Voting Ensemble](https://img.shields.io/badge/Category%20Hero-Ensemble%20(87.4%25%20Acc)-brightgreen.svg)](ml/)
+[![Sentiment Model: BUET BanglaBERT](https://img.shields.io/badge/Sentiment%20Model-BanglaBERT%20(91.6%25%20Acc)-success.svg)](dl/)
+[![Category Model: Soft--Voting Ensemble](https://img.shields.io/badge/Category%20Model-Ensemble%20(87.4%25%20Acc)-brightgreen.svg)](ml/)
 [![Inter-Annotator Reliability: Cohen's Kappa](https://img.shields.io/badge/Cohen's%20Kappa-%CE%BA%20%3D%200.77%20(Substantial)-blueviolet.svg)](data/gold_set/gold_standard_evaluation_report.md)
 [![Roadmap: TODO.txt](https://img.shields.io/badge/Roadmap-TODO.txt-orange.svg)](TODO.txt)
 </div>
@@ -27,7 +27,7 @@
 
 This flagship project provides an empirical, end-to-end Voice-of-Customer (VoC) intelligence engine analyzing customer sentiment and operational complaints across Bangladesh's top three mobile network operators:
 * **Grameenphone Ltd.** (operating the MyGP platform)
-* **Robi Axiata Limited** (operating the MyRobi platform)
+* **Robi Axiata Limited** (operating the My Robi platform)
 * **Banglalink Digital Communications Limited** (operating the MyBL platform)
 
 *(Throughout this document, operators are subsequently referred to as **Grameenphone**, **Robi**, and **Banglalink**).*
@@ -38,7 +38,7 @@ This flagship project provides an empirical, end-to-end Voice-of-Customer (VoC) 
 
 ### 📊 Common Duration Performance Scorecard ($N = 655,670$, July 28, 2016 – September 30, 2026 | 3,716 Days)
 
-Every review was scored by our production **Soft-Voting Ensemble** (trained on 4,500 Groq LLM-annotated seed reviews and benchmarked against an empirical human gold standard, achieving **87.5% CV Accuracy** on Sentiment and **87.3%** on Operational Categories), cross-verified with **PyTorch BiLSTM + Attention**, **Balanced Logistic Regression**, **Calibrated LinearSVC**, and SOTA **BUET BanglaBERT** (**91.6% CV Accuracy**).
+Every review was scored by our production **Soft-Voting Ensemble** (trained on 4,500 Groq LLM-annotated seed reviews and benchmarked against an empirical human gold standard, achieving **87.5% CV Accuracy** on Sentiment and **87.3%** on Operational Categories), cross-verified with **PyTorch BiLSTM + Attention**, **Balanced Logistic Regression**, **Calibrated LinearSVC**, and fine-tuned **BUET BanglaBERT** (**91.6% CV Accuracy**).
 
 ```
 +---------------------------------------------------------------------------------------------------------+
@@ -288,8 +288,8 @@ To eliminate task ambiguity between 3-class sentiment polarity and 5-class depar
 | Rank | Model Architecture | CV Accuracy | Macro-F1 | Inference Throughput | Key Strengths / Characteristics |
 | :---: | :--- | :---: | :---: | :---: | :--- |
 | 🥇 | **BUET BanglaBERT (Fine-Tuned)** | **91.60%** | **0.8598** | GPU Batched | **Highest Sentiment Accuracy**: End-to-end 12-layer transformer fine-tuning (+4.1% Acc, +9.1% F1 over Ensemble). |
-| 🥈 | **Soft-Voting ML Ensemble** | **87.47%** | **0.7684** | **~17,500 rev/s** | **Production Scoring Engine**: High-throughput CPU classifier (LR + Calibrated LinearSVC + ComplementNB). |
-| 🥉 | **Multilingual MiniLM Head** | **82.33%** | **0.7475** | ~2,100 rev/s | 384-dim multilingual dense embeddings; cross-lingual semantic transfer. |
+| 🥈 | **Soft-Voting ML Ensemble** | **87.47%** | **0.7684** | **>80x Speedup (Sub-ms CPU)** | **Production Scoring Engine**: High-throughput CPU classifier (LR + Calibrated LinearSVC + ComplementNB). |
+| 🥉 | **Multilingual MiniLM Head** | **82.33%** | **0.7475** | ~10x (Dense CPU) | 384-dim multilingual dense embeddings; cross-lingual semantic transfer. |
 | 4 | **Hybrid BiLSTM + Attention (GPU)** | **81.50%** | **0.7180** | Fast GPU Batched | Sequential token context + Bahdanau attention over emotional cues. |
 
 ---
@@ -303,9 +303,9 @@ To eliminate task ambiguity between 3-class sentiment polarity and 5-class depar
 
 | Rank | Model Architecture | CV Accuracy | Macro-F1 | Inference Throughput | Key Strengths / Characteristics |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| 🥇 | **Soft-Voting ML Ensemble** | **87.44%** | **0.7845** | **~18,200 rev/s** | **Category Champion**: Sub-word character n-grams excel on Romanized Banglish (*"mb"*, *"kete niyeche"*, *"otp"*). |
+| 🥇 | **Soft-Voting ML Ensemble** | **87.44%** | **0.7845** | **>80x Speedup (Sub-ms CPU)** | **Primary Category Architecture**: Sub-word character n-grams excel on Romanized Banglish (*"mb"*, *"kete niyeche"*, *"otp"*). |
 | 🥈 | **BUET BanglaBERT (Fine-Tuned)** | **85.27%** | **0.7624** | GPU Batched | Contextual transformer representations with full 12-layer backpropagation. |
-| 🥉 | **Multilingual MiniLM Head** | **81.15%** | **0.7247** | ~2,100 rev/s | Multilingual sentence semantic representations with regularized head. |
+| 🥉 | **Multilingual MiniLM Head** | **81.15%** | **0.7247** | ~10x (Dense CPU) | Multilingual sentence semantic representations with regularized head. |
 | 4 | **Hybrid BiLSTM + Attention (GPU)** | **80.84%** | **0.7106** | Fast GPU Batched | Sequential token context + inverse frequency class weighting. |
 
 > [!NOTE]
@@ -328,15 +328,15 @@ The trained classifiers were then benchmarked directly against the blind human g
 
 | Model Architecture | Evaluated Task | Human Raw Agreement (N=300) | Consensus Agreement (Dual-Human Agreed) | Cohen's Kappa (κ) | Status |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Soft-Voting ML Ensemble** | **Operational Category (5-Class)** | **91.33%** | **94.12%** | **0.5046** | 🏆 Production Category Hero |
+| **Soft-Voting ML Ensemble** | **Operational Category (5-Class)** | **91.33%** | **94.12%** | **0.5046** | Production Category Model |
 | Challenger LinearSVC | Operational Category (5-Class) | 91.00% | 93.58% | 0.4679 | High Linear Baseline |
 | Primary Logistic Regression | Operational Category (5-Class) | 89.33% | 91.98% | 0.4385 | Balanced Regularized Baseline |
-| **Soft-Voting ML Ensemble** | **Sentiment Analysis (3-Class)** | **83.67%** | **87.91%** | **0.4670** | 🏆 Production Sentiment Hero |
+| **Soft-Voting ML Ensemble** | **Sentiment Analysis (3-Class)** | **83.67%** | **87.91%** | **0.4670** | Production Sentiment Model |
 | Challenger LinearSVC | Sentiment Analysis (3-Class) | 89.00% | 92.31% | 0.5366 | Strong Linear Generalization |
 | Primary Logistic Regression | Sentiment Analysis (3-Class) | 82.67% | 86.81% | 0.4624 | High Neutral Class Recall |
 | Naive Star-Rating Baseline | Sentiment Analysis (3-Class) | 80.17% | 84.62% | 0.4102 | Heuristic (Fails on Sarcasm/Typos) |
 
-> **Key Takeaway**: On clear human consensus reviews (where both independent human annotators agreed 100%), the Production Hero Ensemble reaches **94.12% agreement** on Operational Categories and **87.91% agreement** on Sentiment Polarity. Across the complete blind human benchmark ($N = 300$, loaded with sarcastic Bengali expressions, informal Banglish slang, and rating-text misclicks), the Ensemble maintains **91.33% agreement** on Operational Categories and **83.67% agreement** on Sentiment Polarity (with Challenger LinearSVC achieving **89.00%**), confirming robust generalization to real-world customer feedback.
+> **Key Takeaway**: On clear human consensus reviews (where both independent human annotators agreed 100%), the production ensemble reaches **94.12% agreement** on Operational Categories and **87.91% agreement** on Sentiment Polarity. Across the complete blind human benchmark ($N = 300$, loaded with sarcastic Bengali expressions, informal Banglish slang, and rating-text misclicks), the Ensemble maintains **91.33% agreement** on Operational Categories and **83.67% agreement** on Sentiment Polarity (with Challenger LinearSVC achieving **89.00%**), confirming robust generalization to real-world customer feedback.
 
 * Detailed confusion matrices, operator breakdowns, and linguistic disagreement analyses are documented in **[`gold_standard_evaluation_report.md`](data/gold_set/gold_standard_evaluation_report.md)** and **[`comprehensive_benchmark_table.md`](data/gold_set/comprehensive_benchmark_table.md)**.
 
@@ -354,7 +354,7 @@ The trained classifiers were then benchmarked directly against the blind human g
 * **Core Vulnerabilities:** Offers and data pack friction (5.18%) and app login bugs (4.60%).
 * **Strategic Lever:** Overhaul biometric login token caching and simplify automated VAS cancellation toggles.
 
-### 3. Banglalink (MyBL) — *Agile Value Champion*
+### 3. Banglalink (MyBL) — *Agile Value Leader*
 * **Common Period NSS:** `+53.1%` (137,149 reviews) | **2026 NSS:** `+81.9%` 🏆
 * **Core Vulnerabilities:** Indoor/suburban 4G latency (3.64%) and technical login glitches (8.12%).
 * **Strategic Lever:** Leverage high brand sentiment to transition promotional micro-rechargers into recurring monthly commitments while optimizing 4G edge caching.
@@ -367,7 +367,7 @@ The trained classifiers were then benchmarked directly against the blind human g
 telecom-Voice-of-Customer_intelligence/
 ├── assets/
 │   ├── logos/                                # Official corporate logos (GP, Robi, BL)
-│   └── plots/                                # Publication-grade 300 DPI visualizations
+│   └── plots/                                # High-resolution 300 DPI visualizations
 │       ├── multi_year_sentiment_trend_line.png # 📈 Complete All-Years NSS Trajectory (2016–2026, Full Range)
 │       ├── yearly_sentiment_trend_pre2020.png  # 📉 Standalone Early Era Trajectory (2016–2019)
 │       ├── yearly_sentiment_trend_2020_2026.png # 🚀 Standalone Modern Scale Trajectory (2020–2026)
@@ -422,8 +422,8 @@ telecom-Voice-of-Customer_intelligence/
 │
 ├── ml/                                       # Classical Machine Learning Engine
 │   ├── models/
-│   │   ├── sentiment_voting_classifier.joblib # 🏆 Production Hero Model (Sentiment, 87.5% CV)
-│   │   ├── category_voting_classifier.joblib  # 🏷️ Production Category Hero Model (87.4% CV)
+│   │   ├── sentiment_voting_classifier.joblib # 🏆 Production Sentiment Model (87.5% CV)
+│   │   ├── category_voting_classifier.joblib  # 🏷️ Production Category Model (87.4% CV)
 │   │   ├── primary_logistic_regression.joblib
 │   │   └── challenger_linearsvc.joblib
 │   └── predict.py                            # CLI dual prediction utility
@@ -433,7 +433,7 @@ telecom-Voice-of-Customer_intelligence/
 │   ├── telecom_voc_master_unified_colab.ipynb # 🏆 Master Unified Colab: ALL ML + DL Models
 │   ├── finetune_banglabert.py                # Standalone end-to-end BanglaBERT fine-tuning CLI
 │   ├── models/
-│   │   ├── banglabert_finetuned_sentiment/   # 🥇 SOTA Sentiment Model (91.60% CV Acc)
+│   │   ├── banglabert_finetuned_sentiment/   # 🥇 Fine-Tuned Sentiment Model (91.60% CV Acc)
 │   │   ├── banglabert_finetuned_category/    # 🥈 Category Model (85.27% CV Acc)
 │   │   ├── bilstm_sentiment_model.pt         # Hybrid BiLSTM + Attention (Sentiment)
 │   │   ├── bilstm_category_model.pt          # Hybrid BiLSTM + Attention (Category)
@@ -491,13 +491,13 @@ python scraped_data_global_2020_2026/pipeline/generate_global_visualizations.py
 
 ### 5. Real-Time CLI Inference
 ```bash
-# High-throughput production dual inference (CPU, ~18,000 rev/s):
+# High-throughput production dual inference (Sub-millisecond CPU):
 python ml/predict.py --text "নেটওয়ার্ক খুব বাজে কিন্তু অফার ভালো"
 ```
 
-### 6. Interactive Google Colab Notebooks (GPU Training & SOTA Replication)
+### 6. Interactive Google Colab Notebooks (GPU Training & Model Replication)
 For GPU training without local hardware:
-* **[BUET BanglaBERT SOTA Suite](dl/telecom_voc_banglabert_finetuning_colab.ipynb)**: End-to-end transformer fine-tuning achieving **91.60% Sentiment Accuracy**.
+* **[BUET BanglaBERT Training Suite](dl/telecom_voc_banglabert_finetuning_colab.ipynb)**: End-to-end transformer fine-tuning achieving **91.60% Sentiment Accuracy**.
 * **[Master Unified Suite](dl/telecom_voc_master_unified_colab.ipynb)**: Benchmarks all 8 ML/DL architectures in a single unified workflow.
 
 ### 7. Evaluate Inter-Annotator Reliability (Cohen's Kappa)

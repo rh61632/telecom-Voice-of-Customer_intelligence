@@ -661,8 +661,8 @@ def plot_sentiment_model_benchmark():
     ]
     labels = [
         "BUET BanglaBERT (Fine-Tuned)\n(Full 12-Layer Transformer · GPU)",
-        "Soft-Voting Ensemble\n(Dual-Gram TF-IDF · ~17.5k rev/s CPU)",
-        "Multilingual MiniLM Head\n(384-dim Dense Embeddings · ~2.1k rev/s)",
+        "Soft-Voting Ensemble\n(Dual-Gram TF-IDF · >80x Speedup / Sub-ms CPU)",
+        "Multilingual MiniLM Head\n(384-dim Dense Embeddings · ~10x CPU)",
         "Hybrid BiLSTM + Attention (GPU)\n(Recurrent Context Modeling · PyTorch)",
     ]
     acc = [91.60, 87.47, 82.33, 81.50]
@@ -726,7 +726,7 @@ def plot_category_model_benchmark():
         "Hybrid BiLSTM + Attention",
     ]
     labels = [
-        "Soft-Voting Ensemble\n(Dual-Gram TF-IDF · ~18.2k rev/s CPU)",
+        "Soft-Voting Ensemble\n(Dual-Gram TF-IDF · >80x Speedup / Sub-ms CPU)",
         "BUET BanglaBERT (Fine-Tuned)\n(End-to-End Contextual Transformer · GPU)",
         "Multilingual MiniLM Head\n(384-dim Dense Vector Embeddings)",
         "Hybrid BiLSTM + Attention (GPU)\n(Recurrent Context + Class Weighting)",
