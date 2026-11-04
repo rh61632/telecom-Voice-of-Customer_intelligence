@@ -179,9 +179,9 @@ def classify_subset(df: pd.DataFrame, models: dict, batch_size: int = 10000):
 
 def main():
     repo_root = Path(__file__).resolve().parent.parent.parent
-    raw_glob_dir = repo_root / "scraped_data_global_2020_2026" / "raw"
+    raw_glob_dir = repo_root / "scraped_data_global" / "raw"
     raw_arch_dir = repo_root / "archive" / "scraped_data_2020" / "raw"
-    cls_dir = repo_root / "scraped_data_global_2020_2026" / "classified"
+    cls_dir = repo_root / "scraped_data_global" / "classified"
     cls_dir.mkdir(parents=True, exist_ok=True)
 
     print("=" * 75)
@@ -189,13 +189,13 @@ def main():
     print("=" * 75)
 
     operator_files = [
-        ("Grameenphone", raw_arch_dir / "mygp_scraped_2020_to_sep2026.csv", raw_glob_dir / "mygp_global_2020_to_sep2026.csv"),
-        ("Robi", raw_arch_dir / "myrobi_scraped_2020_to_sep2026.csv", raw_glob_dir / "myrobi_global_2020_to_sep2026.csv"),
-        ("Banglalink", raw_arch_dir / "mybl_scraped_2020_to_sep2026.csv", raw_glob_dir / "mybl_global_2020_to_sep2026.csv"),
+        ("Grameenphone", raw_arch_dir / "mygp_scraped_2020_to_sep2026.csv", raw_glob_dir / "mygp_global.csv"),
+        ("Robi", raw_arch_dir / "myrobi_scraped_2020_to_sep2026.csv", raw_glob_dir / "myrobi_global.csv"),
+        ("Banglalink", raw_arch_dir / "mybl_scraped_2020_to_sep2026.csv", raw_glob_dir / "mybl_global.csv"),
     ]
 
     # Load existing classified dataset to reuse predictions
-    existing_cls_file = cls_dir / "all_operators_classified_global_2020_2026.csv"
+    existing_cls_file = cls_dir / "all_operators_classified_global.csv"
     if existing_cls_file.exists():
         print(f"Loading existing classified dataset ({existing_cls_file.name})...")
         existing_cls = pd.read_csv(existing_cls_file, low_memory=False)
@@ -266,8 +266,8 @@ def main():
 
         # Save operator raw and classified
         file_key = "mygp" if op_name == "Grameenphone" else "myrobi" if op_name == "Robi" else "mybl"
-        raw_out = raw_glob_dir / f"{file_key}_global_2020_to_sep2026.csv"
-        cls_out = cls_dir / f"{file_key}_classified_global_2020_2026.csv"
+        raw_out = raw_glob_dir / f"{file_key}_global.csv"
+        cls_out = cls_dir / f"{file_key}_classified_global.csv"
 
         dedup[["review_id", "user_name", "rating", "review_date", "review_text", "thumbs_up", "operator"]].to_csv(raw_out, index=False)
         op_final.to_csv(cls_out, index=False)
@@ -275,7 +275,7 @@ def main():
 
     # Master complete dataset
     master_df = pd.concat(merged_operator_dfs, ignore_index=True)
-    master_file = cls_dir / "all_operators_classified_global_2020_2026.csv"
+    master_file = cls_dir / "all_operators_classified_global.csv"
     master_df.to_csv(master_file, index=False)
     print(f"\n🎉 Saved Master Classified Dataset: {len(master_df):,d} records to {master_file.name}")
 

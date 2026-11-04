@@ -23,7 +23,7 @@ PYTHON_BIN = PROJECT_ROOT / "dl" / ".venv" / "bin" / "python"
 if not PYTHON_BIN.exists():
     PYTHON_BIN = sys.executable
 
-WORKER_SCRIPT = PROJECT_ROOT / "scraped_data_global_2020_2026" / "pipeline" / "scraper_worker.py"
+WORKER_SCRIPT = PROJECT_ROOT / "scraped_data_global" / "pipeline" / "scraper_worker.py"
 
 
 def main():

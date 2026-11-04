@@ -30,9 +30,9 @@ def load_dataset():
     dfs = [
         pd.read_csv(CLS_DIR / f, usecols=cols)
         for f in [
-            "mygp_classified_global_2020_2026.csv",
-            "myrobi_classified_global_2020_2026.csv",
-            "mybl_classified_global_2020_2026.csv",
+            "mygp_classified_global.csv",
+            "myrobi_classified_global.csv",
+            "mybl_classified_global.csv",
         ]
     ]
     df = pd.concat(dfs, ignore_index=True)

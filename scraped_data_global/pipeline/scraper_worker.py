@@ -1,7 +1,7 @@
 """
 Script: scraper_worker.py
 Purpose: High-throughput Google Play review scraper for a single operator using country='us'.
-Default (full) mode: January 1, 2020 00:00:00 to today.
+Default (full) mode: January 1, 2014 00:00:00 to today (captures entire historical timeline).
 Incremental mode (--incremental): only fetches reviews newer than the most recent
   review already saved in the raw CSV, then appends and deduplicates by review_id.
 Saves continuously to CSV and writes real-time progress to a JSON status file.
@@ -18,30 +18,30 @@ from pathlib import Path
 from google_play_scraper import Sort, reviews
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-TARGET_DIR = PROJECT_ROOT / "scraped_data_global_2020_2026"
+TARGET_DIR = PROJECT_ROOT / "scraped_data_global"
 RAW_DIR = TARGET_DIR / "raw"
 RAW_DIR.mkdir(parents=True, exist_ok=True)
 
-START_DATE = datetime(2020, 1, 1, 0, 0, 0)
+START_DATE = datetime(2014, 1, 1, 0, 0, 0)
 END_DATE   = datetime.now().replace(hour=23, minute=59, second=59, microsecond=0)
 
 CONFIGS = {
     "gp": {
         "operator": "Grameenphone",
         "app_id": "com.portonics.mygp",
-        "out_csv": RAW_DIR / "mygp_global_2020_to_sep2026.csv",
+        "out_csv": RAW_DIR / "mygp_global.csv",
         "progress_json": TARGET_DIR / "progress_gp.json",
     },
     "bl": {
         "operator": "Banglalink",
         "app_id": "com.arena.banglalinkmela.app",
-        "out_csv": RAW_DIR / "mybl_global_2020_to_sep2026.csv",
+        "out_csv": RAW_DIR / "mybl_global.csv",
         "progress_json": TARGET_DIR / "progress_bl.json",
     },
     "robi": {
         "operator": "Robi",
         "app_id": "net.omobio.robisc",
-        "out_csv": RAW_DIR / "myrobi_global_2020_to_sep2026.csv",
+        "out_csv": RAW_DIR / "myrobi_global.csv",
         "progress_json": TARGET_DIR / "progress_robi.json",
     },
 }

@@ -21,8 +21,8 @@ import pandas as pd
 from google_play_scraper import reviews, Sort
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-RAW_DIR = REPO_ROOT / "scraped_data_global_2020_2026" / "raw"
-ROBI_RAW = RAW_DIR / "myrobi_global_2020_to_sep2026.csv"
+RAW_DIR = REPO_ROOT / "scraped_data_global" / "raw"
+ROBI_RAW = RAW_DIR / "myrobi_global.csv"
 BACKFILL_OUT = RAW_DIR / "robi_backfilled_gap_2024_2025.csv"
 
 APP_ID = "net.omobio.robisc"

@@ -108,13 +108,13 @@ Cadence: Once every 1–3 months (or as desired).
 
 Commands:
   1. Fetch only new reviews since last scrape date:
-     python scraped_data_global_2020_2026/pipeline/run_parallel_scrapers.py --incremental
+     python scraped_data_global/pipeline/run_parallel_scrapers.py --incremental
 
   2. Merge, deduplicate by review_id, and classify new reviews:
-     python scraped_data_global_2020_2026/pipeline/merge_and_sync_all_datasets.py
+     python scraped_data_global/pipeline/merge_and_sync_all_datasets.py
 
   3. Re-render all 6 publication plots:
-     python scraped_data_global_2020_2026/pipeline/generate_global_visualizations.py
+     python scraped_data_global/pipeline/generate_global_visualizations.py
 
   4. Update `Data Last Scraped` date badge in `README.md` and commit to git.
 

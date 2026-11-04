@@ -11,10 +11,10 @@
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Data Last Scraped](https://img.shields.io/badge/Data%20Last%20Scraped-Late%20Oct%202026-informational)](scraped_data_global_2020_2026/raw/)
-[![Common Period Benchmark: 655.7k Reviews](https://img.shields.io/badge/Active%20Benchmark-655%2C670%20Reviews-emerald.svg)](scraped_data_global_2020_2026/classified/common_duration_summary.json)
-[![Master Corpus: 661.2k](https://img.shields.io/badge/Master%20Corpus-661%2C160%20Reviews-blueviolet.svg)](scraped_data_global_2020_2026/classified/)
-[![Common Window: 3,716 Days](https://img.shields.io/badge/Common%20Window-Jul%202016--Sep%202026-teal.svg)](scraped_data_global_2020_2026/classified/common_duration_summary.json)
+[![Data Last Scraped](https://img.shields.io/badge/Data%20Last%20Scraped-Late%20Oct%202026-informational)](scraped_data_global/raw/)
+[![Common Period Benchmark: 655.7k Reviews](https://img.shields.io/badge/Active%20Benchmark-655%2C670%20Reviews-emerald.svg)](scraped_data_global/classified/common_duration_summary.json)
+[![Master Corpus: 661.2k](https://img.shields.io/badge/Master%20Corpus-661%2C160%20Reviews-blueviolet.svg)](scraped_data_global/classified/)
+[![Common Window: 3,716 Days](https://img.shields.io/badge/Common%20Window-Jul%202016--Sep%202026-teal.svg)](scraped_data_global/classified/common_duration_summary.json)
 [![Sentiment Model: BUET BanglaBERT](https://img.shields.io/badge/Sentiment%20Model-BanglaBERT%20(91.6%25%20Acc)-success.svg)](dl/)
 [![Category Model: Soft--Voting Ensemble](https://img.shields.io/badge/Category%20Model-Ensemble%20(87.4%25%20Acc)-brightgreen.svg)](ml/)
 [![Inter-Annotator Reliability: Cohen's Kappa](https://img.shields.io/badge/Cohen's%20Kappa-%CE%BA%20%3D%200.77%20(Substantial)-blueviolet.svg)](data/gold_set/gold_standard_evaluation_report.md)
@@ -194,8 +194,8 @@ Below are major operational shocks detected by the pipeline and their exact cate
 | **Robi** | 2023-01 → 2023-02 | +49.6% | +60.3% | **+10.7 pts** | App Login & Technical Bugs | +4.64 pts | Recovery following stability patch, restoring +4.64 pts in login sentiment. |
 | **Robi** | 2023-11 → 2023-12 | +38.8% | +48.8% | **+10.0 pts** | Offers & Data Packs | +2.67 pts | Year-end data pack promotions generated positive sentiment lift (+2.67 pts). |
 | **Banglalink** | 2021-04 → 2021-05 | +58.8% | +42.4% | **-16.4 pts** | Network Speed & 4G Latency | -4.90 pts | High surge in network speed and coverage complaints (-4.90 pts). |
-| **Banglalink** | 2024-03 → 2024-04 | +49.9% | +38.7% | **-11.2 pts** | App Login & Technical Bugs | -8.74 pts | Acute login session and OTP delivery failure (-8.74 pts impact). |
-| **Banglalink** | 2024-04 → 2024-05 | +38.7% | +71.5% | **+32.8 pts** | App Login & Technical Bugs | +13.73 pts | App release resolved authentication crashes, driving a +13.73 pts recovery in login sentiment alone. |
+| **Banglalink** | 2024-03 → 2024-04 | +42.8% | +31.6% | **-11.2 pts** | App Login & Technical Bugs | -8.74 pts | App launch freezing and blank-screen crash on v11.8.0 update (-8.74 pts impact). |
+| **Banglalink** | 2024-04 → 2024-05 | +31.6% | +64.4% | **+32.8 pts** | App Login & Technical Bugs | +13.73 pts | Hotfix v11.9.1/v11.10.x resolved launch crashes, driving a +13.73 pts recovery in login sentiment alone. |
 
 ---
 
@@ -220,6 +220,9 @@ When isolating strictly **negative customer reviews** (the direct metric plotted
 | **Offers & Data Packs** | **2.99%** (9,557) | **2.61%** (5,168) | **2.42%** (3,321) | **Grameenphone**: Highest negative pack pricing and validity friction. |
 | **Network Speed & 4G Latency** | **1.39%** (4,453) | **1.96%** (3,895) | **2.72%** (3,735) | **Banglalink**: Highest negative signal and 4G speed feedback. |
 | **Billing & Airtime Deductions** | **1.03%** (3,307) | **0.70%** (1,395) | **0.79%** (1,085) | **Grameenphone**: Highest balance deduction grievance rate. |
+
+> [!NOTE]
+> **Scope of "Network Speed & 4G Latency" Across Mobile Generations (2G/3G $\rightarrow$ 4G LTE $\rightarrow$ Commercial 5G)**: Over the 10-year common observation window (2016–2026), the Bangladesh cellular market transitioned across three wireless epochs: (1) **Legacy 2G/3G Era** (July 2016 – Feb 2018, prior to the commercial 4G launch on February 19, 2018); (2) **Mainstream 4G LTE Era** (February 2018 – August 2025, accounting for >98% of historical network volume and establishing the contemporary moniker); and (3) **Commercial 5G Era** (September 1, 2025 – Present, officially launched commercially on **September 1, 2025** by Grameenphone across all divisional headquarters and by Robi Axiata across strategic metropolitan hubs in Dhaka, Chattogram, and Sylhet). The underlying operational construct measured by this category represents *Core Cellular Connectivity, Throughput, and Latency* across all wireless generations, which our subword NLP architecture robustly captures via shared indicator tokens (`speed`, `slow`, `network`, `signal`, `3g`, `4g`, `5g`, `latency`).
 
 ### 📐 Methodological Measurement: How Operational Complaint Rates Are Calculated
 
@@ -387,27 +390,26 @@ telecom-Voice-of-Customer_intelligence/
 │   │   ├── myrobi_classified_reviews.csv
 │   │   └── mybl_classified_reviews.csv
 │   └── gold_set/                             # 🏆 Verified Human Ground Truth & Cohen's Kappa
-│       ├── blind_annotation_300_ratul.csv    # Primary human ground-truth labels (N=300)
-│       ├── blind_annotation_200_friend.csv   # Overlapping independent secondary review (N=200)
+│       ├── blind_annotation_300_annotator1.csv    # Primary human ground-truth labels (N=300)
+│       ├── blind_annotation_200_annotator2.csv   # Overlapping independent secondary review (N=200)
 │       ├── calculate_agreement.py            # Cohen's Kappa & inter-rater agreement evaluator
 │       ├── ANNOTATION_RULEBOOK.md            # Standardized annotation protocol & edge cases
 │       ├── gold_standard_evaluation_report.md # Comprehensive validation & agreement report
 │       └── comprehensive_benchmark_table.md  # Multi-model vs human benchmark matrix
 │
-├── scraped_data_global_2020_2026/            # 🌟 MASTER DATASET SUITE (N=661,160)
+├── scraped_data_global/            # 🌟 MASTER DATASET SUITE (N=661,160)
 │   ├── raw/                                  # 1. Scraped raw reviews (2014 - Oct 2026 with app_version)
-│   │   ├── mygp_global_2020_to_sep2026.csv   # 321,374 unique reviews (Jul 2016 - Sep 2026)
-│   │   ├── myrobi_global_2020_to_sep2026.csv # 200,652 unique reviews (Mar 2016 - Sep 2026)
-│   │   ├── mybl_global_2020_to_sep2026.csv   # 139,134 unique reviews (Oct 2014 - Oct 2026)
-│   │   └── robi_backfilled_gap_2024_2025.csv # Historical gap backfilled reviews
+│   │   ├── mygp_global.csv   # 321,374 unique reviews (Jul 2016 - Sep 2026)
+│   │   ├── myrobi_global.csv # 200,652 unique reviews (Mar 2016 - Sep 2026)
+│   │   └── mybl_global.csv   # 139,134 unique reviews (Oct 2014 - Oct 2026)
 │   │
 │   ├── classified/                           # 2. Classified Datasets & Common Benchmark
 │   │   ├── all_operators_common_duration_classified.csv # 🏆 Active Benchmark (N=655,670 | 3,716 Days)*
-│   │   ├── all_operators_classified_global_2020_2026.csv# Master Multi-Year Corpus (N=661,160 | 347 MB)*
+│   │   ├── all_operators_classified_global.csv# Master Multi-Year Corpus (N=661,160 | 347 MB)*
 │   │   ├── common_duration_summary.json      # Statistical metadata for shared 3,716-day window (2016–2026)
-│   │   ├── mygp_classified_global_2020_2026.csv   # 321,374 classified reviews (GP)
-│   │   ├── myrobi_classified_global_2020_2026.csv # 200,652 classified reviews (Robi)
-│   │   ├── mybl_classified_global_2020_2026.csv   # 139,134 classified reviews (BL)
+│   │   ├── mygp_classified_global.csv   # 321,374 classified reviews (GP)
+│   │   ├── myrobi_classified_global.csv # 200,652 classified reviews (Robi)
+│   │   ├── mybl_classified_global.csv   # 139,134 classified reviews (BL)
 │   │   ├── global_multi_year_intelligence_report.md
 │   │   ├── global_voc_intelligence_report.json
 │   │   └── yearly_intelligence_trends.json
@@ -415,7 +417,6 @@ telecom-Voice-of-Customer_intelligence/
 │   └── pipeline/                             # 3. High-Throughput Production Scripts
 │       ├── run_parallel_scrapers.py          # Parallel scrapers (supports --incremental)
 │       ├── scraper_worker.py                 # Multi-operator worker script
-│       ├── backfill_robi_gap.py              # 🛠️ Fair multi-rating backfill scraper for historical gaps
 │       ├── merge_and_sync_all_datasets.py    # Strict deduplication & common window extraction
 │       ├── classify_global_dataset.py        # Batch classifies reviews across 8 ML/DL architectures
 │       └── generate_global_visualizations.py # Dynamic 300 DPI publication plots (Complete & Standalone)
@@ -444,6 +445,7 @@ telecom-Voice-of-Customer_intelligence/
 │   └── README.md                             # Deep learning documentation
 │
 ├── archive/                                  # 🗄️ ARCHIVED DATASETS & PROBES
+│   ├── robi_backfill/                        # Archived one-time Robi 2024-2025 patch scraper & slice
 │   ├── early_dl_experiments/                 # Early frozen head baseline experiments
 │   ├── powerbi_dashboard/                    # Initial prototype Power BI interface recordings
 │   ├── seed_pipeline_groq/                   # Phase 1 Groq LLM seed pipeline & datasets
@@ -455,7 +457,7 @@ telecom-Voice-of-Customer_intelligence/
 └── README.md                                 # Master Repository Documentation
 ```
 
-> *\* Note: Due to GitHub file-size limits, the consolidated datasets (`all_operators_classified_global_2020_2026.csv` [347 MB] and `all_operators_common_duration_classified.csv` [344 MB]) are omitted from Git. They are automatically reconstructed in seconds from the 3 tracked operator CSVs by running `sync_post_classification.py`.*
+> *\* Note: Due to GitHub file-size limits, the consolidated datasets (`all_operators_classified_global.csv` [347 MB] and `all_operators_common_duration_classified.csv` [344 MB]) are omitted from Git. They are automatically reconstructed in seconds from the 3 tracked operator CSVs by running `sync_post_classification.py`.*
 
 ---
 
@@ -473,20 +475,20 @@ pip install -r requirements.txt
 ### 2. Refresh Data (Incremental — only fetches reviews newer than last scrape)
 ```bash
 # Full re-scrape from scratch (first-time or reset):
-python scraped_data_global_2020_2026/pipeline/run_parallel_scrapers.py
+python scraped_data_global/pipeline/run_parallel_scrapers.py
 
 # Incremental update (appends only new reviews since last run — fast):
-python scraped_data_global_2020_2026/pipeline/run_parallel_scrapers.py --incremental
+python scraped_data_global/pipeline/run_parallel_scrapers.py --incremental
 ```
 
 ### 3. Merge, Deduplicate & Re-Classify New Reviews
 ```bash
-python scraped_data_global_2020_2026/pipeline/merge_and_sync_all_datasets.py
+python scraped_data_global/pipeline/merge_and_sync_all_datasets.py
 ```
 
 ### 4. Render 300 DPI Visualizations
 ```bash
-python scraped_data_global_2020_2026/pipeline/generate_global_visualizations.py
+python scraped_data_global/pipeline/generate_global_visualizations.py
 ```
 
 ### 5. Real-Time CLI Inference

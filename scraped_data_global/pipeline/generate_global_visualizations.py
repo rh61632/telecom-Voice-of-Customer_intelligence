@@ -43,7 +43,7 @@ plt.rcParams.update({
 })
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-GLOBAL_DIR = REPO_ROOT / "scraped_data_global_2020_2026"
+GLOBAL_DIR = REPO_ROOT / "scraped_data_global"
 CLASSIFIED_CSV = GLOBAL_DIR / "classified" / "all_operators_common_duration_classified.csv"
 
 PLOTS_DIR = GLOBAL_DIR / "plots"
@@ -77,9 +77,9 @@ def load_dataset():
     dfs = [
         pd.read_csv(cls_dir / f, usecols=cols)
         for f in [
-            "mygp_classified_global_2020_2026.csv",
-            "myrobi_classified_global_2020_2026.csv",
-            "mybl_classified_global_2020_2026.csv",
+            "mygp_classified_global.csv",
+            "myrobi_classified_global.csv",
+            "mybl_classified_global.csv",
         ]
     ]
     df = pd.concat(dfs, ignore_index=True)

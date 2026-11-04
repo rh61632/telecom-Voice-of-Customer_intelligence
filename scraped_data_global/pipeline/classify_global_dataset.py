@@ -211,14 +211,14 @@ def classify_operator_dataframe(df: pd.DataFrame, operator_name: str, models: di
 
 def main():
     repo_root = Path(__file__).resolve().parent.parent.parent
-    raw_dir = repo_root / "scraped_data_global_2020_2026" / "raw"
-    classified_dir = repo_root / "scraped_data_global_2020_2026" / "classified"
+    raw_dir = repo_root / "scraped_data_global" / "raw"
+    classified_dir = repo_root / "scraped_data_global" / "classified"
     classified_dir.mkdir(parents=True, exist_ok=True)
 
     files = [
-        ("Banglalink", raw_dir / "mybl_global_2020_to_sep2026.csv", classified_dir / "mybl_classified_global_2020_2026.csv"),
-        ("Grameenphone", raw_dir / "mygp_global_2020_to_sep2026.csv", classified_dir / "mygp_classified_global_2020_2026.csv"),
-        ("Robi", raw_dir / "myrobi_global_2020_to_sep2026.csv", classified_dir / "myrobi_classified_global_2020_2026.csv"),
+        ("Banglalink", raw_dir / "mybl_global.csv", classified_dir / "mybl_classified_global.csv"),
+        ("Grameenphone", raw_dir / "mygp_global.csv", classified_dir / "mygp_classified_global.csv"),
+        ("Robi", raw_dir / "myrobi_global.csv", classified_dir / "myrobi_classified_global.csv"),
     ]
 
     # Verify input existence
@@ -273,7 +273,7 @@ def main():
     # Combined master dataset
     print("\nMerging into combined master classified dataset...")
     all_df = pd.concat(classified_dfs, ignore_index=True)
-    all_out_path = classified_dir / "all_operators_classified_global_2020_2026.csv"
+    all_out_path = classified_dir / "all_operators_classified_global.csv"
     all_df.to_csv(all_out_path, index=False)
     print(f"✓ Saved master dataset: {all_out_path.name} ({len(all_df):,d} reviews, {os.path.getsize(all_out_path)/1e6:.1f} MB)")
 

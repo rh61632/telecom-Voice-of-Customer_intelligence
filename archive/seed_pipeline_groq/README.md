@@ -1,7 +1,7 @@
 # 🗄️ Archived: Groq LLM Seed Pipeline (Phase 1)
 
 > **Status: SUPERSEDED** — Archived as of October 2026.  
-> The global production pipeline in [`scraped_data_global_2020_2026/pipeline/`](../../scraped_data_global_2020_2026/pipeline/) is the canonical source of truth for all classification and analysis.
+> The global production pipeline in [`scraped_data_global/pipeline/`](../../scraped_data_global/pipeline/) is the canonical source of truth for all classification and analysis.
 
 ---
 

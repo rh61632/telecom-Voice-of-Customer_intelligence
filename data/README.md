@@ -34,4 +34,4 @@ python data/gold_set/calculate_agreement.py
 
 ---
 
-> ℹ️ **Note**: The master multi-year corpus ($N = 661,160$, 2014–2026) and the 3,716-day common window benchmark ($N = 655,670$, July 2016 – September 2026) are maintained in [`scraped_data_global_2020_2026/`](../scraped_data_global_2020_2026/).
+> ℹ️ **Note**: The master multi-year corpus ($N = 661,160$, 2014–2026) and the 3,716-day common window benchmark ($N = 655,670$, July 2016 – September 2026) are maintained in [`scraped_data_global/`](../scraped_data_global/).

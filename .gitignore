@@ -64,7 +64,7 @@ build/
 # ──────────────────────────────────────────────
 # Large progress/state files (scraper state)
 # ──────────────────────────────────────────────
-scraped_data_global_2020_2026/progress_*.json
+scraped_data_global/progress_*.json
 
 # ──────────────────────────────────────────────
 # Large consolidated files exceeding GitHub limits / recommended sizes
@@ -73,8 +73,8 @@ scraped_data_global_2020_2026/progress_*.json
 # ──────────────────────────────────────────────
 *.safetensors
 *.bin
-scraped_data_global_2020_2026/classified/all_operators_classified_global_2020_2026.csv
-scraped_data_global_2020_2026/classified/all_operators_common_duration_classified.csv
+scraped_data_global/classified/all_operators_classified_global.csv
+scraped_data_global/classified/all_operators_common_duration_classified.csv
 
 # ──────────────────────────────────────────────
 # NOTE: The following are intentionally tracked
@@ -82,8 +82,8 @@ scraped_data_global_2020_2026/classified/all_operators_common_duration_classifie
 # artifacts committed by design:
 #   - ml/models/*.joblib
 #   - dl/models/*.pt  / *.joblib (lightweight heads)
-#   - scraped_data_global_2020_2026/raw/*.csv
-#   - scraped_data_global_2020_2026/classified/my*_classified_global_2020_2026.csv
+#   - scraped_data_global/raw/*.csv
+#   - scraped_data_global/classified/my*_classified_global.csv
 #   - assets/plots/*.png
 # ──────────────────────────────────────────────
 

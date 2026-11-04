@@ -1,2 +1,2 @@
-scraped_data_global_2020_2026/classified/*.csv filter=lfs diff=lfs merge=lfs -text
-scraped_data_global_2020_2026/raw/*.csv filter=lfs diff=lfs merge=lfs -text
+scraped_data_global/classified/*.csv filter=lfs diff=lfs merge=lfs -text
+scraped_data_global/raw/*.csv filter=lfs diff=lfs merge=lfs -text

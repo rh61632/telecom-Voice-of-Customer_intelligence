@@ -17,7 +17,7 @@ import pandas as pd
 import numpy as np
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-GLOBAL_DIR = REPO_ROOT / "scraped_data_global_2020_2026"
+GLOBAL_DIR = REPO_ROOT / "scraped_data_global"
 CLS_DIR = GLOBAL_DIR / "classified"
 
 OPERATOR_SERIAL = ["Grameenphone", "Robi", "Banglalink"]
@@ -31,9 +31,9 @@ def main():
     print("\n1. Loading Classified CSVs for All 3 Operators...")
     dfs = []
     for op, fname in [
-        ("Banglalink", "mybl_classified_global_2020_2026.csv"),
-        ("Grameenphone", "mygp_classified_global_2020_2026.csv"),
-        ("Robi", "myrobi_classified_global_2020_2026.csv")
+        ("Banglalink", "mybl_classified_global.csv"),
+        ("Grameenphone", "mygp_classified_global.csv"),
+        ("Robi", "myrobi_classified_global.csv")
     ]:
         p = CLS_DIR / fname
         if not p.exists():
@@ -48,7 +48,7 @@ def main():
     master_df["year"] = master_df["review_date"].dt.year
     master_df["ym"] = master_df["review_date"].dt.strftime("%Y-%m")
 
-    master_out = CLS_DIR / "all_operators_classified_global_2020_2026.csv"
+    master_out = CLS_DIR / "all_operators_classified_global.csv"
     master_df.to_csv(master_out, index=False)
     print(f"\n✓ Saved Master Classified Dataset -> {master_out.name} ({len(master_df):,d} rows)")
 

@@ -2,7 +2,7 @@
 
 > **Status: ARCHIVED / DISCARDED** (October 2026)  
 > The interactive Power BI dashboard was built during the initial proof-of-concept phase and was subsequently discarded in favor of:
-> 1. An automated, reproducible Python publication visualization suite ([`scraped_data_global_2020_2026/pipeline/generate_global_visualizations.py`](../../scraped_data_global_2020_2026/pipeline/generate_global_visualizations.py) generating 300 DPI figures in [`assets/plots/`](../../assets/plots/)).
+> 1. An automated, reproducible Python publication visualization suite ([`scraped_data_global/pipeline/generate_global_visualizations.py`](../../scraped_data_global/pipeline/generate_global_visualizations.py) generating 300 DPI figures in [`assets/plots/`](../../assets/plots/)).
 > 2. Direct production batch scoring pipelines over the full 434k review corpus without proprietary BI tool dependencies.
 
 ---
