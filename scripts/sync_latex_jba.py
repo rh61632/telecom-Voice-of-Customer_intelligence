@@ -242,7 +242,7 @@ Across the 74-month synchronized common duration (2020--2026), Robi Axiata emerg
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.88\textwidth]{monthly_nss_trend_2020_2026.png}
+\includegraphics[width=0.88\textwidth]{monthly_nss_trend_modern_era.png}
 \caption{Monthly Net Sentiment Score (NSS) Trends Across Operators (2020--2026)}
 \label{fig:monthly_nss}
 \end{figure}

@@ -367,6 +367,7 @@ def plot_yearly_sentiment_trajectory(df):
     ax_pre.grid(True, linestyle="--", alpha=0.5)
     ax_pre.legend(loc="lower center", bbox_to_anchor=(0.5, 1.02), ncol=3, frameon=True, facecolor="white", edgecolor="#BDC3C7", fontsize=9.5)
     plt.tight_layout()
+    save_plot(fig_pre, "yearly_sentiment_trend_early_era.png")
     save_plot(fig_pre, "yearly_sentiment_trend_pre2020.png")
 
     # 3. Completely separate Modern Era Plot (2020 - 2026)
@@ -395,6 +396,7 @@ def plot_yearly_sentiment_trajectory(df):
     ax_post.grid(True, linestyle="--", alpha=0.5)
     ax_post.legend(loc="lower center", bbox_to_anchor=(0.5, 1.02), ncol=3, frameon=True, facecolor="white", edgecolor="#BDC3C7", fontsize=9.5)
     plt.tight_layout()
+    save_plot(fig_post, "yearly_sentiment_trend_modern_era.png")
     save_plot(fig_post, "yearly_sentiment_trend_2020_2026.png")
 
 
@@ -620,6 +622,7 @@ def plot_monthly_nss_trend(df):
     ax_m_pre.grid(True, linestyle="--", alpha=0.5)
     ax_m_pre.legend(loc="lower center", bbox_to_anchor=(0.5, 1.02), ncol=3, frameon=True, facecolor="white", edgecolor="#BDC3C7", fontsize=9.5)
     plt.tight_layout()
+    save_plot(fig_m_pre, "monthly_nss_trend_early_era.png")
     save_plot(fig_m_pre, "monthly_nss_trend_pre2020.png")
 
     # 3. Standalone 2020 Onwards Monthly Plot
@@ -647,6 +650,7 @@ def plot_monthly_nss_trend(df):
     ax_m_post.grid(True, linestyle="--", alpha=0.5)
     ax_m_post.legend(loc="lower center", bbox_to_anchor=(0.5, 1.02), ncol=3, frameon=True, facecolor="white", edgecolor="#BDC3C7", fontsize=9.5)
     plt.tight_layout()
+    save_plot(fig_m_post, "monthly_nss_trend_modern_era.png")
     save_plot(fig_m_post, "monthly_nss_trend_2020_2026.png")
 
 

@@ -85,7 +85,7 @@ To prevent early teething volatility from compressing the modern high-volume era
 
 | Phase 1: Early Era (2016 – 2019 · $N = 20,678$) | Phase 2: Modern Era (2020 – 2026 · $N = 634,992$) |
 | :---: | :---: |
-| <img src="assets/plots/yearly_sentiment_trend_pre2020.png?v=4" width="450" alt="Early Era NSS Trajectory (2016-2019)"/> | <img src="assets/plots/yearly_sentiment_trend_2020_2026.png?v=4" width="450" alt="Modern Era NSS Trajectory (2020-2026)"/> |
+| <img src="assets/plots/yearly_sentiment_trend_early_era.png?v=5" width="450" alt="Early Era NSS Trajectory (2016-2019)"/> | <img src="assets/plots/yearly_sentiment_trend_modern_era.png?v=5" width="450" alt="Modern Era NSS Trajectory (2020-2026)"/> |
 | **Early Infancy & 4G Friction**: Scaled `[-35%, +55%]` with 0% Neutral Baseline highlighting SIM registration and the 2018 4G launch dip. | **Ecosystem Scale & Rivalry**: Scaled `[+30%, +92%]` highlighting 2023–24 VAS friction and 2026 Banglalink surge. |
 
 ### C. Operational Complaint Breakdown & Departmental Sentiment
@@ -106,7 +106,7 @@ To prevent early teething volatility from compressing the modern high-volume era
 #### Dedicated Standalone Era Trajectories (Monthly)
 | Phase 1: Early Era (Jul 2016 – Dec 2019 · 42 Months · N ≥ 30 CLT Floor) | Phase 2: Modern Era (Jan 2020 – Sep 2026 · 81 Months · N ≥ 30 CLT Floor) |
 | :---: | :---: |
-| <img src="assets/plots/monthly_nss_trend_pre2020.png?v=5" width="450" alt="Early Era Monthly NSS (2016-2019)"/> | <img src="assets/plots/monthly_nss_trend_2020_2026.png?v=5" width="450" alt="Modern Era Monthly NSS (2020-2026)"/> |
+| <img src="assets/plots/monthly_nss_trend_early_era.png?v=5" width="450" alt="Early Era Monthly NSS (2016-2019)"/> | <img src="assets/plots/monthly_nss_trend_modern_era.png?v=5" width="450" alt="Modern Era Monthly NSS (2020-2026)"/> |
 | **Acute Teething Volatility**: Detailed monthly progression through 2018's network crisis. | **Super-App Stability**: Quarterly ticks tracking seasonal recharges and modern market shifts. |
 
 ---
@@ -372,11 +372,11 @@ telecom-Voice-of-Customer_intelligence/
 │   ├── logos/                                # Official corporate logos (GP, Robi, BL)
 │   └── plots/                                # High-resolution 300 DPI visualizations
 │       ├── multi_year_sentiment_trend_line.png # 📈 Complete All-Years NSS Trajectory (2016–2026, Full Range)
-│       ├── yearly_sentiment_trend_pre2020.png  # 📉 Standalone Early Era Trajectory (2016–2019)
-│       ├── yearly_sentiment_trend_2020_2026.png # 🚀 Standalone Modern Scale Trajectory (2020–2026)
+│       ├── yearly_sentiment_trend_early_era.png # 📉 Standalone Early Era Trajectory (2016–2019)
+│       ├── yearly_sentiment_trend_modern_era.png # 🚀 Standalone Modern Scale Trajectory (2020–2026)
 │       ├── monthly_nss_trend_line.png          # 📅 Complete All-Months Continuous NSS (123 Months)
-│       ├── monthly_nss_trend_pre2020.png       # 🔍 Standalone Early Era Monthly NSS (42 Months)
-│       ├── monthly_nss_trend_2020_2026.png     # 📊 Standalone Modern Era Monthly NSS (81 Months)
+│       ├── monthly_nss_trend_early_era.png     # 🔍 Standalone Early Era Monthly NSS (42 Months)
+│       ├── monthly_nss_trend_modern_era.png   # 📊 Standalone Modern Era Monthly NSS (81 Months)
 │       ├── net_sentiment_score_comparison_bars.png
 │       ├── operator_sentiment_distribution_bars.png
 │       ├── operator_category_complaint_distribution_bars.png

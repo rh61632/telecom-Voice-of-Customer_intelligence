@@ -30,19 +30,23 @@ def resolve_best_file(candidates):
 
 
 def resolve_files():
-    ratul_candidates = [
+    annotator1_candidates = [
+        GOLD_DIR / "blind_annotation_300_annotator1.csv",
         GOLD_DIR / "blind_annotation_300_ratul.csv",
+        GOLD_DIR.parent / "pipeline" / "blind_annotation_300_annotator1.csv",
         GOLD_DIR.parent / "pipeline" / "blind_annotation_300_ratul.csv",
-        Path.cwd() / "blind_annotation_300_ratul.csv",
-        PROJECT_ROOT / "blind_annotation_300_ratul.csv",
+        Path.cwd() / "blind_annotation_300_annotator1.csv",
+        PROJECT_ROOT / "blind_annotation_300_annotator1.csv",
     ]
-    friend_candidates = [
+    annotator2_candidates = [
+        GOLD_DIR / "blind_annotation_200_annotator2.csv",
         GOLD_DIR / "blind_annotation_200_friend.csv",
+        GOLD_DIR.parent / "pipeline" / "blind_annotation_200_annotator2.csv",
         GOLD_DIR.parent / "pipeline" / "blind_annotation_200_friend.csv",
-        Path.cwd() / "blind_annotation_200_friend.csv",
-        PROJECT_ROOT / "blind_annotation_200_friend.csv",
+        Path.cwd() / "blind_annotation_200_annotator2.csv",
+        PROJECT_ROOT / "blind_annotation_200_annotator2.csv",
     ]
-    return resolve_best_file(ratul_candidates), resolve_best_file(friend_candidates)
+    return resolve_best_file(annotator1_candidates), resolve_best_file(annotator2_candidates)
 
 
 def compute_kappa(y1, y2, categories):
