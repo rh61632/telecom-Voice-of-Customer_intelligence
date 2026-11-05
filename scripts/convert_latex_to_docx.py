@@ -5,7 +5,7 @@ from pathlib import Path
 import docx
 from docx import Document
 from docx.shared import Inches, Pt, RGBColor
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_BREAK
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement, parse_xml
 from docx.oxml.ns import nsdecls, qn
@@ -15,6 +15,7 @@ TEX_PATH = DIR / "Telecom_VoC_Intelligence_JBA_Manuscript.tex"
 BIB_PATH = DIR / "references.bib"
 TEMP_TEX = DIR / "temp_for_pandoc.tex"
 DOCX_PATH = DIR / "Telecom_VoC_Intelligence_JBA_Manuscript.docx"
+BLINDED_DOCX_PATH = DIR / "Telecom_VoC_Intelligence_JBA_Manuscript_Blinded.docx"
 TITLE_PAGE_DOCX = DIR / "Title_Page_JBA.docx"
 PANDOC_EXE = r"C:\Users\user\AppData\Local\Pandoc\pandoc.exe"
 
@@ -397,5 +398,65 @@ for t in tables_to_remove:
     p = t._tbl.getparent()
     p.remove(t._tbl)
 
+# 1. Save Blinded Word manuscript (for double-blind peer review)
+doc.save(BLINDED_DOCX_PATH)
+print("Successfully generated Blinded Word manuscript at:", BLINDED_DOCX_PATH)
+
+# 2. Add Title Page to Primary Manuscript (Md. Ratul Hasan on Page 1)
+p_first = doc.paragraphs[0]
+
+p_t = p_first.insert_paragraph_before()
+p_t.alignment = WD_ALIGN_PARAGRAPH.CENTER
+p_t.paragraph_format.space_before = Pt(72)
+p_t.paragraph_format.space_after = Pt(28)
+p_t.paragraph_format.line_spacing = 1.3
+r_t = p_t.add_run("Customer Experience Volatility and Operational Shock Attribution:\nMulti-Year Telecom Evidence from Bangladesh")
+r_t.font.name = "Times New Roman"
+r_t.font.size = Pt(16)
+r_t.font.bold = True
+r_t.font.color.rgb = RGBColor(0, 0, 0)
+
+p_a = p_first.insert_paragraph_before()
+p_a.alignment = WD_ALIGN_PARAGRAPH.CENTER
+p_a.paragraph_format.space_before = Pt(24)
+p_a.paragraph_format.space_after = Pt(12)
+r_a = p_a.add_run("Md. Ratul Hasan")
+r_a.font.name = "Times New Roman"
+r_a.font.size = Pt(13)
+r_a.font.bold = True
+r_a.font.color.rgb = RGBColor(0, 0, 0)
+
+p_aff = p_first.insert_paragraph_before()
+p_aff.alignment = WD_ALIGN_PARAGRAPH.CENTER
+p_aff.paragraph_format.line_spacing = 1.3
+p_aff.paragraph_format.space_after = Pt(36)
+r_aff = p_aff.add_run(
+    "Undergraduate Student\n"
+    "Department of Electrical and Electronic Engineering\n"
+    "Jashore University of Science and Technology\n"
+    "Jashore - 7408, Bangladesh\n"
+    "Email: rh61632@gmail.com | Phone: +880 1916-277722"
+)
+r_aff.font.name = "Times New Roman"
+r_aff.font.size = Pt(11)
+r_aff.font.color.rgb = RGBColor(0, 0, 0)
+
+# Page Break after Title Page
+p_pb1 = p_first.insert_paragraph_before()
+p_pb1.paragraph_format.space_before = Pt(0)
+p_pb1.paragraph_format.space_after = Pt(0)
+r_pb1 = p_pb1.add_run()
+r_pb1.add_break(WD_BREAK.PAGE)
+
+# Page Break before 1. INTRODUCTION (so Page 2 is solely Abstract + Keywords)
+for p in doc.paragraphs:
+    if p.text.strip().startswith("1. INTRODUCTION"):
+        p_pb2 = p.insert_paragraph_before()
+        p_pb2.paragraph_format.space_before = Pt(0)
+        p_pb2.paragraph_format.space_after = Pt(0)
+        r_pb2 = p_pb2.add_run()
+        r_pb2.add_break(WD_BREAK.PAGE)
+        break
+
 doc.save(DOCX_PATH)
-print("Successfully generated and styled Blinded Word manuscript at:", DOCX_PATH)
+print("Successfully generated and styled Primary Word manuscript (with Title Page) at:", DOCX_PATH)
