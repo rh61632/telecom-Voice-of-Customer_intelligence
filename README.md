@@ -19,8 +19,6 @@
 [![Category Model: Soft--Voting Ensemble](https://img.shields.io/badge/Category%20Model-Ensemble%20(87.4%25%20Acc)-brightgreen.svg)](ml/)
 [![Inter-Annotator Reliability: Cohen's Kappa](https://img.shields.io/badge/Cohen's%20Kappa-%CE%BA%20%3D%200.77%20(Substantial)-blueviolet.svg)](data/gold_set/gold_standard_evaluation_report.md)
 [![Roadmap: TODO.txt](https://img.shields.io/badge/Roadmap-TODO.txt-orange.svg)](TODO.txt)
-[![Integrity Audit: 100% Passed](https://img.shields.io/badge/Integrity%20Audit-100%25%20Passed%20(8%20Modules)-brightgreen.svg)](scripts/audit_project_integrity.py)
-[![Academic Paper: JBA Manuscript](https://img.shields.io/badge/Academic%20Paper-JBA%20Manuscript%20(15%20Pages%2C%20APA%207)-blue.svg)](paper/journal_manuscript/)
 </div>
 
 ---
@@ -454,26 +452,11 @@ telecom-Voice-of-Customer_intelligence/
 │       ├── gold_standard_evaluation_report.md # Comprehensive validation & agreement report
 │       └── comprehensive_benchmark_table.md  # Multi-model vs human benchmark matrix
 │
-├── paper/                                    # 🎓 ACADEMIC MANUSCRIPTS & SUBMISSION SUITES
-│   ├── journal_manuscript/                   # Journal of Business Analytics (JBA / Taylor & Francis)
-│   │   ├── Telecom_VoC_Intelligence_JBA_Manuscript.pdf  # Primary unblinded manuscript (Author Page 1)
-│   │   ├── Telecom_VoC_Intelligence_JBA_Manuscript.docx # Primary unblinded Word submission (15 Pages)
-│   │   ├── Telecom_VoC_Intelligence_JBA_Manuscript_Blinded.pdf  # Double-blind peer review version
-│   │   ├── Telecom_VoC_Intelligence_JBA_Manuscript_Blinded.docx # Double-blind Word manuscript
-│   │   ├── Title_Page_JBA.docx               # Standalone Title Page deliverable
-│   │   ├── JBA_Manuscript_Empirical_Calculations.xlsx # Reconciled empirical calculations
-│   │   └── figures/                          # Vector-quality manuscript figures
-│   └── ieee_conference/                      # IEEE Conference submission drafts & templates
-│
-├── scripts/                                  # 🔬 ECONOMETRIC AUDITS & AUTOMATION PIPELINES
-│   ├── audit_project_integrity.py            # 🏆 Master test suite: 8 modules checked in <10s
+├── scripts/                                  # 🔬 Econometric Diagnostics & Analytical Scripts
 │   ├── analyze_surges.py                     # Review volume surge diagnostics & filtered RMSSD
 │   ├── audit_point1.py                       # Non-shock login leading counts & Fisher exact tests
 │   ├── audit_thresholds.py                   # Shock count sensitivity across thresholds & models
-│   ├── check_version_bias.py                 # Banglalink build telemetry auditor (v11.8.0 / v11.9.1)
-│   ├── generate_jba_latex.py                 # Generates publication-grade LaTeX manuscript
-│   ├── convert_latex_to_docx.py              # Automated LaTeX-to-DOCX converter with title page preservation
-│   └── sync_latex_jba.py                     # LaTeX synchronization utility
+│   └── check_version_bias.py                 # Banglalink build telemetry auditor (v11.8.0 / v11.9.1)
 │
 ├── scraped_data_global/            # 🌟 MASTER DATASET SUITE (N=661,160)
 │   ├── raw/                                  # 1. Scraped raw reviews (2014 - Oct 2026 with app_version)
@@ -600,48 +583,9 @@ python scripts/analyze_surges.py
 # Evaluates shock threshold sensitivity (8.0, 10.0, 12.0 pp) across classifiers:
 python scripts/audit_thresholds.py
 ```
-
-### 10. Compile Academic Journal Manuscript (PDF & DOCX)
-```bash
-# Generates and compiles publication-grade LaTeX manuscript to PDF:
-python scripts/generate_jba_latex.py
-
-# Converts LaTeX to Word DOCX maintaining Title Page on Page 1 and APA styling:
-python scripts/convert_latex_to_docx.py
-```
-
 ---
 
-## 🎓 9. Academic Journal Manuscript & Econometric Robustness Suite
-
-This research has been formalized into a comprehensive, publication-grade academic manuscript targeted for the **Journal of Business Analytics (JBA)** (Taylor & Francis):
-
-* **Manuscript Title**: *Customer Experience Volatility and Operational Shock Attribution: Multi-Year Telecom Evidence from Bangladesh*
-* **Author**: **Md. Ratul Hasan** (*Department of Electrical and Electronic Engineering, Jashore University of Science and Technology, Jashore - 7408, Bangladesh*)
-* **Document Format**: Strict 15 pages double-spaced (strictly complying with JBA's $\le 20$-page cap), APA 7th edition author-year citations via `natbib`, 16 verified scholarly references with DOIs, zero duplicate data.
-
-### 📐 Theoretical Hypotheses Evaluated & Confirmed
-
-| Hypothesis | Theoretical Foundation | Econometric Operationalization | Empirical Finding | Status |
-| :--- | :--- | :--- | :--- | :---: |
-| **H1 (Operational Asymmetry)** | Herzberg Two-Factor / SERVQUAL | Grievance concentration across core vs. secondary operational categories | Billing (>90% negative) and App Login (>87% negative) act as acute hygiene dissatisfiers; Offers are mixed (~50-56% negative). | **CONFIRMED** |
-| **H2 (Digital Volatility & Shock Dominance)** | Service Recovery & Release Quality | Attribution of large monthly sentiment shocks ($|\Delta \text{NSS}| \ge 10.0$ pp) | App Login leads functional operational domains in 27 of 35 shocks (77.1%), with pooled $\chi^2(1) = 12.83$ ($p = 0.0003$). | **CONFIRMED** |
-| **H3 (Process Stability & Volume Confounding)** | Reviewer-Mix & Asynchronous Arrival | Decoupling review volume surges ($\ge 50\%$ MoM) from operational shocks | General / Other sentiment shifts track volume arrival ($R^2 = 0.5601$). Filtering surges reduces Banglalink volatility by 44.5%. | **CONFIRMED** |
-
-### 📁 Manuscript Deliverables Matrix
-
-| File Path | Deliverable Type | Target Use Case | Page / Format Specs |
-| :--- | :--- | :--- | :--- |
-| [`paper/journal_manuscript/Telecom_VoC_Intelligence_JBA_Manuscript.docx`](paper/journal_manuscript/Telecom_VoC_Intelligence_JBA_Manuscript.docx) | Primary Word Manuscript | Official journal submission | Page 1 Title Page (Author Details), Page 2 Abstract, Page 3+ Body; APA borders. |
-| [`paper/journal_manuscript/Telecom_VoC_Intelligence_JBA_Manuscript.pdf`](paper/journal_manuscript/Telecom_VoC_Intelligence_JBA_Manuscript.pdf) | Primary LaTeX PDF | Camera-ready & preprint | 15 pages total, 1-inch margins, 12pt Times New Roman, double-spaced. |
-| [`paper/journal_manuscript/Telecom_VoC_Intelligence_JBA_Manuscript_Blinded.docx`](paper/journal_manuscript/Telecom_VoC_Intelligence_JBA_Manuscript_Blinded.docx) | Blinded Word Manuscript | Double-blind peer review | Author name, affiliation, and institutional email completely removed. |
-| [`paper/journal_manuscript/Telecom_VoC_Intelligence_JBA_Manuscript_Blinded.pdf`](paper/journal_manuscript/Telecom_VoC_Intelligence_JBA_Manuscript_Blinded.pdf) | Blinded LaTeX PDF | Double-blind peer review | 14 pages total, fully anonymized for referee evaluation. |
-| [`paper/journal_manuscript/Title_Page_JBA.docx`](paper/journal_manuscript/Title_Page_JBA.docx) | Standalone Title Page | Editorial portal upload | Author names, affiliations, corresponding address, phone, and JEL codes. |
-| [`paper/journal_manuscript/JBA_Manuscript_Empirical_Calculations.xlsx`](paper/journal_manuscript/JBA_Manuscript_Empirical_Calculations.xlsx) | Empirical Calculation Sheet | Reviewer verification | Reconciled data tables, transition matrices, shock tallies, and chi-square tests. |
-
----
-
-## 🗺️ 10. Future Roadmap & Development Milestones
+## 🗺️ 9. Future Roadmap & Development Milestones
 
 For active tracking of deferred milestones, model checkpoint hosting on Hugging Face Model Hub, and interactive Streamlit web demos, see **[TODO.txt](TODO.txt)**. Multi-annotator reliability verification (Cohen's Kappa κ = 0.5762$ on Sentiment, κ = 0.7694$ on Categories) is completed and documented in [`gold_standard_evaluation_report.md`](data/gold_set/gold_standard_evaluation_report.md).
 
