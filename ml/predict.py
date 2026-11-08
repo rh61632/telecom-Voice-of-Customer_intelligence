@@ -5,6 +5,13 @@ from pathlib import Path
 import numpy as np
 import joblib
 
+# Ensure project root is in sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from ml.language_detector import detector
+
 warnings.filterwarnings("ignore")
 
 ML_DIR = Path(__file__).resolve().parent
@@ -66,9 +73,14 @@ def predict_sentiment(text: str, model, model_name: str, cat_model=None):
             c_probs = cat_model.predict_proba([text])[0]
             cat_conf = round(float(np.max(c_probs)), 4)
 
+    # Perform automated language identification
+    lang_info = detector.analyze(text)
+
     return {
         "text": text,
         "model": model_name,
+        "language": lang_info["language"],
+        "is_code_mixed": lang_info["is_code_mixed"],
         "sentiment": prediction,
         "confidence": confidence,
         "probabilities": prob_dict,
@@ -79,7 +91,7 @@ def predict_sentiment(text: str, model, model_name: str, cat_model=None):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Predict telecom review sentiment using ML on device"
+        description="Predict telecom review sentiment and language using ML on device"
     )
     parser.add_argument(
         "--model", "-m",
@@ -104,10 +116,12 @@ def main():
 
     if args.text:
         res = predict_sentiment(args.text, model, actual_model_name, cat_model)
-        print("\n" + "=" * 60)
-        print(f"Model Architecture  : {res['model'].upper()} ML")
-        print(f"Input Review        : {res['text']}")
-        print(f"Predicted Sentiment : {res['sentiment']} (Confidence: {res['confidence'] * 100:.2f}%)")
+        code_mixed_str = " [Code-Mixed]" if res["is_code_mixed"] else ""
+        print("\n" + "=" * 65)
+        print(f"Model Architecture    : {res['model'].upper()} ML")
+        print(f"Input Review          : {res['text']}")
+        print(f"Detected Language     : {res['language']}{code_mixed_str}")
+        print(f"Predicted Sentiment   : {res['sentiment']} (Confidence: {res['confidence'] * 100:.2f}%)")
         if res["category"]:
             print(f"Predicted Comment Type: {res['category']} (Confidence: {res['category_confidence'] * 100:.2f}%)")
         if res["probabilities"]:
@@ -115,18 +129,19 @@ def main():
             for s, prob in res["probabilities"].items():
                 bar = "█" * int(prob * 25)
                 print(f"  - {s:8s}: {prob * 100:6.2f}% {bar}")
-        print("=" * 60)
+        print("=" * 65)
     else:
         print(f"Interactive Telecom Review Analyzer [{actual_model_name.upper()}]")
         print("Enter review in Bangla, Banglish, or English (type 'exit' or 'q' to quit):")
-        print("-" * 60)
+        print("-" * 65)
         while True:
             try:
                 line = input("\nReview > ").strip()
                 if not line or line.lower() in ("exit", "quit", "q"):
                     break
                 res = predict_sentiment(line, model, actual_model_name, cat_model)
-                out_str = f"-> Sentiment: {res['sentiment']} ({res['confidence'] * 100:.1f}%)"
+                cm_str = " (Code-Mixed)" if res["is_code_mixed"] else ""
+                out_str = f"-> Lang: {res['language']}{cm_str} | Sentiment: {res['sentiment']} ({res['confidence'] * 100:.1f}%)"
                 if res["category"]:
                     out_str += f" | Type: {res['category']} ({res['category_confidence'] * 100:.1f}%)"
                 print(out_str)
