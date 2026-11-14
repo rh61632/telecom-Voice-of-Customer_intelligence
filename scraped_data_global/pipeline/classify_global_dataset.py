@@ -20,50 +20,17 @@ import torch.nn as nn
 # Suppress sklearn unpickle version warnings for clean terminal logging
 warnings.filterwarnings("ignore", category=UserWarning)
 
-# Define architecture classes matching the pickled artifacts
-class Vocabulary:
-    def __init__(self, min_freq=2):
-        self.min_freq = min_freq
-        self.word2idx = {"<pad>": 0, "<unk>": 1}
-        self.idx2word = {0: "<pad>", 1: "<unk>"}
+# Ensure repo root is on sys.path for dl package imports
+REPO_ROOT_IMPORT = Path(__file__).resolve().parent.parent.parent
+if str(REPO_ROOT_IMPORT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT_IMPORT))
 
-    def transform(self, text, max_len=40):
-        words = str(text).lower().split()[:max_len]
-        seq = [self.word2idx.get(w, 1) for w in words]
-        return seq + [0] * (max_len - len(seq))
-
-
-class BahdanauAttention(nn.Module):
-    def __init__(self, hidden_dim):
-        super().__init__()
-        self.w = nn.Linear(hidden_dim, hidden_dim)
-        self.v = nn.Linear(hidden_dim, 1, bias=False)
-
-    def forward(self, rnn_outputs):
-        energy = torch.tanh(self.w(rnn_outputs))
-        weights = torch.softmax(self.v(energy), dim=1)
-        context = torch.sum(weights * rnn_outputs, dim=1)
-        return context, weights
-
-
-class HybridBiLSTMAttention(nn.Module):
-    def __init__(self, vocab_size, num_classes, embed_dim=128, hidden_dim=128):
-        super().__init__()
-        self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
-        self.bilstm = nn.LSTM(embed_dim, hidden_dim, batch_first=True, bidirectional=True)
-        self.attention = BahdanauAttention(hidden_dim * 2)
-        self.fc = nn.Sequential(
-            nn.Dropout(0.4),
-            nn.Linear(hidden_dim * 2, 64),
-            nn.ReLU(),
-            nn.Linear(64, num_classes),
-        )
-
-    def forward(self, x):
-        embedded = self.embedding(x)
-        outputs, _ = self.bilstm(embedded)
-        context, _ = self.attention(outputs)
-        return self.fc(context)
+from dl.bilstm_artifacts import (
+    Vocabulary,
+    BahdanauAttention,
+    HybridBiLSTMAttention,
+    load_bilstm_vocab,
+)
 
 
 def load_all_models(repo_root: Path):
@@ -87,7 +54,7 @@ def load_all_models(repo_root: Path):
     cat_svc = joblib.load(ml_dir / "category_linearsvc.joblib")
 
     print("4/6 Loading Deep Learning Vocabulary & Encoders...", flush=True)
-    vocab = joblib.load(dl_dir / "bilstm_vocab.joblib")
+    vocab = load_bilstm_vocab(dl_dir)
     sent_le = joblib.load(dl_dir / "sent_le.joblib")
     cat_le = joblib.load(dl_dir / "cat_le.joblib")
 

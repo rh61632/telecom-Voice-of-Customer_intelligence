@@ -1,0 +1,364 @@
+{
+  "total_reviews": 661160,
+  "runtime_seconds": 27.54,
+  "overall_distribution": {
+    "English": {
+      "count": 509887,
+      "percentage": 77.12
+    },
+    "Romanized Banglish": {
+      "count": 74515,
+      "percentage": 11.27
+    },
+    "Bangla (Native Script)": {
+      "count": 62296,
+      "percentage": 9.42
+    },
+    "Symbolic / Emoticons": {
+      "count": 14462,
+      "percentage": 2.19
+    }
+  },
+  "code_mixed_total": 16615,
+  "code_mixed_percentage": 2.51,
+  "operator_breakdown": {
+    "Banglalink": {
+      "total": 139134,
+      "distribution": {
+        "English": {
+          "count": 102352,
+          "percentage": 73.56
+        },
+        "Romanized Banglish": {
+          "count": 18536,
+          "percentage": 13.32
+        },
+        "Bangla (Native Script)": {
+          "count": 15232,
+          "percentage": 10.95
+        },
+        "Symbolic / Emoticons": {
+          "count": 3014,
+          "percentage": 2.17
+        }
+      }
+    },
+    "Grameenphone": {
+      "total": 321374,
+      "distribution": {
+        "English": {
+          "count": 252149,
+          "percentage": 78.46
+        },
+        "Romanized Banglish": {
+          "count": 34901,
+          "percentage": 10.86
+        },
+        "Bangla (Native Script)": {
+          "count": 27104,
+          "percentage": 8.43
+        },
+        "Symbolic / Emoticons": {
+          "count": 7220,
+          "percentage": 2.25
+        }
+      }
+    },
+    "Robi": {
+      "total": 200652,
+      "distribution": {
+        "English": {
+          "count": 155386,
+          "percentage": 77.44
+        },
+        "Romanized Banglish": {
+          "count": 21078,
+          "percentage": 10.5
+        },
+        "Bangla (Native Script)": {
+          "count": 19960,
+          "percentage": 9.95
+        },
+        "Symbolic / Emoticons": {
+          "count": 4228,
+          "percentage": 2.11
+        }
+      }
+    }
+  },
+  "year_breakdown": {
+    "2014": {
+      "total": 183,
+      "distribution": {
+        "English": {
+          "count": 149,
+          "percentage": 81.42
+        },
+        "Romanized Banglish": {
+          "count": 21,
+          "percentage": 11.48
+        },
+        "Bangla (Native Script)": {
+          "count": 10,
+          "percentage": 5.46
+        },
+        "Symbolic / Emoticons": {
+          "count": 3,
+          "percentage": 1.64
+        }
+      }
+    },
+    "2015": {
+      "total": 910,
+      "distribution": {
+        "English": {
+          "count": 725,
+          "percentage": 79.67
+        },
+        "Romanized Banglish": {
+          "count": 138,
+          "percentage": 15.16
+        },
+        "Bangla (Native Script)": {
+          "count": 37,
+          "percentage": 4.07
+        },
+        "Symbolic / Emoticons": {
+          "count": 10,
+          "percentage": 1.1
+        }
+      }
+    },
+    "2016": {
+      "total": 2119,
+      "distribution": {
+        "English": {
+          "count": 1631,
+          "percentage": 76.97
+        },
+        "Romanized Banglish": {
+          "count": 400,
+          "percentage": 18.88
+        },
+        "Bangla (Native Script)": {
+          "count": 60,
+          "percentage": 2.83
+        },
+        "Symbolic / Emoticons": {
+          "count": 28,
+          "percentage": 1.32
+        }
+      }
+    },
+    "2017": {
+      "total": 3472,
+      "distribution": {
+        "English": {
+          "count": 2676,
+          "percentage": 77.07
+        },
+        "Romanized Banglish": {
+          "count": 508,
+          "percentage": 14.63
+        },
+        "Bangla (Native Script)": {
+          "count": 260,
+          "percentage": 7.49
+        },
+        "Symbolic / Emoticons": {
+          "count": 28,
+          "percentage": 0.81
+        }
+      }
+    },
+    "2018": {
+      "total": 5064,
+      "distribution": {
+        "English": {
+          "count": 3828,
+          "percentage": 75.59
+        },
+        "Romanized Banglish": {
+          "count": 661,
+          "percentage": 13.05
+        },
+        "Bangla (Native Script)": {
+          "count": 546,
+          "percentage": 10.78
+        },
+        "Symbolic / Emoticons": {
+          "count": 29,
+          "percentage": 0.57
+        }
+      }
+    },
+    "2019": {
+      "total": 10813,
+      "distribution": {
+        "English": {
+          "count": 8109,
+          "percentage": 74.99
+        },
+        "Romanized Banglish": {
+          "count": 1511,
+          "percentage": 13.97
+        },
+        "Bangla (Native Script)": {
+          "count": 1070,
+          "percentage": 9.9
+        },
+        "Symbolic / Emoticons": {
+          "count": 123,
+          "percentage": 1.14
+        }
+      }
+    },
+    "2020": {
+      "total": 77471,
+      "distribution": {
+        "English": {
+          "count": 61599,
+          "percentage": 79.51
+        },
+        "Romanized Banglish": {
+          "count": 9162,
+          "percentage": 11.83
+        },
+        "Bangla (Native Script)": {
+          "count": 5619,
+          "percentage": 7.25
+        },
+        "Symbolic / Emoticons": {
+          "count": 1091,
+          "percentage": 1.41
+        }
+      }
+    },
+    "2021": {
+      "total": 96302,
+      "distribution": {
+        "English": {
+          "count": 74578,
+          "percentage": 77.44
+        },
+        "Romanized Banglish": {
+          "count": 12507,
+          "percentage": 12.99
+        },
+        "Bangla (Native Script)": {
+          "count": 7736,
+          "percentage": 8.03
+        },
+        "Symbolic / Emoticons": {
+          "count": 1481,
+          "percentage": 1.54
+        }
+      }
+    },
+    "2022": {
+      "total": 101562,
+      "distribution": {
+        "English": {
+          "count": 78120,
+          "percentage": 76.92
+        },
+        "Romanized Banglish": {
+          "count": 12880,
+          "percentage": 12.68
+        },
+        "Bangla (Native Script)": {
+          "count": 8596,
+          "percentage": 8.46
+        },
+        "Symbolic / Emoticons": {
+          "count": 1966,
+          "percentage": 1.94
+        }
+      }
+    },
+    "2023": {
+      "total": 92154,
+      "distribution": {
+        "English": {
+          "count": 69429,
+          "percentage": 75.34
+        },
+        "Romanized Banglish": {
+          "count": 11376,
+          "percentage": 12.34
+        },
+        "Bangla (Native Script)": {
+          "count": 9156,
+          "percentage": 9.94
+        },
+        "Symbolic / Emoticons": {
+          "count": 2193,
+          "percentage": 2.38
+        }
+      }
+    },
+    "2024": {
+      "total": 107196,
+      "distribution": {
+        "English": {
+          "count": 81900,
+          "percentage": 76.4
+        },
+        "Romanized Banglish": {
+          "count": 12176,
+          "percentage": 11.36
+        },
+        "Bangla (Native Script)": {
+          "count": 10025,
+          "percentage": 9.35
+        },
+        "Symbolic / Emoticons": {
+          "count": 3095,
+          "percentage": 2.89
+        }
+      }
+    },
+    "2025": {
+      "total": 107243,
+      "distribution": {
+        "English": {
+          "count": 84344,
+          "percentage": 78.65
+        },
+        "Bangla (Native Script)": {
+          "count": 11605,
+          "percentage": 10.82
+        },
+        "Romanized Banglish": {
+          "count": 8611,
+          "percentage": 8.03
+        },
+        "Symbolic / Emoticons": {
+          "count": 2683,
+          "percentage": 2.5
+        }
+      }
+    },
+    "2026": {
+      "total": 56671,
+      "distribution": {
+        "English": {
+          "count": 42799,
+          "percentage": 75.52
+        },
+        "Bangla (Native Script)": {
+          "count": 7576,
+          "percentage": 13.37
+        },
+        "Romanized Banglish": {
+          "count": 4564,
+          "percentage": 8.05
+        },
+        "Symbolic / Emoticons": {
+          "count": 1732,
+          "percentage": 3.06
+        }
+      }
+    }
+  }
+}

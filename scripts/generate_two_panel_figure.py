@@ -1,3 +1,4 @@
+import pathlib
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -165,12 +166,23 @@ ax_b2.set_ylim(0, 2750)
 ax_b2.grid(True, linestyle=':', alpha=0.55, axis='y')
 ax_b2.legend(loc='upper left', frameon=True, facecolor='white', framealpha=0.9, edgecolor='#CCCCCC', fontsize=7.2)
 
-fig_path = 'paper/journal_manuscript/figures/monthly_nss_trend_modern_era.png'
-plt.savefig(fig_path, dpi=300, bbox_inches='tight')
-# Also save backward-compatible copy and update assets/plots
-plt.savefig('paper/journal_manuscript/figures/monthly_nss_trend_2020_2026.png', dpi=300, bbox_inches='tight')
-plt.savefig('assets/plots/monthly_nss_trend_modern_era.png', dpi=300, bbox_inches='tight')
-plt.savefig('scraped_data_global/plots/monthly_nss_trend_modern_era.png', dpi=300, bbox_inches='tight')
+target_paths = [
+    pathlib.Path('paper/figures/monthly_nss_trend_modern_era.png'),
+    pathlib.Path('paper/figures/monthly_nss_trend_2020_2026.png'),
+    pathlib.Path('assets/plots/monthly_nss_trend_modern_era.png'),
+    pathlib.Path('assets/plots/monthly_nss_trend_2020_2026.png'),
+    pathlib.Path('scraped_data_global/plots/monthly_nss_trend_modern_era.png'),
+    pathlib.Path('scraped_data_global/plots/monthly_nss_trend_2020_2026.png'),
+]
+
+for p in target_paths:
+    p.parent.mkdir(parents=True, exist_ok=True)
+
+plt.savefig(target_paths[0], dpi=300, bbox_inches='tight')
 plt.close()
 
-print(f"Compact two-panel figure saved to: {fig_path}")
+img_bytes = target_paths[0].read_bytes()
+for p in target_paths[1:]:
+    p.write_bytes(img_bytes)
+
+print(f"Compact two-panel figure saved to all {len(target_paths)} target paths with identical bytes!")

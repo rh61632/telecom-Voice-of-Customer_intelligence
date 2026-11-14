@@ -54,6 +54,11 @@ FIELDNAMES = [
     "review_text",
     "thumbs_up",
     "operator",
+    "app_version",
+    "user_image",
+    "developer_reply",
+    "developer_reply_date",
+    "is_enriched",
 ]
 
 
@@ -100,7 +105,7 @@ def get_existing_review_ids_and_cutoff(out_csv: Path):
         return set(), START_DATE
 
 
-def run_scraper(op_key: str, incremental: bool = False):
+def run_scraper(op_key: str, incremental: bool = False, lang: str = "en", country: str = "us"):
     if op_key not in CONFIGS:
         print(f"Unknown operator key: {op_key}. Choose from: gp, bl, robi")
         sys.exit(1)
@@ -162,8 +167,8 @@ def run_scraper(op_key: str, incremental: bool = False):
                 try:
                     batch, token = reviews(
                         app_id,
-                        lang="en",
-                        country="us",
+                        lang=lang,
+                        country=country,
                         sort=Sort.NEWEST,
                         count=199,
                         continuation_token=token,
@@ -200,14 +205,27 @@ def run_scraper(op_key: str, incremental: bool = False):
                     hit_start_boundary = True
                     break
 
+                rev_id = str(r.get("reviewId") or "").strip()
+                if not rev_id:
+                    continue
+
+                replied_at = r.get("repliedAt")
+                reply_text = r.get("replyContent")
+                app_ver = r.get("appVersion") or r.get("reviewCreatedVersion")
+
                 row = {
-                    "review_id": str(r.get("reviewId", "")),
-                    "user_name": str(r.get("userName", "A Google user")),
-                    "rating": int(r.get("score", 0)),
+                    "review_id": rev_id,
+                    "user_name": str(r.get("userName") or "A Google user"),
+                    "rating": int(r.get("score") or 0),
                     "review_date": rev_dt.strftime("%Y-%m-%d %H:%M:%S"),
-                    "review_text": str(r.get("content", "")).strip(),
-                    "thumbs_up": int(r.get("thumbsUpCount", 0)),
+                    "review_text": str(r.get("content") or "").strip(),
+                    "thumbs_up": int(r.get("thumbsUpCount") or 0),
                     "operator": op_name,
+                    "app_version": str(app_ver).strip() if app_ver else None,
+                    "user_image": str(r.get("userImage")).strip() if r.get("userImage") else None,
+                    "developer_reply": str(reply_text).strip() if reply_text else None,
+                    "developer_reply_date": replied_at.strftime("%Y-%m-%d %H:%M:%S") if replied_at else None,
+                    "is_enriched": True,
                 }
                 valid_rows.append(row)
 
@@ -243,6 +261,10 @@ def run_scraper(op_key: str, incremental: bool = False):
                 new_df = new_df[~new_df["review_id"].astype(str).isin(existing_ids)]
             print(f"[{op_name}] Appending {len(new_df):,d} genuinely new reviews (after dedup).")
             if len(new_df) > 0:
+                if out_csv.exists():
+                    existing_cols = pd.read_csv(out_csv, nrows=0).columns.tolist()
+                    if existing_cols:
+                        new_df = new_df.reindex(columns=existing_cols)
                 # Append to existing CSV
                 new_df.to_csv(out_csv, mode="a", header=not out_csv.exists(), index=False)
         elif incremental and not new_rows:
@@ -271,6 +293,8 @@ if __name__ == "__main__":
             "Appends new rows and deduplicates by review_id. Much faster for routine refreshes."
         )
     )
+    parser.add_argument("--lang", type=str, default="en", help="Language code (default: en)")
+    parser.add_argument("--country", type=str, default="us", help="Country code (default: us)")
     args = parser.parse_args()
-    run_scraper(args.operator, incremental=args.incremental)
+    run_scraper(args.operator, incremental=args.incremental, lang=args.lang, country=args.country)
 

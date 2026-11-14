@@ -55,11 +55,12 @@ def main():
     # 2. Extract Common Duration Window (up to Sep 30, 2026)
     print("\n2. Extracting Common Duration Window...")
     df_sep = master_df[master_df["review_date"] <= "2026-09-30 23:59:59"].copy()
-    start_common = max(df_sep[df_sep["operator"] == op]["review_date"].min() for op in OPERATOR_SERIAL)
+    # Align to start of first complete calendar month (August 1, 2016)
+    start_common = pd.Timestamp("2016-08-01 00:00:00")
     end_common = min(df_sep[df_sep["operator"] == op]["review_date"].max() for op in OPERATOR_SERIAL)
 
     common_df = df_sep[(df_sep["review_date"] >= start_common) & (df_sep["review_date"] <= end_common)].copy()
-    days = (end_common - start_common).days
+    days = (end_common.normalize() - start_common.normalize()).days + 1
 
     common_out = CLS_DIR / "all_operators_common_duration_classified.csv"
     common_df.to_csv(common_out, index=False)

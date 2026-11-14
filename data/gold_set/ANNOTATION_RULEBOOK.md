@@ -109,6 +109,12 @@ If annotating operational category, assign each review to exactly one primary bu
 | **4** | **`Offers & Data Packs`** | High data pack prices, short validity (e.g. 3-day validity complaints), request for cheaper GB, "Amar Offer" relevance, minute bundle pricing. |
 | **5** | **`General Appreciation / Other`** | General app praise (*"Good app"*, *"Five star"*), store rating praise, non-telecom complaints, or general salutations. |
 
+### Edge-Case Disambiguation Note (`[BLIND_106]` / `[BLIND_111]`)
+* **Data Pack & Tariff Pricing vs Generic Price Complaints**:
+  * Explicit complaints regarding data packs, internet bundle costs, or minute rates (*"MB package dam beshi"*, *"internet rate high"*) map strictly to **`Offers & Data Packs`**.
+  * Generic, uncontextualized cost or price complaints (*"Good but price is some high"*, `[BLIND_106]`; *"khali tk besi 🫠"*, `[BLIND_111]`) sit on the taxonomic boundary between **`Billing & Airtime Deductions`** (if interpreted as overall monetary charges/airtime cost) and **`Offers & Data Packs`** (if interpreted as tariff rates), or **`General Appreciation / Other`** (when mixed with general praise as a mild qualification).
+  * **Empirical Audit Integrity (`ADR-003`)**: Historical blind annotations recorded in `blind_annotation_300_annotator1.csv` and `blind_annotation_200_annotator2.csv` are preserved verbatim without post-hoc modification to protect the empirical integrity of inter-annotator agreement metrics ($\kappa$).
+
 ---
 
 ## ⚡ Quick-Reference Annotation Cheat Sheet
@@ -126,4 +132,6 @@ Review Text                                          | Rating | Correct Sentimen
 "Normal app cholbe"                                  | 3★     | Neutral           | General Appreciation / Other
 "Alhamdulillah khub sundor service"                  | 5★     | Positive          | General Appreciation / Other
 "Faltu network gram e kono 4G thake na"              | 1★     | Negative          | Network Speed & 4G Latency
+"Good but price is some high" [BLIND_106]            | 4★     | Neg/Pos [Boundary]| Billing / General [Boundary]
+"khali tk besi 🫠" [BLIND_111]                        | 5★     | Negative          | Billing & Airtime Deductions
 ```

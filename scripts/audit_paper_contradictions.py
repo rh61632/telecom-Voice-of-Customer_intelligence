@@ -20,7 +20,7 @@ cats = [
 
 # 1. Total across 4 domains
 sub_4 = df[df['predicted_category'].isin(cats[:4])]
-print(f"Total reviews in 4 domains: {len(sub_4)} (Paper says: 88,184)")
+print(f"Total reviews in 4 domains: {len(sub_4)} (Paper says: 88,181)")
 
 # Table 3 check
 print("\n--- TABLE 3 AUDIT (Exact) ---")

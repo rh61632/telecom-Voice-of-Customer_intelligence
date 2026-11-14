@@ -3,7 +3,8 @@ Linguistic Cohort Identification Module for Multilingual Telecom Voice-of-Custom
 
 Implements the two-stage linguistic partitioning methodology grounded in:
 1. Barman et al. (2014, EMNLP): Unicode script-level filtering and sub-word n-gram heuristics.
-2. Gambäck & Das (2016, LREC): Code-Mixing Index (CMI) dominance threshold (CMI <= 30 / >= 70% language dominance).
+2. Gambäck & Das (2016, LREC): Code-Mixing Index (CMI) dominance threshold (CMI <= 30 / >= 70% language dominance),
+   augmented with a secondary 0.60 English token ratio typo-tolerance fallback for short Latin text with zero Banglish lexicon matches.
 
 Categorizes input reviews into:
 - Bangla (Native Script)
@@ -81,6 +82,11 @@ BANGLISH_PHONETIC_MARKERS = {
 class LanguageClassifier:
     """
     Automated Language and Linguistic Sub-Cohort Classifier.
+
+    Uses a two-tier decision heuristic:
+      - Primary threshold: 0.70 English token ratio dominance (Gambäck & Das 2016).
+      - Secondary fallback: 0.60 English token ratio when zero Banglish phonetic markers
+        are present, tolerating minor typos in short customer reviews (e.g., 'Veary High price').
     """
 
     def __init__(self, script_threshold: float = 0.25, dominance_threshold: float = 0.70):
@@ -143,14 +149,14 @@ class LanguageClassifier:
         # Code-Mixing Index (Gambäck & Das 2016)
         is_mixed = (banglish_matches > 0 and english_matches > 0)
 
-        # Classification decision rules
-        if banglish_matches > 0 and banglish_ratio >= 0.15:
+        # Classification decision rules (Option B: Two-tier threshold)
+        if banglish_matches > 0:
             lang = "Romanized Banglish"
-        elif english_ratio >= self.dominance_threshold and banglish_matches == 0:
+        elif english_ratio >= self.dominance_threshold:
             lang = "English"
-        elif banglish_matches > 0:
-            lang = "Romanized Banglish"
         elif english_ratio >= 0.60:
+            # Secondary fallback: allows minor spelling typos in short Latin text
+            # with 0 Banglish dictionary hits (e.g. 'Veary High price')
             lang = "English"
         else:
             lang = "Romanized Banglish"

@@ -80,15 +80,18 @@ def load_dataset() -> pd.DataFrame:
         raise FileNotFoundError(f"Could not locate processed data at {DATA_PROCESSED_PRIMARY} or {DATA_PROCESSED_ARCHIVE}")
 
     files = [
-        data_dir / "mygp_classified_reviews.csv",
-        data_dir / "myrobi_classified_reviews.csv",
-        data_dir / "mybl_classified_reviews.csv",
+        (data_dir / "mygp_classified_reviews.csv", "Grameenphone"),
+        (data_dir / "myrobi_classified_reviews.csv", "Robi"),
+        (data_dir / "mybl_classified_reviews.csv", "Banglalink"),
     ]
 
     dfs = []
-    for f in files:
+    for f, fallback_op in files:
         if f.exists():
-            dfs.append(pd.read_csv(f))
+            d = pd.read_csv(f)
+            if "operator" not in d.columns:
+                d["operator"] = fallback_op
+            dfs.append(d)
 
     if not dfs:
         raise FileNotFoundError("No review CSV files found to load.")
@@ -216,9 +219,13 @@ def run_cv_experiment(df, task, label_map, args, device, tokenizer):
         val_loader = DataLoader(val_ds, batch_size=args.batch_size * 2, shuffle=False)
 
         # Re-initialize clean model from pretrained checkpoint for each fold
+        id2label = {v: k for k, v in label_map.items()}
+        label2id = label_map
         model = AutoModelForSequenceClassification.from_pretrained(
             MODEL_NAME,
             num_labels=num_classes,
+            id2label=id2label,
+            label2id=label2id,
         ).to(device)
 
         class_weights = compute_class_weights(labels[train_idx], num_classes, device)
@@ -264,6 +271,18 @@ def run_cv_experiment(df, task, label_map, args, device, tokenizer):
     print(f"  Accuracy : {mean_acc*100:.2f}% ± {std_acc*100:.2f}%")
     print("=" * 75)
 
+    # Structured 5-fold CV logging
+    report_file = REPORTS_DIR / "banglabert_finetuning_report.txt"
+    mode = "w" if (task == "sentiment" or not report_file.exists()) else "a"
+    with open(report_file, mode, encoding="utf-8") as rf:
+        rf.write(f"\n=======================================================\n")
+        rf.write(f"BUET BanglaBERT {task.upper()} 5-Fold Stratified Cross-Validation\n")
+        rf.write(f"=======================================================\n")
+        for i, (f1_val, acc_val) in enumerate(zip(fold_f1_scores, fold_acc_scores), 1):
+            rf.write(f"Fold {i}: Macro-F1 = {f1_val:.4f}, Accuracy = {acc_val*100:.2f}%\n")
+        rf.write(f"Mean Macro-F1: {mean_f1:.4f} +/- {std_f1:.4f}\n")
+        rf.write(f"Mean Accuracy: {mean_acc*100:.2f}% +/- {std_acc*100:.2f}%\n")
+
     return mean_f1, mean_acc, fold_f1_scores, fold_acc_scores
 
 
@@ -285,9 +304,13 @@ def train_production_checkpoint(df, task, label_map, args, device, tokenizer):
     train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True)
     test_loader = DataLoader(test_ds, batch_size=args.batch_size * 2, shuffle=False)
 
+    id2label = {v: k for k, v in label_map.items()}
+    label2id = label_map
     model = AutoModelForSequenceClassification.from_pretrained(
         MODEL_NAME,
         num_labels=num_classes,
+        id2label=id2label,
+        label2id=label2id,
     ).to(device)
 
     class_weights = compute_class_weights(train_labels, num_classes, device)

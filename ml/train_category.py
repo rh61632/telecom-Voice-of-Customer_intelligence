@@ -80,35 +80,52 @@ def get_feature_extractor() -> FeatureUnion:
     Combined Sub-word Character N-Gram and Word N-Gram TF-IDF Feature Extractor.
     Captures phonetic Banglish spelling patterns as well as key domain terms
     like 'mb', 'offer', 'net', 'speed', 'login', 'taka', 'kete nei'.
+
+    Parameters are aligned with the deployed Google Colab production model
+    (category_voting_classifier.joblib):
+      - Word TF-IDF: (1, 2) n-grams, min_df=2, max_features=12000, sublinear_tf=True
+      - Char TF-IDF: analyzer='char', (3, 5) n-grams, min_df=2, max_features=25000, sublinear_tf=True
     """
     return FeatureUnion([
         ("word_tfidf", TfidfVectorizer(
             ngram_range=(1, 2),
             min_df=2,
+            max_features=12000,
             sublinear_tf=True,
         )),
         ("char_tfidf", TfidfVectorizer(
-            analyzer="char_wb",
+            analyzer="char",
             ngram_range=(3, 5),
-            min_df=3,
+            min_df=2,
+            max_features=25000,
             sublinear_tf=True,
         )),
     ])
 
 
 def build_models():
-    """Build baseline, logistic regression, calibrated LinearSVC, and ensemble pipelines."""
+    """
+    Build baseline, logistic regression, calibrated LinearSVC, and ensemble pipelines.
+    Hyperparameters and classifier pipelines are aligned with the deployed Google Colab
+    category voting ensemble (category_voting_classifier.joblib):
+      - Logistic Regression: C=2.5, class_weight='balanced', max_iter=1000
+      - Calibrated LinearSVC: cv=3, LinearSVC(C=1.0, class_weight='balanced', max_iter=2000)
+      - ComplementNB: alpha=0.5, norm=False
+      - Soft-Voting Ensemble: weights=[2.0, 2.5, 1.0]
+    """
     feat = get_feature_extractor()
 
     clf_lr = LogisticRegression(
+        C=2.5,
         class_weight="balanced",
         max_iter=1000,
         random_state=42,
     )
     clf_svc = CalibratedClassifierCV(
-        LinearSVC(class_weight="balanced", random_state=42)
+        estimator=LinearSVC(C=1.0, class_weight="balanced", max_iter=2000, random_state=42),
+        cv=3,
     )
-    clf_cnb = ComplementNB(norm=True)
+    clf_cnb = ComplementNB(alpha=0.5, norm=False)
 
     models = {
         "Statistical Floor (Dummy - Most Frequent)": Pipeline([
@@ -128,7 +145,7 @@ def build_models():
             ("classifier", VotingClassifier(
                 estimators=[("lr", clf_lr), ("svc", clf_svc), ("cnb", clf_cnb)],
                 voting="soft",
-                weights=[2, 2, 1],
+                weights=[2.0, 2.5, 1.0],
             )),
         ]),
     }
@@ -187,13 +204,17 @@ def evaluate_models_cross_validation(df: pd.DataFrame):
     return results
 
 
-def train_and_export_category_models(df: pd.DataFrame):
-    """Train final category models on entire seed dataset and save to disk."""
+def train_and_export_category_models(df: pd.DataFrame, save_to_disk: bool = False):
+    """
+    Train final category models on entire seed dataset.
+    To protect deployed production weights from accidental degradation,
+    weights are only dumped to disk if save_to_disk=True.
+    """
     X = df["review_text"]
     y = df["category"]
 
     print("\n" + "=" * 70)
-    print("TRAINING & EXPORTING PRODUCTION CATEGORY MODELS")
+    print("TRAINING & EVALUATING PRODUCTION CATEGORY MODELS")
     print("=" * 70)
 
     models = build_models()
@@ -202,22 +223,31 @@ def train_and_export_category_models(df: pd.DataFrame):
     lr_pipe = models["Primary Logistic Regression"]
     lr_pipe.fit(X, y)
     lr_path = MODELS_DIR / "category_logistic_regression.joblib"
-    joblib.dump(lr_pipe, lr_path)
-    print(f"Saved: {lr_path.name}")
+    if save_to_disk:
+        joblib.dump(lr_pipe, lr_path)
+        print(f"Saved: {lr_path.name}")
+    else:
+        print(f"Fitted in-memory: {lr_path.name} (disk export skipped to protect deployed model)")
 
     # 2. Challenger LinearSVC
     svc_pipe = models["Challenger Calibrated LinearSVC"]
     svc_pipe.fit(X, y)
     svc_path = MODELS_DIR / "category_linearsvc.joblib"
-    joblib.dump(svc_pipe, svc_path)
-    print(f"Saved: {svc_path.name}")
+    if save_to_disk:
+        joblib.dump(svc_pipe, svc_path)
+        print(f"Saved: {svc_path.name}")
+    else:
+        print(f"Fitted in-memory: {svc_path.name} (disk export skipped to protect deployed model)")
 
     # 3. Hero Soft-Voting Ensemble
     ensemble_pipe = models["Soft-Voting Ensemble (Hero Model)"]
     ensemble_pipe.fit(X, y)
     ensemble_path = MODELS_DIR / "category_voting_classifier.joblib"
-    joblib.dump(ensemble_pipe, ensemble_path)
-    print(f"Saved: {ensemble_path.name}")
+    if save_to_disk:
+        joblib.dump(ensemble_pipe, ensemble_path)
+        print(f"Saved: {ensemble_path.name}")
+    else:
+        print(f"Fitted in-memory: {ensemble_path.name} (disk export skipped to protect deployed production model)")
 
     return ensemble_pipe
 
@@ -244,7 +274,7 @@ Trained on $N = {len(df):,d}$ multi-operator customer reviews across Grameenphon
 """
     for name, m in results.items():
         status = "Baseline Floor" if "Dummy" in name else ("Hero Model" if "Ensemble" in name else "Candidate")
-        md_content += f"| **{name}** | {m['mean_macro_f1']:.4f} ± {m['mean_macro_f1']:.4f} | {m['mean_weighted_f1']:.4f} | {m['mean_acc']*100:.2f}% ± {m['std_acc']*100:.2f}% | {status} |\n"
+        md_content += f"| **{name}** | {m['mean_macro_f1']:.4f} ± {m['std_macro_f1']:.4f} | {m['mean_weighted_f1']:.4f} | {m['mean_acc']*100:.2f}% ± {m['std_acc']*100:.2f}% | {status} |\n"
 
     md_content += f"""
 ## Final Hero Model (Soft-Voting Ensemble) Full Dataset Evaluation

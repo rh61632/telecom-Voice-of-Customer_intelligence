@@ -9,22 +9,23 @@ In mobile app review datasets, 1-word and 2-word reviews (e.g., *"Good"*, *"Nice
 
 | Filter Setting | Samples ($N$) | Retained | Category Macro-F1 | Category Acc | Sentiment Macro-F1 | Sentiment Acc | **Gold Set Macro-F1** | Gold Set Acc |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Full Dataset (No Filter)** | 4,499 | 100.0% | 0.7845 | 87.44% | 0.7917 | 88.20% | **0.6737** | 80.17% |
-| **Filtered (>= 3 words, removing 1-2 word reviews)** | 3,886 | 86.4% | 0.7791 | 85.98% | 0.7847 | 87.29% | **0.7318** | 77.54% |
-| **Aggressive Filter (>= 5 words, removing short snippets)** | 2,285 | 50.8% | 0.7446 | 79.34% | 0.7774 | 84.46% | **0.6989** | 70.94% |
+| **Full Dataset (No Filter)** | 4,500 | 100.0% | 0.7892 | 87.78% | 0.7914 | 88.22% | **0.5571** | 82.00% |
+| **Filtered (>= 3 words, removing 1-2 word reviews)** | 3,887 | 86.4% | 0.7803 | 85.95% | 0.7822 | 87.37% | **0.5632** | 67.65% |
+| **Aggressive Filter (>= 5 words, removing short snippets)** | 2,286 | 50.8% | 0.7498 | 80.05% | 0.7825 | 84.78% | **0.7556** | 82.05% |
 
 ## Key Insights & Discoveries
 
-1. **Massive Surge in Gold Standard Macro-F1 (+6.55% to +7.80%):**
-   * On the **Human Gold Standard Ground Truth**, Macro-F1 jumped from **`0.6781`** on the full dataset up to **`0.7436`** when removing 1-2 word reviews (≥ 3$ words).
-   * **Why?** Very short reviews on the Play Store frequently contain user misclicks (giving 1 star while saying "Good" or giving 5 stars while writing "faltu"), ambiguous emojis without context, and isolated sarcastic words. When reviews have at least 3 words, syntactic context enables the NLP models to reliably separate true sentiment.
+1. **Surge in Gold Standard Macro-F1 (+0.61% to +19.85%):**
+   * On the active **Human Gold Standard Ground Truth** (`blind_annotation_300_annotator1.csv`), Macro-F1 increased from **`0.5571`** on the full dataset ($N=300$) to **`0.5632`** when removing 1–2 word reviews ($\ge 3$ words, $N=68$), and reached **`0.7556`** under aggressive filtering ($\ge 5$ words, $N=39$).
+   * *Note on sample count:* In the active gold standard ($N=300$), 77.3% (232/300) of reviews contain only 1–2 words (e.g., single-word affirmations or emojis), reducing the evaluated subset to $N=68$ for $\ge 3$ words and $N=39$ for $\ge 5$ words.
+   * **Why?** Very short reviews on the Play Store frequently contain user misclicks (giving 1 star while saying "Good" or giving 5 stars while writing "faltu"), ambiguous emojis without context, and isolated sarcastic words. When reviews have at least 3 to 5 words, syntactic context enables the NLP models to reliably separate true sentiment.
 
 2. **Improvement in Operational Category Precision:**
    * Removing generic short reviews reduced the dilution of the dataset by *General Appreciation / Other*.
    * Per-class precision for technical telecom categories improved substantially:
-     * **`Billing & Airtime Deductions`**: Precision increased from **64.82% ➔ 67.38%**
-     * **`App Login & Technical Bugs`**: Precision increased from **74.45% ➔ 76.26%**
-     * **`Offers & Data Packs`**: F1-score increased from **0.8309 ➔ 0.8326**
+     * **`Billing & Airtime Deductions`**: Precision increased from **64.08% ➔ 66.15%**
+     * **`App Login & Technical Bugs`**: Precision increased from **75.24% ➔ 76.77%**
+     * **`Offers & Data Packs`**: F1-score: **0.8403 ➔ 0.8331**
 
 3. **Why Overall Accuracy Slightly Decreased (The Trivial Baseline Paradox):**
    * In the unfiltered dataset, 60.7% of reviews were generic *General Appreciation / Other* (mostly trivial 1-word praise).
@@ -34,6 +35,6 @@ In mobile app review datasets, 1-word and 2-word reviews (e.g., *"Good"*, *"Nice
 - Full Production Models (Original):
   - `ml/models/ensemble_voting_classifier.joblib` (Sentiment)
   - `ml/models/category_voting_classifier.joblib` (Category)
-- Filtered Models (≥ 3$ words):
+- Filtered Models ($\ge 3$ words):
   - `ml/models/sentiment_ensemble_filtered_min3words.joblib`
   - `ml/models/category_ensemble_filtered_min3words.joblib`

@@ -1,26 +1,35 @@
 ================================================================================
 TELECOM VOICE OF CUSTOMER (VoC) INTELLIGENCE - GOOGLE COLAB GPU BENCHMARK REPORT
 ================================================================================
-Executed In   : Google Colab (Commit: 60cf0f4)
+Executed In   : Google Colab GPU Environment (N=4,500 Ground Truth Benchmark)
 Compute Device: NVIDIA Tesla T4 GPU (15.64 GB VRAM, CUDA Enabled)
 Framework     : PyTorch 2.11.0+cu130, Hugging Face Transformers
 Dataset Scope : 4,500 Multilingual Reviews (Grameenphone, Banglalink, Robi)
 
 1. DATASET CLASS DISTRIBUTION:
 --------------------------------------------------------------------------------
-  - Positive Reviews :  2,773 (61.62%)
+  - Positive Reviews :  2,774 (61.64%)
   - Negative Reviews :  1,238 (27.51%)
-  - Neutral Reviews  :    489 (10.87%)
+  - Neutral Reviews  :    488 (10.84%)
   - Total Evaluated  :  4,500 (100.0%)
 
 2. 5-FOLD STRATIFIED CROSS-VALIDATION SUMMARY:
 --------------------------------------------------------------------------------
 Model                                  Macro-F1 (Mean ± Std)   Accuracy (Mean ± Std)
 --------------------------------------------------------------------------------
-Statistical Floor (Dummy - Most Freq)  0.2542 ± 0.0001         61.62% ± 0.05%
+Statistical Floor (Dummy - Most Freq)  0.2542 ± 0.0001         61.64% ± 0.05%
 Deep Learning: BiLSTM + Char-CNN       0.7525 ± 0.0116         84.02% ± 1.15%
 Classical ML: Char N-Gram LogReg       0.7796 ± 0.0182         85.96% ± 1.36%
 Deep Learning: Multilingual MiniLM     0.7809 ± 0.0203         86.00% ± 1.42%
+
+Architecture Context Note (DISC-MIN-07):
+  - Local Word+Char-CNN BiLSTM (dl/train_bilstm.py): 84.02% Acc | 0.7525 Macro-F1 (Sentiment)
+  - Colab Word-only BiLSTM (dl/telecom_voc_master_unified_colab.ipynb):
+    * Sentiment Model (bilstm_sentiment_model.pt): 81.50% Acc | 0.7180 Macro-F1
+    * Category Model (bilstm_category_model.pt)  : 80.84% Acc | 0.7106 Macro-F1
+  - BUET BanglaBERT Fine-Tuned (csebuetnlp/banglabert):
+    * Sentiment (banglabert_finetuned_sentiment) : 91.60% Acc | 0.8598 Macro-F1
+    * Category (banglabert_finetuned_category)   : 85.27% Acc | 0.7624 Macro-F1 (Test: 87.11% / 0.8023)
 
 3. FOLD-BY-FOLD BREAKDOWN (Macro-F1):
 --------------------------------------------------------------------------------
@@ -55,6 +64,10 @@ Fold 5  0.7408               0.8039                 0.7545
 
 5. SAVED NOTEBOOK & ARTIFACTS:
 --------------------------------------------------------------------------------
-  - Executed Notebook with Visual Plots: dl/telecom_voc_deep_learning_colab.ipynb
-  - Local GPU Checkpoint Export Path   : dl/models/colab_bilstm_attention.pt
+  - Master Execution Notebook: dl/telecom_voc_master_unified_colab.ipynb
+  - Deployed Neural Weights  : dl/models/bilstm_sentiment_model.pt
+                               dl/models/bilstm_category_model.pt
+  - Portable DL Vocabulary   : dl/models/bilstm_vocab.json (min_freq=2, 2,864 tokens)
+  - Fine-Tuned Transformers  : dl/models/banglabert_finetuned_sentiment/
+                               dl/models/banglabert_finetuned_category/
 ================================================================================

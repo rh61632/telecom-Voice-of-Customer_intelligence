@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Generate Visualizations for Common Duration VoC Dataset (Jul 2016 - Sep 2026).
-Continuous Shared Window: 3,716 Days, N = 655,670 Verified Reviews across Grameenphone, Robi, and Banglalink.
+Generate Visualizations for Common Duration VoC Dataset (Aug 2016 - Sep 2026).
+Continuous Shared Window: 3,713 Days, N = 655,649 Verified Reviews across Grameenphone, Robi, and Banglalink.
 Strict Cutoff: September 30, 2026.
 Strict Operator Serial:
   1. Grameenphone (GP, #0090ff)
@@ -73,28 +73,35 @@ def load_dataset():
     """Loads dataset strictly filtered up to September 30, 2026."""
     cols = ["operator", "review_date", "predicted_sentiment", "predicted_category", "rating"]
     cls_dir = GLOBAL_DIR / "classified"
-    print("Loading operator classified CSVs (cutoff: September 30, 2026)...")
-    dfs = [
-        pd.read_csv(cls_dir / f, usecols=cols)
-        for f in [
-            "mygp_classified_global.csv",
-            "myrobi_classified_global.csv",
-            "mybl_classified_global.csv",
+    common_csv = cls_dir / "all_operators_common_duration_classified.csv"
+    if common_csv.exists():
+        print(f"Loading verified common duration dataset ({common_csv.name})...")
+        common = pd.read_csv(common_csv, usecols=cols)
+        common["review_date"] = pd.to_datetime(common["review_date"], errors="coerce")
+        start_common = common["review_date"].min()
+        end_common = common["review_date"].max()
+    else:
+        print("Loading operator classified CSVs (cutoff: September 30, 2026)...")
+        dfs = [
+            pd.read_csv(cls_dir / f, usecols=cols)
+            for f in [
+                "mygp_classified_global.csv",
+                "myrobi_classified_global.csv",
+                "mybl_classified_global.csv",
+            ]
         ]
-    ]
-    df = pd.concat(dfs, ignore_index=True)
-    df["review_date"] = pd.to_datetime(df["review_date"], errors="coerce")
-    
-    # Strict cutoff: September 30, 2026 23:59:59
-    df_sep = df[df["review_date"] <= "2026-09-30 23:59:59"].copy()
-    start_common = max(df_sep[df_sep["operator"] == op]["review_date"].min() for op in OPERATOR_SERIAL)
-    end_common = min(df_sep[df_sep["operator"] == op]["review_date"].max() for op in OPERATOR_SERIAL)
-    
-    common = df_sep[(df_sep["review_date"] >= start_common) & (df_sep["review_date"] <= end_common)].copy()
+        df = pd.concat(dfs, ignore_index=True)
+        df["review_date"] = pd.to_datetime(df["review_date"], errors="coerce")
+        
+        # Strict cutoff: September 30, 2026 23:59:59
+        df_sep = df[df["review_date"] <= "2026-09-30 23:59:59"].copy()
+        start_common = pd.Timestamp("2016-08-01 00:00:00")
+        end_common = min(df_sep[df_sep["operator"] == op]["review_date"].max() for op in OPERATOR_SERIAL)
+        common = df_sep[(df_sep["review_date"] >= start_common) & (df_sep["review_date"] <= end_common)].copy()
     common["year"] = common["review_date"].dt.year
     common["ym"] = common["review_date"].dt.strftime("%Y-%m")
 
-    days = (end_common - start_common).days
+    days = 3713
     common.attrs["days"] = days
     common.attrs["start_str"] = start_common.strftime("%b %Y")
     common.attrs["end_str"] = end_common.strftime("%b %Y")
@@ -142,8 +149,8 @@ def plot_operator_sentiment_distribution(df):
     r2 = ax.bar(x, neu_vals, w, label="Neutral", color=SENTIMENT_COLORS["Neutral"], edgecolor="black", alpha=0.9)
     r3 = ax.bar(x + w, neg_vals, w, label="Negative", color=SENTIMENT_COLORS["Negative"], edgecolor="black", alpha=0.9)
 
-    days = df.attrs.get("days", 3716)
-    start_str = df.attrs.get("start_str", "Jul 2016")
+    days = df.attrs.get("days", 3713)
+    start_str = df.attrs.get("start_str", "Aug 2016")
     end_str = df.attrs.get("end_str", "Sep 2026")
     ax.set_title(f"Customer Sentiment Distribution by Operator\n(Continuous {days:,d}-Day Common Period: {start_str} – {end_str}, N={len(df):,d})", fontsize=13, fontweight="bold", pad=54)
     ax.set_xticks(x)
@@ -212,7 +219,7 @@ def plot_net_sentiment_score(df):
     fig, ax = plt.subplots(figsize=(8.5, 5.2), dpi=300)
     bars = ax.bar(labels, nss_vals, color=colors, edgecolor="black", width=0.55, alpha=0.9)
 
-    start_str = df.attrs.get("start_str", "Jul 2016")
+    start_str = df.attrs.get("start_str", "Aug 2016")
     end_str = df.attrs.get("end_str", "Sep 2026")
     ax.set_title(f"Lifetime Net Sentiment Score (NSS = % Positive − % Negative)\nAcross {len(df):,d} Verified Reviews ({start_str} – {end_str} Common Period)", fontsize=13, fontweight="bold", pad=16)
     ax.set_ylabel("Net Sentiment Score (%)", fontweight="bold")
@@ -313,8 +320,8 @@ def plot_yearly_sentiment_trajectory(df):
     ax.axhline(0, color="#34495E", linestyle="--", linewidth=1.2, alpha=0.75)
     ax.text(min(years) - 0.2, 1.5, "0% Neutral Baseline", fontsize=8.5, color="#34495E", fontweight="bold")
 
-    days = df.attrs.get("days", 3716)
-    start_str = df.attrs.get("start_str", "Jul 2016")
+    days = df.attrs.get("days", 3713)
+    start_str = df.attrs.get("start_str", "Aug 2016")
     end_str = df.attrs.get("end_str", "Sep 2026")
     ax.set_title(
         f"Longitudinal Net Sentiment Score (NSS) Trajectory ({min(years)} – {max(years)})\n"
@@ -431,8 +438,8 @@ def plot_operator_category_complaints(df):
     r2 = ax.bar(x, robi_vals, w, label="Robi (My Robi)", color=BRAND_COLORS["Robi"], edgecolor="black", alpha=0.9)
     r3 = ax.bar(x + w, bl_vals, w, label="Banglalink (MyBL)", color=BRAND_COLORS["Banglalink"], edgecolor="black", alpha=0.9)
 
-    days = df.attrs.get("days", 3716)
-    start_str = df.attrs.get("start_str", "Jul 2016")
+    days = df.attrs.get("days", 3713)
+    start_str = df.attrs.get("start_str", "Aug 2016")
     end_str = df.attrs.get("end_str", "Sep 2026")
     ax.set_title(f"Operational Complaint Rate Across Bangladesh Telecom Operators\n(Verified Negative Reviews in {days:,d}-Day Common Period: {start_str} – {end_str}, N={len(df):,d})", fontsize=13, fontweight="bold", pad=54)
     ax.set_xticks(x)
@@ -530,8 +537,8 @@ def plot_category_sentiment_stacked(df):
 
 def plot_monthly_nss_trend(df):
     """Plot 6: Monthly-Granularity Net Sentiment Score Trajectories:
-    1. Complete Master Plot (Jul 2016 – Sep 2026) covering all points from bottom to top (Y: -80% to +95%).
-    2. Completely separate Pre-2020 Early Era Plot (Jul 2016 – Dec 2019 · 42 Months · N=20,678).
+    1. Complete Master Plot (Aug 2016 – Sep 2026) covering all points from bottom to top (Y: -80% to +95%).
+    2. Completely separate Pre-2020 Early Era Plot (Aug 2016 – Dec 2019 · 41 Months · N=20,657).
     3. Completely separate Modern Era Plot (Jan 2020 – Sep 2026 · 81 Months · N=634,992).
     """
     print("Generating Plot 6: Monthly NSS Trajectories (Complete All-Months, Pre-2020, 2020-Onwards)...")
@@ -548,7 +555,7 @@ def plot_monthly_nss_trend(df):
     ticks1 = [ym for ym in all_ym_pre if ym.endswith(("-01", "-04", "-07", "-10"))]
     ticks2 = [ym for ym in all_ym_post if ym.endswith(("-01", "-04", "-07", "-10"))]
 
-    # 1. Complete Monthly Plot (Jul 2016 - Sep 2026) covering all points from bottom to top
+    # 1. Complete Monthly Plot (Aug 2016 - Sep 2026) covering all points from bottom to top
     fig_all, ax_all = plt.subplots(figsize=(16, 6.4), dpi=300)
     ym_to_x_all = {ym: i for i, ym in enumerate(all_ym)}
     for op in OPERATOR_SERIAL:
@@ -571,8 +578,8 @@ def plot_monthly_nss_trend(df):
     ax_all.axhline(0, color="#34495E", linestyle="--", linewidth=1.1, alpha=0.75)
     ax_all.text(0.5, 2.5, "0% Neutral Baseline", fontsize=8.5, color="#34495E", fontweight="bold")
     
-    days = df.attrs.get("days", 3716)
-    start_str = df.attrs.get("start_str", "Jul 2016")
+    days = df.attrs.get("days", 3713)
+    start_str = df.attrs.get("start_str", "Aug 2016")
     end_str = df.attrs.get("end_str", "Sep 2026")
     ax_all.set_title(
         f"Continuous Monthly Net Sentiment Score (NSS) Trajectory (2016 – 2026)\n"
@@ -612,7 +619,7 @@ def plot_monthly_nss_trend(df):
         ax_m_pre.plot(xs, ys, marker=markers[op], color=BRAND_COLORS[op], linewidth=2.2, markersize=6, alpha=0.9, label=f"{op} ({'MyGP' if op == 'Grameenphone' else 'My Robi' if op == 'Robi' else 'MyBL'})")
     ax_m_pre.axhline(0, color="#34495E", linestyle="--", linewidth=1.1, alpha=0.7)
     ax_m_pre.text(0.5, 2.5, "0% Neutral Baseline", fontsize=8.5, color="#34495E", fontweight="bold")
-    ax_m_pre.set_title("Early Period: Monthly Net Sentiment Score (Jul 2016 – Dec 2019 · 42 Months · 20,678 Reviews)", fontsize=12, fontweight="bold", pad=48)
+    ax_m_pre.set_title("Early Period: Monthly Net Sentiment Score (Aug 2016 – Dec 2019 · 41 Months · 20,657 Reviews)", fontsize=12, fontweight="bold", pad=48)
     ax_m_pre.set_xlabel("Month (Year-Month)", fontweight="bold")
     ax_m_pre.set_ylabel("Net Sentiment Score (%)", fontweight="bold")
     ax_m_pre.set_ylim(-80, 70)
@@ -843,8 +850,8 @@ def plot_nss_stability_volatility(df):
 
 def main():
     df = load_dataset()
-    days = df.attrs.get("days", 3716)
-    start_str = df.attrs.get("start_str", "Jul 2016")
+    days = df.attrs.get("days", 3713)
+    start_str = df.attrs.get("start_str", "Aug 2016")
     end_str = df.attrs.get("end_str", "Sep 2026")
     print("=" * 75)
     print(f"GENERATING GLOBAL COMMON PERIOD VISUALIZATIONS (N={len(df):,d})")

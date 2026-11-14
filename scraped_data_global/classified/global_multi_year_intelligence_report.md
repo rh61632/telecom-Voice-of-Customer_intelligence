@@ -1,6 +1,6 @@
-# 📡 Voice-of-Customer Intelligence Report (Jul 2016 – Sep 2026 Common Period)
+# 📡 Voice-of-Customer Intelligence Report (Aug 2016 – Sep 2026 Common Period)
 ### Exhaustive Macro-Level Sentiment & Operational Category Analysis across Bangladesh Telecoms
-**Common Duration Benchmark Scale**: $N = 655,670$ Verified Google Play Customer Reviews (3,716 Shared Days)  
+**Common Duration Benchmark Scale**: $N = 655,649$ Verified Google Play Customer Reviews (3,713 Shared Days)  
 **Master Corpus in Storage**: $N = 661,160$ Unique Reviews (March 2014 – October 2026)  
 **Operators Evaluated**: Grameenphone Ltd. (MyGP), Robi Axiata Limited (My Robi), Banglalink Digital Communications Limited (MyBL)  
 **Strict Operator Serial**: Grameenphone, Robi, Banglalink  
@@ -10,14 +10,14 @@
 
 ## 🏆 1. Executive Summary & Common Duration Operator Performance
 
-Across the shared 3,716-day common window (July 28, 2016 – September 30, 2026, $N = 655,670$ reviews where all three operators coexist simultaneously), every review was scored by the **Hero Soft-Voting Ensemble** (trained on 4,500 seed reviews and benchmarked against an empirical human gold standard), cross-verified with **PyTorch BiLSTM + Attention**, **Logistic Regression**, and **LinearSVC**.
+Across the shared 3,713-day common window (August 01, 2016 – September 30, 2026, $N = 655,649$ reviews where all three operators coexist simultaneously), every review was scored by the **Hero Soft-Voting Ensemble** (trained on 4,500 seed reviews and benchmarked against an empirical human gold standard), cross-verified with **PyTorch BiLSTM + Attention**, **Logistic Regression**, and **LinearSVC**.
 
 | Operator | Total Reviews Harvested | Positive (%) | Neutral (%) | Negative (%) | Net Sentiment Score (NSS) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Grameenphone** | **320,143** | **77.0%** (246,501) | **10.8%** (34,747) | **12.2%** (38,895) | **+64.85%** |
+| **Grameenphone** | **320,140** | **77.0%** (246,500) | **10.8%** (34,746) | **12.2%** (38,894) | **+64.85%** |
 | **Robi** | **198,378** | **77.9%** (154,477) | **10.2%** (20,166) | **12.0%** (23,735) | **+65.91%** |
-| **Banglalink** | **137,149** | **70.4%** (96,525) | **12.3%** (16,853) | **17.3%** (23,771) | **+53.05%** |
-| **Combined Industry Total** | **655,670** | **75.9%** (497,503) | **10.9%** (71,766) | **13.2%** (86,401) | **+62.70%** |
+| **Banglalink** | **137,131** | **70.4%** (96,509) | **12.3%** (16,851) | **17.3%** (23,771) | **+53.04%** |
+| **Combined Industry Total** | **655,649** | **75.9%** (497,486) | **10.9%** (71,763) | **13.2%** (86,400) | **+62.70%** |
 
 > **Net Sentiment Score Formula**:  
 > $$\text{NSS} = \left(\frac{N_{\text{Positive}} - N_{\text{Negative}}}{N_{\text{Total}}}\right) \times 100$$  
@@ -29,9 +29,9 @@ Across the shared 3,716-day common window (July 28, 2016 – September 30, 2026,
 
 | Year | Operator | Volume | Net Sentiment Score (NSS) | Positive (%) | Negative (%) |
 | :---: | :--- | :---: | :---: | :---: | :---: |
-| **2016** | **Grameenphone** | 441 | **+2.5%** | 39.7% | 37.2% |
+| **2016** | **Grameenphone** | 438 | **+2.5%** | 39.7% | 37.2% |
 | **2016** | **Robi** | 126 | **-57.9%** | 14.3% | 72.2% |
-| **2016** | **Banglalink** | 762 | **+46.3%** | 63.8% | 17.4% |
+| **2016** | **Banglalink** | 744 | **+45.3%** | 63.2% | 17.9% |
 | **2017** | **Grameenphone** | 587 | **+13.5%** | 46.0% | 32.5% |
 | **2017** | **Robi** | 367 | **-50.7%** | 17.7% | 68.4% |
 | **2017** | **Banglalink** | 2,518 | **+45.5%** | 66.5% | 21.0% |
@@ -67,13 +67,13 @@ Across the shared 3,716-day common window (July 28, 2016 – September 30, 2026,
 
 ## 🏷️ 3. Operational Category Distribution
 
-Across all 655,670 common period reviews, the operational categories broke down as follows:
+Across all 655,649 common period reviews, the operational categories broke down as follows:
 
-- **General Appreciation / Other  **: 86.55% (567,486 reviews)  
+- **General Appreciation / Other  **: 86.55% (567,468 reviews)  
   `██████████████████████████████████`
-- **Offers & Data Packs           **:  5.04% (33,078 reviews)  
+- **Offers & Data Packs           **:  5.04% (33,077 reviews)  
   `██`
-- **App Login & Technical Bugs    **:  4.99% (32,703 reviews)  
+- **App Login & Technical Bugs    **:  4.99% (32,701 reviews)  
   `█`
 - **Network Speed & 4G Latency    **:  2.46% (16,108 reviews)  
   ``

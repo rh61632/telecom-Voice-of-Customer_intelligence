@@ -9,28 +9,30 @@ This folder contains the complete Deep Learning pipeline, neural model architect
 
 ### 🏆 1. Master Unified Colab Suite (All ML + DL Models in One File)
 
-* [**`telecom_voc_master_unified_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_master_unified_colab.ipynb): **Complete Unified Production Suite**. Trains, evaluates, and benchmarks **both Sentiment Analysis and Operational Comment Types** across Classical Soft-Voting Ensembles, Hybrid BiLSTM+Attention (PyTorch GPU), and Multilingual Sentence Transformers with automated 1-click model packaging.
+* [**`telecom_voc_master_unified_colab.ipynb`**](telecom_voc_master_unified_colab.ipynb): **Complete Unified Production Suite**. Trains, evaluates, and benchmarks **both Sentiment Analysis and Operational Comment Types** across Classical Soft-Voting Ensembles, Hybrid BiLSTM+Attention (PyTorch GPU word-level model with Bahdanau attention), and Multilingual Sentence Transformers with automated 1-click model packaging.
   * **Direct Colab Link**:
     ```text
     https://colab.research.google.com/github/rh61632/telecom-Voice-of-Customer_intelligence/blob/main/dl/telecom_voc_master_unified_colab.ipynb
     ```
 
 ### Specialized Single-Task Notebooks
-2. [**`telecom_voc_banglabert_finetuning_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_banglabert_finetuning_colab.ipynb): 🇧🇩 **BUET BanglaBERT Full End-to-End Fine-Tuning** (`csebuetnlp/banglabert` 110M params). Performs 5-Fold Stratified CV and production model training with backpropagation through all 12 transformer layers.
+2. [**`telecom_voc_banglabert_finetuning_colab.ipynb`**](telecom_voc_banglabert_finetuning_colab.ipynb): 🇧🇩 **BUET BanglaBERT Full End-to-End Fine-Tuning** (`csebuetnlp/banglabert` 110M params). Performs 5-Fold Stratified CV and production model training with backpropagation through all 12 transformer layers.
    * **Direct Colab Link**:
      ```text
      https://colab.research.google.com/github/rh61632/telecom-Voice-of-Customer_intelligence/blob/main/dl/telecom_voc_banglabert_finetuning_colab.ipynb
      ```
-3. [**`telecom_voc_deep_learning_colab.ipynb`**](file:///home/ratul/Github/telecom-Voice-of-Customer_intelligence/dl/telecom_voc_deep_learning_colab.ipynb): Focused **Sentiment Classification** (Positive, Neutral, Negative).
+3. [**`telecom_voc_deep_learning_colab.ipynb`**](telecom_voc_deep_learning_colab.ipynb): Focused **Sentiment Classification** (Positive, Neutral, Negative).
 4. [**`archive/early_dl_experiments/telecom_voc_comment_type_classification_colab.ipynb`**](../archive/early_dl_experiments/telecom_voc_comment_type_classification_colab.ipynb): [Archived] Early exploratory frozen feature extractor notebook. Superseded by full fine-tuning notebook above.
 
 ---
 
-### 💻 Local / CLI Training Scripts
+### 💻 Local / CLI Training & Inference Scripts
 * `dl/finetune_banglabert.py`: CLI for full fine-tuning of BanglaBERT (`--task both --epochs 4 --batch_size 32`).
 * `dl/train_bilstm.py`: PyTorch BiLSTM + Attention training for Sentiment.
 * `dl/train_bilstm_category.py`: PyTorch BiLSTM + Attention training for Operational Categories.
 * `dl/train_transformer.py`: Pretrained Multilingual MiniLM sentence embeddings + classifier head.
+* `dl/predict_dl.py`: Unified multi-architecture CLI inference for BiLSTM, MiniLM, and BanglaBERT.
+* `dl/bilstm_artifacts.py`: Shared neural architectures and portable vocabulary loaders (`bilstm_vocab.json`).
 
 ---
 
@@ -59,7 +61,7 @@ Evaluated on the 4,500 curated ground-truth reviews across **Grameenphone**, **R
 | 🥇 | **BUET BanglaBERT (Fine-Tuned)** | **91.60%** | **0.8598** | Full 12-layer backpropagation (`csebuetnlp/banglabert`) |
 | 🥈 | **Hero Soft-Voting ML Ensemble** | **87.47%** | **0.7684** | Calibrated probability soft-voting classifier (~17.5k rev/s CPU) |
 | 🥉 | **Multilingual MiniLM Head** | **82.33%** | **0.7475** | Multilingual sentence semantic representations (`paraphrase-multilingual-MiniLM-L12-v2`) |
-| 4 | **Hybrid BiLSTM + Attention (GPU)** | **81.50%** | **0.7180** | Sequential context modeling with sub-word token embeddings |
+| 4 | **Hybrid BiLSTM + Attention (GPU)** | **81.50%** | **0.7180** | 1-layer word-level BiLSTM with Bahdanau additive attention |
 
 ---
 
@@ -75,21 +77,26 @@ Evaluated on the 4,500 curated ground-truth reviews across **Grameenphone**, **R
 | 🥇 | **Hero Soft-Voting ML Ensemble** | **87.44%** | **0.7845** | Dual-Gram TF-IDF + Logistic Regression + LinearSVC + ComplementNB |
 | 🥈 | **BUET BanglaBERT (Fine-Tuned)** | **85.27%** | **0.7624** | Full 12-layer backpropagation (`csebuetnlp/banglabert`) |
 | 🥉 | **Multilingual MiniLM Head** | **81.15%** | **0.7247** | `paraphrase-multilingual-MiniLM-L12-v2` 384-dim dense vectors |
-| 4 | **Hybrid BiLSTM + Attention (GPU)** | **80.84%** | **0.7106** | PyTorch BiLSTM + Bahdanau Attention with class-weighted loss |
+| 4 | **Hybrid BiLSTM + Attention (GPU)** | **80.84%** | **0.7106** | 1-layer word-level BiLSTM with Bahdanau additive attention and class-weighted loss |
 
 > [!NOTE]
-> **Ablation Study (Frozen vs. Fine-Tuned)**: Evaluating BUET BanglaBERT as a static frozen feature extractor achieved 74.88% CV Accuracy / 0.6253 Macro-F1. End-to-end fine-tuning delivered a **+10.39% leap** to 85.27% CV Accuracy / 0.7624 Macro-F1, proving the necessity of fine-tuning for adapting to domain-specific Romanized Banglish. The original frozen head notebook is archived in [`archive/early_dl_experiments/`](../archive/early_dl_experiments/).
+> **Ablation Study (Frozen vs. Fine-Tuned)**: Evaluating BUET BanglaBERT as a static frozen feature extractor achieved 74.88% CV Accuracy / 0.6253 Macro-F1. End-to-end fine-tuning delivered a **+10.39% leap** to 85.27% CV Accuracy / 0.7624 Macro-F1 (with held-out test split reaching 87.11% Accuracy / 0.8023 Macro-F1), proving the necessity of fine-tuning for adapting to domain-specific Romanized Banglish. The original frozen head notebook is archived in [`archive/early_dl_experiments/`](../archive/early_dl_experiments/).
+
+> [!NOTE]
+> **Out-of-Domain Linguistic Limitation (DISC-MIN-08)**: BUET BanglaBERT was pretrained predominantly on native Bengali script. While achieving state-of-the-art representations on native Bangla script and mixed domains, heavy Romanized Banglish (phonetic Bengali in Latin script) is out-of-domain for its subword vocabulary. In high-density Romanized Banglish production environments, pairing with the Dual-Gram TF-IDF Classical Ensemble is recommended.
 
 ---
 
 ## 📂 Saved Artifacts in `dl/models/`
 
-* `bilstm_sentiment_model.pt`: Trained PyTorch weights for Sentiment Analysis
-* `bilstm_category_model.pt`: Trained PyTorch weights for Operational Comment Types
-* `bilstm_vocab.joblib`: Serialized vocabulary dictionary
-* `sent_le.joblib`: Sentiment label encoder
-* `cat_le.joblib`: Operational category label encoder
+* `bilstm_sentiment_model.pt`: Trained PyTorch weights for Sentiment Analysis (1-layer word-only HybridBiLSTMAttention)
+* `bilstm_category_model.pt`: Trained PyTorch weights for Operational Comment Types (1-layer word-only HybridBiLSTMAttention)
+* `bilstm_vocab.json`: Portable JSON vocabulary dictionary (2,864 words, min_freq=2, unpickler-free)
+* `bilstm_vocab.joblib`: Serialized legacy vocabulary (preserved for backward compatibility)
+* `sent_le.joblib`: Sentiment label encoder (used by BiLSTM and MiniLM)
+* `cat_le.joblib`: Operational category label encoder (alphabetical class order, used by BiLSTM and MiniLM)
 * `minilm_sent_head.joblib`: Regularized MiniLM classification head (Sentiment)
 * `minilm_cat_head.joblib`: Regularized MiniLM classification head (Category)
-* `banglabert_finetuned_sentiment/`: Fine-tuned BUET BanglaBERT model for Sentiment (91.60% CV Acc)
-* `banglabert_finetuned_category/`: Fine-tuned BUET BanglaBERT model for Operational Categories (85.27% CV Acc)
+* `banglabert_finetuned_sentiment/`: Fine-tuned BUET BanglaBERT model for Sentiment (91.60% CV Acc, 88.40% Test)
+* `banglabert_finetuned_category/`: Fine-tuned BUET BanglaBERT model for Operational Categories (85.27% CV Acc, 87.11% Test)
+* `../banglabert_finetuned_models.zip`: Repacked zip bundle containing verified explicit config.json mappings and exact safetensors weights

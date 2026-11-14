@@ -20,9 +20,9 @@ Each review contains dual annotations:
 ## 2. Verified Human Gold Standard (`data/gold_set/`)
 
 Dual-annotator zero-leakage human ground truth used for empirical inter-annotator reliability and production model auditing:
-- `data/gold_set/blind_annotation_300_ratul.csv` (Primary blind human review, $N = 300$)
-- `data/gold_set/blind_annotation_200_friend.csv` (Overlapping independent secondary review, $N = 200$)
-- `data/gold_set/calculate_agreement.py` (Cohen's Kappa evaluator: κ = 0.7694$ Substantial Agreement)
+- `data/gold_set/blind_annotation_300_annotator1.csv` (Primary blind human review, $N = 300$, Annotator 1)
+- `data/gold_set/blind_annotation_200_annotator2.csv` (Overlapping independent secondary review, $N = 200$, Annotator 2)
+- `data/gold_set/calculate_agreement.py` (Cohen's Kappa evaluator: Sentiment $\kappa = 0.5762$, Category $\kappa = 0.7694$)
 - `data/gold_set/ANNOTATION_RULEBOOK.md` (Taxonomy annotation protocol & edge cases)
 - `data/gold_set/gold_standard_evaluation_report.md` (Scientific evaluation report)
 - `data/gold_set/comprehensive_benchmark_table.md` (Multi-model benchmark table against human consensus)
@@ -34,4 +34,4 @@ python data/gold_set/calculate_agreement.py
 
 ---
 
-> ℹ️ **Note**: The master multi-year corpus ($N = 661,160$, 2014–2026) and the 3,716-day common window benchmark ($N = 655,670$, July 2016 – September 2026) are maintained in [`scraped_data_global/`](../scraped_data_global/).
+> ℹ️ **Note**: The master multi-year corpus ($N = 661,160$, 2014–2026) and the 3,713-day common window benchmark ($N = 655,649$, August 2016 – September 2026) are maintained in [`scraped_data_global/`](../scraped_data_global/).

@@ -6,7 +6,7 @@ Purpose:
 2. Strictly deduplicates records: exact same operator, timestamp, text, and user.
 3. Reuses existing classifications for already processed reviews and runs the full model suite on any new reviews.
 4. Saves the complete multi-year master classified dataset (N=661,160).
-5. Isolates the common temporal duration where ALL THREE operators have simultaneous reviews (July 28, 2016 to September 30, 2026, 3,716 Days, N=655,670).
+5. Isolates the common temporal duration where ALL THREE operators have simultaneous reviews (August 1, 2016 to September 30, 2026, 3,713 Days, N=655,649).
 """
 
 import sys
@@ -22,50 +22,23 @@ import torch.nn as nn
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
-# Define PyTorch architectures matching the pickled models
-class Vocabulary:
-    def __init__(self, min_freq=2):
-        self.min_freq = min_freq
-        self.word2idx = {"<pad>": 0, "<unk>": 1}
-        self.idx2word = {0: "<pad>", 1: "<unk>"}
+RAW_COLUMNS = [
+    "review_id", "user_name", "rating", "review_date", "review_text",
+    "thumbs_up", "operator", "app_version", "user_image",
+    "developer_reply", "developer_reply_date", "is_enriched"
+]
 
-    def transform(self, text, max_len=40):
-        words = str(text).lower().split()[:max_len]
-        seq = [self.word2idx.get(w, 1) for w in words]
-        return seq + [0] * (max_len - len(seq))
+# Ensure repo root is on sys.path for dl package imports
+REPO_ROOT_IMPORT = Path(__file__).resolve().parent.parent.parent
+if str(REPO_ROOT_IMPORT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT_IMPORT))
 
-
-class BahdanauAttention(nn.Module):
-    def __init__(self, hidden_dim):
-        super().__init__()
-        self.w = nn.Linear(hidden_dim, hidden_dim)
-        self.v = nn.Linear(hidden_dim, 1, bias=False)
-
-    def forward(self, rnn_outputs):
-        energy = torch.tanh(self.w(rnn_outputs))
-        weights = torch.softmax(self.v(energy), dim=1)
-        context = torch.sum(weights * rnn_outputs, dim=1)
-        return context, weights
-
-
-class HybridBiLSTMAttention(nn.Module):
-    def __init__(self, vocab_size, num_classes, embed_dim=128, hidden_dim=128):
-        super().__init__()
-        self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
-        self.bilstm = nn.LSTM(embed_dim, hidden_dim, batch_first=True, bidirectional=True)
-        self.attention = BahdanauAttention(hidden_dim * 2)
-        self.fc = nn.Sequential(
-            nn.Dropout(0.4),
-            nn.Linear(hidden_dim * 2, 64),
-            nn.ReLU(),
-            nn.Linear(64, num_classes),
-        )
-
-    def forward(self, x):
-        embedded = self.embedding(x)
-        outputs, _ = self.bilstm(embedded)
-        context, _ = self.attention(outputs)
-        return self.fc(context)
+from dl.bilstm_artifacts import (
+    Vocabulary,
+    BahdanauAttention,
+    HybridBiLSTMAttention,
+    load_bilstm_vocab,
+)
 
 
 def load_all_models(repo_root: Path):
@@ -80,7 +53,7 @@ def load_all_models(repo_root: Path):
     cat_lr = joblib.load(ml_dir / "category_logistic_regression.joblib")
     cat_svc = joblib.load(ml_dir / "category_linearsvc.joblib")
 
-    vocab = joblib.load(dl_dir / "bilstm_vocab.joblib")
+    vocab = load_bilstm_vocab(dl_dir)
     sent_le = joblib.load(dl_dir / "sent_le.joblib")
     cat_le = joblib.load(dl_dir / "cat_le.joblib")
 
@@ -221,12 +194,25 @@ def main():
             df["operator"] = op_name
             if "review_id" not in df.columns:
                 df["review_id"] = [f"{op_name[:2].lower()}_bd_{i}" for i in range(len(df))]
+            for col in RAW_COLUMNS:
+                if col not in df.columns:
+                    df[col] = False if col == "is_enriched" else None
 
         combined = pd.concat([df_us, df_bd], ignore_index=True)
         raw_len = len(combined)
 
-        # Strict deduplication: exact operator, review_date, review_text, user_name
-        dedup = combined.drop_duplicates(subset=["operator", "review_date", "review_text", "user_name"]).copy()
+        # Strict deduplication:
+        # Preserve distinct non-null review_ids (e.g. historical pairs sharing 4-tuple but distinct review_ids).
+        # Deduplicate strictly by non-null review_id when present, or by 4-tuple when review_id is missing.
+        has_id = combined["review_id"].notna() & (combined["review_id"].astype(str).str.strip() != "")
+        df_with_id = combined[has_id].drop_duplicates(subset=["review_id"]).copy()
+        df_no_id = combined[~has_id].drop_duplicates(subset=["operator", "review_date", "review_text", "user_name"]).copy()
+        id_tuples = set(zip(df_with_id["operator"], df_with_id["review_date"], df_with_id["review_text"], df_with_id["user_name"]))
+        keep_no_id = [
+            (op, dt, txt, user) not in id_tuples
+            for op, dt, txt, user in zip(df_no_id["operator"], df_no_id["review_date"], df_no_id["review_text"], df_no_id["user_name"])
+        ]
+        dedup = pd.concat([df_with_id, df_no_id[keep_no_id]], ignore_index=True)
         dedup_len = len(dedup)
         print(f"  Raw: {raw_len:,d} -> Deduplicated: {dedup_len:,d} (Dropped {raw_len - dedup_len:,d} exact duplicates)")
         print(f"  Range: {dedup['review_date'].min()} to {dedup['review_date'].max()}")
@@ -240,11 +226,32 @@ def main():
                 "category_logistic", "category_linearsvc", "category_bilstm"
             ]
             
-            merged = dedup.merge(
-                op_existing[["review_date", "review_text", "user_name"] + cls_cols],
-                on=["review_date", "review_text", "user_name"],
-                how="left"
-            )
+            if "review_id" in op_existing.columns and "review_id" in dedup.columns:
+                op_existing_id = op_existing.dropna(subset=["review_id"]).drop_duplicates(subset=["review_id"])
+                merged = dedup.merge(
+                    op_existing_id[["review_id"] + cls_cols],
+                    on="review_id",
+                    how="left"
+                )
+                unclassified_mask = merged["predicted_sentiment"].isna()
+                if unclassified_mask.any():
+                    op_existing_tuple = op_existing.drop_duplicates(subset=["review_date", "review_text", "user_name"])
+                    fallback_merged = dedup.loc[unclassified_mask, ["review_date", "review_text", "user_name"]].merge(
+                        op_existing_tuple[["review_date", "review_text", "user_name"] + cls_cols],
+                        on=["review_date", "review_text", "user_name"],
+                        how="left",
+                        validate="many_to_one"
+                    )
+                    for col in cls_cols:
+                        merged.loc[unclassified_mask, col] = fallback_merged[col].values
+            else:
+                op_existing_tuple = op_existing.drop_duplicates(subset=["review_date", "review_text", "user_name"])
+                merged = dedup.merge(
+                    op_existing_tuple[["review_date", "review_text", "user_name"] + cls_cols],
+                    on=["review_date", "review_text", "user_name"],
+                    how="left",
+                    validate="many_to_one"
+                )
             
             unclassified_mask = merged["predicted_sentiment"].isna()
             num_unclassified = unclassified_mask.sum()
@@ -269,7 +276,7 @@ def main():
         raw_out = raw_glob_dir / f"{file_key}_global.csv"
         cls_out = cls_dir / f"{file_key}_classified_global.csv"
 
-        dedup[["review_id", "user_name", "rating", "review_date", "review_text", "thumbs_up", "operator"]].to_csv(raw_out, index=False)
+        dedup[RAW_COLUMNS].to_csv(raw_out, index=False)
         op_final.to_csv(cls_out, index=False)
         merged_operator_dfs.append(op_final)
 
@@ -286,11 +293,12 @@ def main():
     print("EXTRACTING COMMON DURATION PERIOD (WHERE ALL 3 OPERATORS OVERLAP)")
     print("=" * 75)
 
-    start_common = max(master_df[master_df["operator"] == op]["review_date"].min() for op in ["Grameenphone", "Robi", "Banglalink"])
+    # Align to start of first complete calendar month to ensure 100% full-month periods (1 August 2016)
+    start_common = pd.Timestamp("2016-08-01 00:00:00")
     end_common = min(master_df[master_df["operator"] == op]["review_date"].max() for op in ["Grameenphone", "Robi", "Banglalink"])
 
     common_df = master_df[(master_df["review_date"] >= start_common) & (master_df["review_date"] <= end_common)].copy()
-    days = (end_common - start_common).days
+    days = (end_common.normalize() - start_common.normalize()).days + 1
 
     common_file = cls_dir / "all_operators_common_duration_classified.csv"
     common_df.to_csv(common_file, index=False)
@@ -316,8 +324,11 @@ def main():
         summary["operators"][op] = {
             "total_reviews": len(sub),
             "share_percent": round(len(sub) / len(common_df) * 100, 2),
+            "positive_count": int(pos),
             "positive_percent": round(pos / len(sub) * 100, 2),
+            "neutral_count": int(neu),
             "neutral_percent": round(neu / len(sub) * 100, 2),
+            "negative_count": int(neg),
             "negative_percent": round(neg / len(sub) * 100, 2),
             "net_sentiment_score": round(nss, 2),
         }

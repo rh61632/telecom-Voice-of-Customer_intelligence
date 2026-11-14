@@ -13,7 +13,7 @@ research milestones deferred for subsequent development cycles.
 Context:
   Fine-tuned BUET BanglaBERT checkpoints (91.60% Sentiment, 85.27% Category)
   are currently stored locally in `dl/models/` and packaged in:
-  `banglabert_finetuned_models (1).zip` (784 MB).
+  `banglabert_finetuned_models.zip` (784 MB).
   GitHub commits reject files >100 MB, so `model.safetensors` (423 MB each)
   are ignored by `.gitignore`.
 
@@ -29,7 +29,7 @@ Action Options:
 
   Option B: GitHub Releases
     - Create release tag `v1.0.0` on GitHub.
-    - Drag and drop `banglabert_finetuned_models (1).zip` (784 MB) into the
+    - Drag and drop `banglabert_finetuned_models.zip` (784 MB) into the
       release binaries attachment area (GitHub allows up to 2.0 GB per asset).
     - Restore on new machine via `wget <release-url>` and `unzip`.
 
@@ -46,8 +46,8 @@ Achievement:
   - Operational Category Agreement: 95.41% Raw Agreement | Cohen's Kappa κ = 0.7694
     (Substantial Agreement across 5 operational complaint categories).
   - Production Artifacts:
-    * `data/gold_set/blind_annotation_300_ratul.csv` (N=300)
-    * `data/gold_set/blind_annotation_200_friend.csv` (N=200)
+    * `data/gold_set/blind_annotation_300_annotator1.csv` (N=300)
+    * `data/gold_set/blind_annotation_200_annotator2.csv` (N=200)
     * Evaluator: `data/gold_set/calculate_agreement.py`
     * Detailed Report: `data/gold_set/gold_standard_evaluation_report.md`
 
@@ -58,30 +58,33 @@ Context:
   Ablation study (`ml/reports/short_text_filtering_ablation_study.md`) proved:
   - Filtered model (>=3 words, dropping 1-2 word noise) jumped from 0.6737 to
     0.7318 Macro-F1 (+5.81% F1) on human edge cases.
-  - Full-dataset model (N = 4,499) has higher cross-validation accuracy (87.44%
+  - Full-dataset model (N = 4,500) has higher cross-validation accuracy (87.44%
     vs 85.98%) due to trivial easy reviews ("Good", "valo").
-  - The 398k production corpus currently uses the full-dataset model.
+  - The 655.6k common-window production corpus currently uses the full-dataset model.
 
 Action Plan:
   - Once the expanded Gold Standard v2 (with Cohen's Kappa) is completed:
     Evaluate both models on the new gold ground truth.
   - Choose between:
-    (a) Re-classifying the 398k corpus with the filtered model for better
+    (a) Re-classifying the 661.2k master corpus with the filtered model for better
         precision on actionable categories (Billing, App Bugs).
     (b) Formally publishing the trade-off in the paper/report: explaining why
         the full model was kept for inference coverage while documenting the
         filtered model's edge-case advantage.
 
 --------------------------------------------------------------------------------
-4. INTERACTIVE LIVE WEB DEMO (STREAMLIT / GRADIO ON HUGGING FACE SPACES)
+4. INTERACTIVE LIVE WEB DEMO (GRADIO ON HUGGING FACE SPACES) [COMPLETED LOCALLY]
 --------------------------------------------------------------------------------
+Status: COMPLETED LOCALLY (Gradio app in demo/app.py with demo/requirements.txt);
+        Hugging Face Spaces deployment pending public account configuration.
+
 Context:
   Currently all insights are presented as static reports and 300 DPI plots.
   A live web app allows recruiters, reviewers, and users to test reviews directly.
 
 Action Plan:
-  - Build `app.py` using Streamlit or Gradio.
-  - Load the trained models (either the lightweight Ensemble or BanglaBERT).
+  - Build `app.py` using Gradio (completed in demo/app.py).
+  - Load the trained models (lightweight Voting Ensembles).
   - Interactive UI: Text area for Bengali/Banglish review -> Real-time display of:
     * Sentiment: Positive / Neutral / Negative + confidence gauge.
     * Operational Category: 5 Classes + probability distribution bar chart.

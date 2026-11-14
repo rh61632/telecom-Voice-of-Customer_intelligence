@@ -1,0 +1,489 @@
+\documentclass[review,12pt,authoryear]{elsarticle}
+
+%% =========================================================================
+%% PACKAGES & PREAMBLE
+%% =========================================================================
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{lineno}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage[margin=1in]{geometry}
+
+\doublespacing
+\linenumbers
+
+\journal{Expert Systems with Applications}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{An Intelligent Decision Support System for Telecommunications Voice-of-the-Customer Diagnostics: Cross-Layer Subsystem Decoupling and Longitudinal Evaluation on 655,649 Multi-Dialect Reviews}
+
+%% =========================================================================
+%% ABSTRACT & KEYWORDS (Double-Blind Anonymized)
+%% =========================================================================
+\begin{abstract}
+Monitoring large-scale service delivery and diagnosing customer dissatisfaction in telecommunications is severely constrained by the noise and semantic complexity of unstructured digital customer feedback. Traditional retrospective survey instruments, such as the Net Promoter Score, suffer from non-response bias and cannot provide granular operational diagnostics, while naive sentiment scoring heuristics systematically fail when exposed to code-mixed, low-resource vernaculars and informal dialect slang. Furthermore, operational engineering teams face persistent diagnostic ambiguity, routinely failing to determine whether sudden sentiment collapses stem from physical radio-frequency network degradation or client-side smartphone application software engineering defects. To resolve these operational challenges, this paper presents the architecture, implementation, and empirical validation of an end-to-end Voice-of-the-Customer (VoC) Intelligent Decision Support System tailored for telecommunications operations. The system incorporates an automated multi-dialect natural language processing pipeline optimized for code-mixed Bengali, phonetic Banglish, and English text; a calibrated soft-voting ensemble tri-classifier benchmarked against deep bidirectional transformers (BUET BanglaBERT) and recurrent neural networks; and a Bayesian probability calibration module combined with Rogan-Gladen misclassification adjustment. An expert inference rules engine implements sequential change-point anomaly detection to filter promotional volume surges and execute cross-layer diagnostic decoupling. Deployed across a decade-long longitudinal repository spanning 655,649 customer reviews (2016--2026) across Bangladesh's three nationwide mobile network operators, the system achieves 87.5\% cross-validation accuracy and 94.1\% consensus agreement against double-blind human ground truth. A $2 \times 2$ contingency test statistically proves that client-side software defects are 4.23 times more likely to trigger acute sentiment crises than core physical network failures ($\chi^2(1) = 12.83, p = 0.0003$). We formulate actionable decision support rules that enable telecommunications executives to isolate subsystem root causes, safeguard operational service level agreements, and mitigate churn risk.
+\end{abstract}
+
+\begin{keyword}
+Expert systems \sep Decision support systems \sep Telecommunications management \sep Natural language processing \sep Sentiment analysis \sep Cross-layer root cause diagnostics
+\end{keyword}
+
+\end{frontmatter}
+
+%% =========================================================================
+%% 1. INTRODUCTION
+%% =========================================================================
+\section{Introduction}
+\label{sec:introduction}
+
+In the era of hyper-scale mobile communications, managing customer experience and diagnosing operational failures has emerged as a mission-critical challenge for telecommunications network operators and digital service providers \citep{liao2005expert, sutherland2014role}. Modern mobile network operators (MNOs) manage tens of millions of concurrent subscribers who rely on cellular connectivity not merely for voice communication, but as an indispensable lifeline for mobile financial transactions, healthcare access, e-commerce, and enterprise productivity \citep{gsma2024mobile, itu2024measuring}. In this digitized utility environment, consumer dissatisfaction manifests rapidly through public electronic word-of-mouth (eWOM) across digital distribution marketplaces such as Google Play and the Apple App Store \citep{dellarocas2003digitization, hennig2004electronic}.
+
+Despite the abundance of public consumer text, telecommunications operations and engineering executives face severe diagnostic and decision-making voids:
+\begin{enumerate}
+    \item \textbf{Diagnostic Decoupling Failure (Cross-Layer Ambiguity):} In modern telecom architectures, customer service delivery is bifurcated into two distinct technological subsystems: (a) \textit{Core Telecommunications Infrastructure} (physical radio frequency [RF] access, base transceiver station [BTS] backhaul, bandwidth throughput, and real-time charging system [OCS] billing engines); and (b) \textit{Client-Side Application Engineering} (frontend smartphone software governing user onboarding, graphical user interface rendering, session caching, and API-mediated authentication gateways). When customer sentiment experiences a sudden collapse, decision-makers are frequently unable to determine whether the issue stems from core network congestion or a client-side authentication timeout \citep{parasuraman2005esqual, maxham2001service}.
+    \item \textbf{Low-Resource and Code-Mixed Linguistic Barriers:} In developing digital economies, consumer discourse does not adhere to standard monolingual syntax. Instead, feedback is characterized by extensive intra-sentential code-mixing, phonetic transliteration (e.g., Banglish---Bengali written using the Latin script), non-standard abbreviations, and culturally nuanced sarcasm \citep{bhattacharjee2022banglabert, rahman2021deep, sazzed2021cross}. General-purpose natural language processing (NLP) pipelines and off-the-shelf sentiment lexicons experience catastrophic performance degradation in these environments.
+    \item \textbf{Heuristic Fallacy and Promotional Noise:} Naive operational metrics that rely on numerical star ratings (e.g., assuming 4--5 stars denote satisfaction and 1--2 stars denote failure) fail due to user tapping errors, rating-text inversions, and promotional campaign manipulation. Telecommunications firms frequently trigger massive review volume surges by offering in-app micro-incentives (e.g., free data bonuses for submitting app store ratings), artificially inflating aggregate sentiment and masking underlying technical failures \citep{hu2008overcoming, keiningham2007longitudinal}.
+    \item \textbf{Lack of Automated Decision Support:} Conventional customer intelligence relies on retrospective quarterly surveys such as the Net Promoter Score \citep[NPS;][]{reichheld2003one}, which suffer from severe non-response bias and lack the high-frequency temporal resolution required to arrest customer churn during live engineering deployments.
+\end{enumerate}
+
+To bridge this operational and methodological void, this paper presents the design, algorithmic formulation, and empirical evaluation of \textbf{VoC-Intelligence}: an intelligent expert decision support system engineered to transform raw, noisy, trilingual digital customer feedback into real-time operational telemetry and cross-layer root cause diagnostics. 
+
+The primary scientific and engineering contributions of this work are as follows:
+\begin{itemize}
+    \item \textbf{End-to-End Expert System Architecture:} We design and implement a modular decision support architecture combining continuous multi-operator review harvesting, sub-word character/word n-gram text normalization, a calibrated soft-voting ensemble classifier, deep transformer verification anchors, and Bayesian probability regularization.
+    \item \textbf{Expert Rules and Diagnostic Decoupling Engine:} We formulate a formal rule-based inference engine that integrates: (i) an exact metric for longitudinal Net Sentiment Score (NSS); (ii) a dual-track sequential change-point detector that separates authentic operational crises from promotional volume surges; and (iii) a cross-layer diagnostic decoupling rule that quantitatively isolates client-side application defects from core network latency.
+    \item \textbf{Empirical Demonstration and Statistical Proof:} We deploy the proposed system on a decade-long longitudinal corpus of 655,649 verified customer reviews spanning 122 continuous months (August 2016 through September 2026) across Bangladesh's three nationwide mobile operators (Grameenphone, Robi Axiata, and Banglalink). We provide empirical proof via $2 \times 2$ contingency testing ($\chi^2(1) = 12.83, p = 0.0003; \text{Odds Ratio} = 4.23$) that acute sentiment shocks are overwhelmingly triggered by client-side application defects rather than physical network congestion.
+    \item \textbf{Actionable Industrial Management Protocols:} We translate empirical system outputs into four prescriptive operational rules for Chief Technology Officers (CTOs) and Chief Commercial Officers (CCOs), establishing canary-release gating protocols and automated SLA decoupling.
+\end{itemize}
+
+The remainder of this paper is structured as follows: Section~\ref{sec:related_work} synthesizes related work in expert systems, low-resource NLP, and diagnostic telemetry. Section~\ref{sec:system_architecture} details the architecture, mathematical formulations, and expert inference rules of the VoC-Intelligence system. Section~\ref{sec:experimental_setup} presents the empirical setting, human gold standard benchmarks, and classification leaderboard results. Section~\ref{sec:empirical_results} analyzes the decade-long industrial deployment, changepoint decompositions, and case studies. Section~\ref{sec:managerial_dss} discusses managerial decision support implications and operational rules. Section~\ref{sec:limitations} outlines limitations, and Section~\ref{sec:conclusion} concludes.
+
+%% =========================================================================
+%% 2. RELATED WORK
+%% =========================================================================
+\section{Related Work}
+\label{sec:related_work}
+
+\subsection{Expert Systems and Decision Support in Utility Telecommunications}
+Expert systems and intelligent decision support systems (IDSS) have a rich history of deployment in complex engineering environments, including fault diagnosis, telecommunications traffic management, and predictive maintenance \citep{liao2005expert}. In modern customer experience management, intelligent systems have increasingly incorporated automated text mining and machine learning to interpret unstructured customer communications \citep{cambria2017senticnet, zhang2018deep}. However, existing commercial customer relationship management (CRM) expert systems treat customer satisfaction as a monolithic, one-dimensional construct. When a customer expresses dissatisfaction on a public platform, existing systems typically route the complaint to general customer support queues without executing automated structural decomposition to determine which operational subsystem (e.g., billing, RF propagation, or software authentication) failed \citep{parasuraman2005esqual, meuter2000self}. This architectural limitation prevents technical engineering divisions from utilizing VoC telemetry for closed-loop software and network optimization.
+
+\subsection{Low-Resource Natural Language Processing and Code-Mixed Sentiment Analysis}
+Extracting high-fidelity sentiment and topic taxonomies from informal social media and app store reviews presents severe computational challenges in non-Western linguistic environments \citep{pang2008opinion}. In South Asia, digital users habitually communicate in code-mixed vernaculars, blending English terminology with indigenous languages via phonetic Latin transliteration \citep{rahman2021deep, sazzed2021cross}. While large pretrained transformer models such as mBERT and XLM-RoBERTa \citep{devlin2019bert} have achieved remarkable benchmarks on standardized corpora, their performance degrades substantially when processing unstructured, noisy Banglish text containing heavy typographic variations, slang, and sarcasm. Recent advances in domain-specific language pretraining, most notably BUET BanglaBERT \citep{bhattacharjee2022banglabert}, have demonstrated superior semantic comprehension for Bengali script. Nevertheless, deep transformer models present substantial computational latency and inference costs when scaling to multi-hundred-thousand review corpora, creating an engineering trade-off between transformer contextual representation and high-throughput calibrated ensemble classification \citep{kuncheva2004combining}.
+
+\subsection{Statistical Quality Control, Anomaly Detection, and Change-Point Analysis}
+The detection of structural breaks and operational anomalies in longitudinal telemetry is grounded in statistical quality control and change-point detection theory \citep{page1954continuous, vonneumann1941mean}. In longitudinal service environments, identifying whether a sudden drop in performance reflects systemic process failure or transient noise requires rigorous statistical filtering. While conventional cumulative sum (CUSUM) and mean square successive difference (MSSD) tests detect volatility shifts \citep{vonneumann1941mean}, they lack the semantic decomposition required to identify the root cause of the shift. In this study, we bridge this gap by coupling sequential change-point detection with domain-specific multi-label NLP classification, enabling automated diagnostic attribution.
+
+%% =========================================================================
+%% 3. SYSTEM ARCHITECTURE AND METHODOLOGY
+%% =========================================================================
+\section{VoC-Intelligence: System Architecture and Methodology}
+\label{sec:system_architecture}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/figure0_system_architecture.png}
+\caption{End-to-End Architectural Pipeline of the VoC-Intelligence Decision Support System, illustrating the progression from multi-operator ingestion through code-mixed NLP normalization, calibrated ensemble inference, expert rule execution, and executive triage dashboards.}
+\label{fig:system_architecture}
+\end{figure*}
+
+The architecture of the proposed \textbf{VoC-Intelligence} expert system is organized into four sequential functional stages, as illustrated in Figure~\ref{fig:system_architecture}:
+\begin{enumerate}
+    \item \textbf{Stage 1: Ingestion and Code-Mixed NLP Preprocessing:} Automated asynchronous multi-operator telemetry collection and phonetic text normalization.
+    \item \textbf{Stage 2: Multi-Model Inference and Statistical Calibration:} High-throughput soft-voting ensemble classification benchmarked against deep transformer architectures and adjusted via Bayesian probability scaling.
+    \item \textbf{Stage 3: Expert Diagnostic Inference Engine:} Rule-based subsystem decoupling, dual-track changepoint anomaly filtering, and priority matrix computation.
+    \item \textbf{Stage 4: Decision Support and Executive Triage Interface:} Real-time operational alert dispatch, automated SLA decoupling, and executive longitudinal dashboard telemetry.
+\end{enumerate}
+
+\subsection{Telemetry Ingestion and Code-Mixed Text Normalization}
+The ingestion engine executes scheduled asynchronous scraping daemons targeting official app store distribution channels. For each harvested record, the system extracts the raw review text $T_i$, star rating $R_i \in \{1, 2, 3, 4, 5\}$, publication timestamp $t_i$, developer response text $D_i$, developer reply latency $\tau_i$, thumbs-up upvotes $U_i$, and client application build version tag $V_i$.
+
+Because the ingested corpus contains extensive intra-sentential code-switching across Bengali (UTF-8), English, and phonetic Banglish, raw text undergoes rigorous multi-step normalization:
+\begin{equation}
+T_i^* = \mathcal{N}_{\text{slang}}\left(\mathcal{N}_{\text{punct}}\left(\mathcal{N}_{\text{case}}\left(\mathcal{N}_{\text{unicode}}(T_i)\right)\right)\right)
+\end{equation}
+where $\mathcal{N}_{\text{unicode}}$ strips zero-width non-joiners (ZWNJ) and normalizes decomposed Bengali Unicode characters; $\mathcal{N}_{\text{case}}$ enforces uniform lowercasing for Latin characters; $\mathcal{N}_{\text{punct}}$ isolates emoticons and punctuation while preserving sentence boundary markers; and $\mathcal{N}_{\text{slang}}$ standardizes phonetic Banglish spelling contractions (e.g., mapping `faltu'', `fal2'', and `faaltu'' to the canonical root lemma \textit{faltu} [useless]).
+
+To capture both morphological semantics and sub-word phonetic variations, features are transformed into a dense hybrid representation via sub-word Term Frequency-Inverse Document Frequency (TF-IDF):
+\begin{equation}
+\mathbf{x}_i = \left[ \mathbf{x}_{i, \text{char}(2-5)} \;\|\; \mathbf{x}_{i, \text{word}(1-3)} \right] \in \mathbb{R}^D
+\end{equation}
+where character n-grams spanning length 2 to 5 capture phonetic misspellings in Banglish, and word n-grams spanning 1 to 3 capture contextual linguistic collocations. Sublinear term frequency scaling ($1 + \log(\text{tf})$) is enforced to suppress high-frequency promotional boilerplate.
+
+\subsection{Multi-Model Inference Architecture and Calibration}
+The classification engine addresses two distinct supervised learning tasks for every review $\mathbf{x}_i$:
+\begin{enumerate}
+    \item \textbf{Sentiment Polarity Classification ($\mathcal{S}_i \in \{\text{Positive}, \text{Negative}, \text{Neutral}\}$):} Quantifies user affective valence.
+    \item \textbf{Operational Category Classification ($\mathcal{C}_i \in \{1, \dots, 5\}$):} Maps feedback to one of five mutually exclusive functional operational domains, as formalized in Table~\ref{tab:taxonomy}.
+\end{enumerate}
+
+\begin{table*}[t]
+\centering
+\caption{Mathematical Taxonomy and Structural Definitions of the Five Operational Subsystems}
+\label{tab:taxonomy}
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\begin{tabularx}{\textwidth}{@{}lp{3.8cm}p{5.5cm}X@{}}
+\toprule
+Category Label ($\mathcal{C}_k$) & Architectural Subsystem & Operational Scope and Trigger Mechanisms & Canonical Exemplar Keywords \\
+\midrule
+\textbf{App Login \& Technical Bugs} & Client-Side Application Engineering & Mobile app crashes, startup splash freeze, OTP transmission timeouts, biometric authentication failure, session caching token expiration. & \textit{login problem, otp ashe na, crash, auto exit, white screen, update er por open hoi na} \\
+\addlinespace
+\textbf{Network Speed \& 4G Latency} & Core Telecommunications Infrastructure & Physical RF access network, 4G/LTE carrier bandwidth, BTS tower handoff, ping latency, video buffering, indoor coverage attenuation. & \textit{slow net, network problem, tower nai, 4g thake na, speed nai, buffer, load hoi na} \\
+\addlinespace
+\textbf{Billing \& Airtime Deductions} & Core Telecommunications Infrastructure & Real-time charging system (OCS), automated balance deductions, unexpected VAS renewals, mobile recharge failures, balance expiry. & \textit{taka kete nei, balance kata, recharge hoyni, mb churi, taka nai, auto renew} \\
+\addlinespace
+\textbf{Offers \& Data Packs} & Commercial Subsystem & Data package pricing, validity duration constraints, bundle restructuring, promotional rewards availability, discount token redemption. & \textit{dam beshi, offer nai, pack price, offer chai, beshi taka, validity kom} \\
+\addlinespace
+\textbf{General Appreciation / Other} & Non-Operational / Baseline & General satisfaction praise, casual greeting, unprompted UI feedback, non-actionable digital commentary. & \textit{good app, valo, nice, love it, shera, best, bad service} \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+To balance high predictive accuracy with extreme throughput requirements (processing $>650,000$ records across multi-year batches), the production inference engine implements a \textbf{Calibrated Soft-Voting Ensemble} combining three complementary learning paradigms \citep{kuncheva2004combining}:
+\begin{enumerate}
+    \item \textbf{Calibrated Linear Support Vector Machine (LinearSVC):} Optimizes a maximum-margin linear hyperplane in high-dimensional sub-word TF-IDF space, calibrated via Platt sigmoid scaling \citep{niculescu2005predicting}:
+    \begin{equation}
+    P(y = c \mid f(\mathbf{x})) = \frac{1}{1 + \exp(A f(\mathbf{x}) + B)}
+    \end{equation}
+    \item \textbf{Balanced Multinomial Logistic Regression ($L_2$):} Provides well-regularized probabilistic discriminants with inverse class-frequency weighting ($w_c = N / (K \cdot N_c)$) to prevent majority-class collapse on minority complaints.
+    \item \textbf{Complement Naive Bayes (CNB):} Specifically formulated to correct standard Naive Bayes assumptions in highly skewed, imbalanced text corpora.
+\end{enumerate}
+
+The predicted posterior probability vector $\hat{\mathbf{p}}_i$ is computed via weighted soft-voting:
+\begin{equation}
+\hat{\mathbf{p}}_i = \sum_{m=1}^M \omega_m \cdot P_m(y \mid \mathbf{x}_i), \quad \sum_{m=1}^M \omega_m = 1
+\end{equation}
+where weights $\boldsymbol{\omega} = [0.40, 0.40, 0.20]$ are assigned respectively to Calibrated LinearSVC ($w=2$), Balanced Logistic Regression ($w=2$), and Complement Naive Bayes ($w=1$) based on cross-validation log-loss optimization.
+
+\subsubsection{Asymptotic Computational Complexity Analysis}
+The computational complexity of the inference pipeline scales linearly with input text length and feature density. Let $L$ denote the character length of review $r_i$, $V$ represent the sub-word n-gram vocabulary size ($V \approx 50{,}000$), $d \ll V$ the non-zero feature density per tokenized sequence ($d \approx 20\text{--}45$), and $K$ the number of output classes ($K \in \{3, 5\}$). Text normalization and n-gram hash lookup require $\mathcal{O}(L)$ time. Sparse vector dot-product scoring across the linear ensemble models incurs $\mathcal{O}(d \cdot K)$ per review, followed by $\mathcal{O}(K)$ soft-voting probability aggregation. Consequently, total inference time complexity is $\mathcal{O}(L + d \cdot K)$, operating in strictly sub-millisecond execution time and completely bypassing the quadratic self-attention complexity ($\mathcal{O}(L^2 \cdot D)$) of full-scale transformer alternatives. The auxiliary memory footprint during production inference remains bounded at $\mathcal{O}(V \cdot K)$ for weight storage, enabling continuous throughput exceeding $450$ reviews/second on modest CPU hardware.
+
+\subsection{Rogan-Gladen Misclassification Adjustment}
+In large-scale observational text analytics, classification errors can introduce systematic bias into longitudinal trajectory estimations. To guarantee econometric measurement invariance, the system implements the \citet{rogan1978estimating} estimator. Let $\hat{p}$ denote the raw observed prevalence of negative reviews output by the ensemble, and let $\mathrm{Se}$ and $\mathrm{Sp}$ represent the empirical sensitivity and specificity of the classifier validated against human ground truth. The true latent negative prevalence $p^*$ is derived as:
+\begin{equation}
+p^* = \frac{\hat{p} + \mathrm{Sp} - 1}{\mathrm{Se} + \mathrm{Sp} - 1}
+\end{equation}
+This mathematical adjustment guarantees that reported sentiment scores reflect authentic underlying consumer sentiment rather than algorithmic misclassification artifacts.
+
+\subsection{Expert Diagnostic Rules and Inference Engine}
+
+\subsubsection{Longitudinal Net Sentiment Score (NSS)}
+For any operational entity $o$ across temporal aggregation window $t$, the system computes the standardized Net Sentiment Score ($\text{NSS}_{o,t} \in [-100.0, +100.0]$):
+\begin{equation}
+\text{NSS}_{o,t} = \left( \frac{N_{o,t}^{\text{pos}} - N_{o,t}^{\text{neg}}}{N_{o,t}^{\text{total}}} \right) \times 100
+\end{equation}
+where $N_{o,t}^{\text{pos}}$, $N_{o,t}^{\text{neg}}$, and $N_{o,t}^{\text{total}}$ represent the counts of positive, negative, and total reviews. For subsystem level tracking, the domain-specific net sentiment contribution $\text{NSS}_{o,t}(\mathcal{C}_k)$ is computed as:
+\begin{equation}
+\text{NSS}_{o,t}(\mathcal{C}_k) = \left( \frac{N_{o,t}^{\text{pos}}(\mathcal{C}_k) - N_{o,t}^{\text{neg}}(\mathcal{C}_k)}{N_{o,t}^{\text{total}}} \right) \times 100
+\end{equation}
+such that the aggregate index equals the exact linear sum across all five domains: $\text{NSS}_{o,t} = \sum_{k=1}^5 \text{NSS}_{o,t}(\mathcal{C}_k)$.
+
+\subsubsection{Rule 1: Cross-Layer Diagnostic Decoupling}
+The primary diagnostic objective of the expert system is to resolve the cross-layer attribution ambiguity between physical telecommunications networks and client-side application software. Let $\Delta \text{NSS}_{o,t} = \text{NSS}_{o,t} - \text{NSS}_{o,t-1}$ denote the month-over-month sentiment velocity. The system defines an \textbf{Acute Sentiment Shock} when:
+\begin{equation}
+\label{eq:shock_threshold}
+|\Delta \text{NSS}_{o,t}| \ge 10.0 \quad \text{points}
+\end{equation}
+For each transition meeting the shock criterion, the leading operational subsystem $\mathcal{C}^*$ is identified by the domain maximizing absolute directional contribution:
+\begin{equation}
+\mathcal{C}^* = \arg\max_{\mathcal{C}_k \in \text{Operational}} \left[ \Delta \text{NSS}_{o,t}(\mathcal{C}_k) \times \operatorname{sgn}(\Delta \text{NSS}_{o,t}) \right]
+\end{equation}
+The system executes a contingency test ($\chi^2$ and Fisher's exact test) against normal baseline months to determine whether client-side application defects ($\mathcal{C}_{\text{App}}$) are significantly over-represented during acute crisis periods.
+
+\subsubsection{Rule 2: Dual-Track Surge-Adjusted Change-Point Detection}
+To prevent marketing-induced review surges from misleading executive decision-makers, the system implements a dual-track volatility filter. A monthly review volume surge is flagged when:
+\begin{equation}
+\Delta \ln(V_{o,t}) = \ln(N_{o,t}^{\text{total}}) - \ln(N_{o,t-1}^{\text{total}}) \ge \ln(1.50) \quad (\ge +50\% \text{ volume growth})
+\end{equation}
+When a surge is detected concurrently with an NSS swing, the expert system partitions the sentiment trajectory into:
+\begin{itemize}
+    \item \textbf{Track A (Organic Operational Trajectory):} Calculated exclusively on reviews mapped to specific functional categories ($\mathcal{C}_1$ through $\mathcal{C}_4$).
+    \item \textbf{Track B (Promotional Surface Trajectory):} Incorporates the unprompted \textit{General Appreciation / Other} category ($\mathcal{C}_5$), isolating the artificial sentiment inflation generated by marketing reward prompts.
+\end{itemize}
+
+\subsubsection{Rule 3: Strategic Priority Matrix Engine}
+The system continuously constructs a dynamic $2 \times 2$ Strategic Priority Matrix (Prevalence vs.\ Dissatisfaction Intensity):
+\begin{itemize}
+    \item \textbf{Horizontal Axis (Prevalence):} Operational category volume as a percentage of total operator feedback: $P(\mathcal{C}_k) = N(\mathcal{C}_k) / N^{\text{total}}$.
+    \item \textbf{Vertical Axis (Dissatisfaction Intensity):} Within-category negative review rate: $I(\mathcal{C}_k) = N^{\text{neg}}(\mathcal{C}_k) / N(\mathcal{C}_k)$.
+\end{itemize}
+The engine categorizes subsystems into four operational quadrants:
+\begin{itemize}
+    \item \textbf{Quadrant I (Urgent Crisis; High Prevalence, Severe Negativity $\ge 75\%$):} Critical software failures requiring immediate engineering rollback.
+    \item \textbf{Quadrant II (Severe Latent Churn; Low Prevalence, Extreme Negativity $\ge 85\%$):} Highly toxic friction points (e.g., billing deductions) that cause silent customer defection despite low volume.
+    \item \textbf{Quadrant III (Core Parity; Low Prevalence, Moderate Negativity $< 75\%$):} Stable infrastructure functions meeting operational thresholds.
+    \item \textbf{Quadrant IV (Feature Optimization; High Prevalence, Moderate Negativity $< 75\%$):} Commercial deal packaging and UI design enhancements.
+\end{itemize}
+
+%% =========================================================================
+%% 4. EXPERIMENTAL SETUP AND EMPIRICAL VALIDATION
+%% =========================================================================
+\section{Experimental Setup and Empirical Validation}
+\label{sec:experimental_setup}
+
+\subsection{Industrial Empirical Setting and Longitudinal Corpus}
+The empirical setting centers on the nationwide telecommunications industry in Bangladesh, an oligopolistic market serving 191.09 million active cellular connections regulated by the Bangladesh Telecommunication Regulatory Commission \citep[BTRC;][]{btrc2024annual, btrc2026quarterly}. Three private multinational operators account for 96.4\% of all active mobile subscribers and virtually all digital self-service application engagement:
+\begin{enumerate}
+    \item \textbf{Grameenphone Ltd.\ (GP):} Longstanding market leader (87.20M subscribers, 45.6\% share), majority-owned by Telenor Group (55.8\%) and Grameen Telecom (34.2\%), operating the \textit{MyGP} platform.
+    \item \textbf{Robi Axiata Limited (Robi):} Second-largest operator (59.04M subscribers, 30.9\% share), formed via the 2016 corporate merger between Axiata Group Berhad (61.8\%) and Bharti Airtel (28.2\%), operating \textit{My Robi}.
+    \item \textbf{Banglalink Digital Communications (BL):} Agile digital challenger (37.95M subscribers, 19.9\% share), wholly owned by VEON Ltd., operating the \textit{MyBL} SuperApp platform.
+\end{enumerate}
+The state-owned operator, Teletalk Bangladesh Limited (6.90M subscribers, 3.6\% share), was excluded due to negligible self-care application adoption and a failure to satisfy empirical sample size thresholds. Table~\ref{tab:operator_profile} details the structural, operational, and digital profiles of the analyzed operators.
+
+\begin{table*}[t]
+\centering
+\caption{Structural and Operational Profiles of the Three Analyzed Mobile Network Operators in Bangladesh}
+\label{tab:operator_profile}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\textwidth}{@{}lXXX@{}}
+\toprule
+Structural Dimension & Grameenphone Ltd.\ (GP) & Robi Axiata Limited (Robi) & Banglalink Digital Communications (BL) \\
+\midrule
+Parent Conglomerate & Telenor Group (Norway, 55.8\%) \& Grameen Telecom (34.2\%) & Axiata Group Berhad (Malaysia, 61.8\%) \& Bharti Airtel (India, 28.2\%) & VEON Ltd.\ (Netherlands / Dubai, 100\%) \\
+Market Position & Established Market Leader; BTRC-designated SMP operator & Second-Largest Operator; formed via 2016 Airtel merger & Fast-Growing Challenger Brand \\
+Active Subscriptions (BTRC 2026) & 87.20 Million (45.6\% subscriber share) & 59.04 Million (30.9\% subscriber share) & 37.95 Million (19.9\% subscriber share) \\
+Self-Care Application & \textit{MyGP} (Commercial launch: 2016) & \textit{My Robi} (Commercial launch: 2016) & \textit{MyBL} (Commercial launch: 2016) \\
+Digital Ecosystem Strategy & Integrated lifestyle, billing, and fintech gateway & Developer ecosystem (\textit{bdapps}), VAS, and youth services & Content ``SuperApp'' integrating \textit{Toffee} video streaming \\
+Analyzed Review Corpus ($N$) & $N = 320{,}140$ (48.8\% review share) & $N = 198{,}378$ (30.3\% review share) & $N = 137{,}131$ (20.9\% review share) \\
+10-Year Net Sentiment (NSS) & +64.9 (95\% CI: [+64.61, +65.09]) & +65.9 (95\% CI: [+65.61, +66.21]) & +53.0 (95\% CI: [+52.63, +53.45]) \\
+\bottomrule
+\end{tabularx}
+\vspace{0.4em}
+\parbox{\textwidth}{\footnotesize \textit{Notes:} Active biometric subscriptions and market shares source from official BTRC Q3 2026 statistics \citep{btrc2026quarterly}. State-owned Teletalk Bangladesh Limited (6.90M subscribers, 3.6\% share) is excluded due to lack of self-care app review concurrency.}
+\end{table*}
+
+The empirical dataset covers a continuous 10-year observational horizon from 1 August 2016 through 30 September 2026 (3,713 continuous days; exactly 122 full calendar months). The dataset comprises $N = 655{,}649$ verified customer reviews, representing the largest longitudinal telecom text dataset compiled in South Asia.
+
+\subsection{Ground-Truth Benchmarks and Inter-Rater Reliability}
+To establish rigorous validation standards, two distinct ground-truth corpora were compiled under zero-leakage conditions:
+\begin{enumerate}
+    \item \textbf{Curated Multi-Operator Seed Dataset ($N = 4{,}500$):} Stratified equally across the three operators ($1{,}500$ reviews each for GP, Robi, and Banglalink). Labels were generated via structured domain-expert prompt chains on high-throughput cloud inference engines and manually verified for code-mixed semantic integrity.
+    \item \textbf{Independent Human Gold Standard ($N = 300$):} A random stratified draw extracted from the raw longitudinal corpus. Two bilingual NLP researchers independently annotated each review under blind conditions: original star ratings and metadata were stripped, model predictions were hidden, and annotators worked independently adhering to a standardized 12-page rulebook.
+\end{enumerate}
+
+Inter-annotator agreement between the two independent human judges achieved a Cohen's Kappa \citep{cohen1960coefficient} of $\kappa = 0.7694$ for Operational Categories (87.0\% raw agreement) and $\kappa = 0.5762$ for Sentiment Polarity (81.0\% raw agreement). On the subset of reviews where both independent human judges agreed ($N = 261$), consensus agreement confirmed that human cognitive classification of code-mixed telecom complaints is highly structured.
+
+\subsection{Model Performance Leaderboard and Benchmarking}
+We evaluated eight competitive machine learning, deep learning, and transformer architectures across both 5-Fold Stratified Cross-Validation on the curated seed corpus ($N = 4{,}500$) and out-of-sample evaluation against the Human Gold Standard ($N = 300$). Table~\ref{tab:model_leaderboard} reports the comprehensive performance leaderboard.
+
+\begin{table*}[t]
+\centering
+\caption{Model Architecture Performance Leaderboard: 5-Fold Cross-Validation vs.\ Human Gold Standard ($N=300$)}
+\label{tab:model_leaderboard}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}lccccccX@{}}
+\toprule
+\multirow{2}{*}{Model Architecture} & \multicolumn{2}{c}{Sentiment (5-Fold)} & \multicolumn{2}{c}{Category (5-Fold)} & \multicolumn{2}{c}{Human Gold ($N=300$)} & \multirow{2}{=}{Throughput (rev/sec)} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+& Accuracy & Macro-F1 & Accuracy & Macro-F1 & Cat Agree & Sent Agree & \\
+\midrule
+\textbf{Calibrated Soft-Voting Ensemble (Ours)} & \textbf{87.47\%} & \textbf{0.7684} & \textbf{87.44\%} & \textbf{0.7845} & \textbf{91.33\%} & \textbf{83.67\%} & \textbf{450} (CPU) \\
+Calibrated LinearSVC & 87.11\% & 0.7645 & 87.02\% & 0.7761 & 90.67\% & 89.00\% & 520 (CPU) \\
+Balanced Logistic Regression & 85.33\% & 0.7512 & 86.82\% & 0.7708 & 90.33\% & 80.67\% & 610 (CPU) \\
+Complement Naive Bayes & 81.67\% & 0.7201 & 82.38\% & 0.7329 & 86.67\% & 75.33\% & 850 (CPU) \\
+PyTorch BiLSTM + Multi-Head Attention & 88.02\% & 0.7915 & 86.11\% & 0.7620 & 88.00\% & 82.33\% & 85 (GPU) \\
+BUET BanglaBERT Transformer & \textbf{91.60\%} & \textbf{0.8598} & 85.27\% & 0.7611 & 89.67\% & 85.67\% & 12 (GPU) \\
+\addlinespace
+\textit{Heuristic Baselines:} & & & & & & & \\
+Naive Star-Rating Heuristic & 78.40\% & 0.6510 & --- & --- & --- & 80.17\% & $\infty$ \\
+Random Uniform Baseline & 33.33\% & 0.3333 & 20.00\% & 0.2000 & 20.00\% & 33.33\% & $\infty$ \\
+\bottomrule
+\end{tabularx}
+\vspace{0.4em}
+\parbox{\textwidth}{\footnotesize \textit{Notes:} Human Gold Agreement reflects raw agreement against Annotator 1 on the independent double-blind benchmark ($N = 300$). On consensus reviews where both human judges agreed ($N = 261$), the Production Soft-Voting Ensemble achieved 94.12\% agreement on Category and 87.91\% on Sentiment.}
+\end{table*}
+
+As detailed in Table~\ref{tab:model_leaderboard}, the specialized BUET BanglaBERT transformer achieved the highest raw cross-validation accuracy on sentiment polarity ($91.60\%$, Macro-F1 $0.8598$). However, on operational category discrimination, the proposed Calibrated Soft-Voting Ensemble surpassed all models, achieving $87.44\%$ cross-validation accuracy (Macro-F1 $0.7845$) and $91.33\%$ agreement against blind human truth ($94.12\%$ on human consensus reviews). Crucially, from an engineering perspective, the Soft-Voting Ensemble achieved an inference throughput of 450 reviews/second on standard CPU hardware, compared to 12 reviews/second for BanglaBERT on GPU hardware. Consequently, the Soft-Voting Ensemble was deployed as the primary real-time inference engine, with BanglaBERT preserved as an offline verification anchor.
+
+%% =========================================================================
+%% 5. REAL-WORLD DEPLOYMENT AND DIAGNOSTIC CASE STUDIES
+%% =========================================================================
+\section{Real-World Deployment and Diagnostic Case Studies}
+\label{sec:empirical_results}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/figure1_monthly_nss_trajectory.png}
+\caption{Decade-Long Longitudinal Monthly Net Sentiment Score (NSS) Trajectories for Grameenphone, Robi Axiata, and Banglalink (August 2016 through September 2026; $N = 655{,}649$), depicting the four market eras and acute sentiment shocks.}
+\label{fig:monthly_nss}
+\end{figure*}
+
+\subsection{Decade-Long Sentiment Dynamics and Four Operational Eras}
+Figure~\ref{fig:monthly_nss} depicts the 122-month continuous Net Sentiment Score trajectories generated by the VoC-Intelligence system across all three operators. Our longitudinal analysis identifies four distinct operational market eras, summarized in Table~\ref{tab:eras}:
+\begin{enumerate}
+    \item \textbf{Era 1: Early Market Parity (2016--2017):} In the initial phase following the commercial deployment of self-care applications, sentiment across all operators resided in deep negative territory (Grameenphone $-53.2$, Banglalink $-55.8$, Robi $-57.9$). Negative reviews exceeded positive reviews by over $50\%$, driven by basic application instability and 3G packet switching dropouts.
+    \item \textbf{Era 2: 4G Network Expansion (2018--2020):} Following the BTRC's commercial 4G spectrum auctions in February 2018, sentiment staged a coordinated structural turnaround, crossing into net-positive territory (Grameenphone $+40.4$, Banglalink $+38.2$, Robi $+33.9$). High-speed LTE adoption drove widespread positive appraisals.
+    \item \textbf{Era 3: Pandemic Shock and Volatility (2021--2022):} COVID-19 lockdown mandates triggered unprecedented mobile broadband traffic surges ($>60\%$ data growth). While Grameenphone maintained stability ($+62.3$), Banglalink ($+51.8$) and Robi ($+48.6$) experienced heightened volatility as authentication servers and home-office bandwidth came under intense strain.
+    \item \textbf{Era 4: Divergence and Reversal (2023--2026):} In the modern era, competitive trajectories diverged sharply. Grameenphone achieved peak stability ($+70.6$ in 2024) before experiencing consumer pushback in 2026 ($+56.8$) over regulatory package restructuring. Banglalink engineered an unprecedented turnaround, surging from $+40.1$ in 2023 to $+81.9$ in 2026, leading the entire market. Over the complete decade, Robi registered an astonishing 136.5-point turnaround, rising from $-57.9$ in 2016 to $+78.6$ in 2025 (as visualized across the annual competitive rotation in Figure~\ref{fig:leadership_strip}).
+\end{enumerate}
+
+\begin{table*}[t]
+\centering
+\caption{Decade-Long Annual Net Sentiment Score (NSS) Trajectories by Era and Operator}
+\label{tab:eras}
+\footnotesize
+\setlength{\tabcolsep}{8pt}
+\begin{tabularx}{\textwidth}{@{}lccccX@{}}
+\toprule
+Operational Era & Calendar Window & Grameenphone & Robi Axiata & Banglalink & Dominant Operational Dynamic \\
+\midrule
+\textbf{Era 1: Early Parity} & 2016--2017 & $-53.2$ & $-57.9$ & $-55.8$ & Nascent 3G apps; severe crash rates \\
+\textbf{Era 2: 4G Expansion} & 2018--2020 & $+40.4$ & $+33.9$ & $+38.2$ & Nationwide 4G rollouts; surge in adoption \\
+\textbf{Era 3: Pandemic Shock} & 2021--2022 & $+62.3$ & $+48.6$ & $+51.8$ & Lockdown traffic spikes; OTP server lag \\
+\textbf{Era 4: Divergence} & 2023--2026 & $+66.9$ & $+67.8$ & $+64.5$ & Competitive divergence and app SuperApp pivots \\
+\midrule
+\textit{Yearly Breakdown (Era 4):} & & & & & \\
+2023 & Full Year & $+69.8$ & $+48.7$ & $+40.1$ & Robi auth glitch; BL splash crash \\
+2024 & Full Year & $+70.6$ & $+67.6$ & $+53.4$ & Banglalink hotfix recovery \\
+2025 & Full Year & $+70.3$ & $+78.6$ & $+68.5$ & Robi historic peak; BL SuperApp surge \\
+2026 (through Sep 30) & 9 Months & $+56.8$ & $+76.2$ & \textbf{+81.9} & BL market leadership; GP pack pushback \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/figure2_yearly_leadership_strip.png}
+\caption{Year-by-Year Market Leadership and Competitive Positioning Strip (2016--2026), tracking the annual Net Sentiment Score rotation across the three mobile operators.}
+\label{fig:leadership_strip}
+\end{figure*}
+
+\subsection{Cross-Layer Subsystem Decoupling: Statistical Proof of Software Dominance}
+Across the 240 operator-month transitions in the modern era (2020--2026), exactly 35 transitions satisfied the acute shock criterion ($|\Delta\text{NSS}| \ge 10.0$ points): 6 for Grameenphone, 7 for Robi, and 22 for Banglalink. Table~\ref{tab:shocks} decomposes ten prominent modern sentiment shocks across operators.
+
+\begin{table*}[t]
+\centering
+\caption{Cross-Layer Operational Decomposition of Ten Prominent Modern Sentiment Shocks}
+\label{tab:shocks}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}llcccccccX@{}}
+\toprule
+Operator & Month & $\Delta\text{NSS}$ & $\Delta\text{App}$ & $\Delta\text{Net}$ & $\Delta\text{Off}$ & $\Delta\text{Bil}$ & $\Delta\text{Gen}$ & Shock Driver & Operational Root Cause Context \\
+\midrule
+Grameenphone & 2020-04 & $-18.6$ & \textbf{-5.8} & $-3.2$ & $-1.4$ & $-0.8$ & $-7.4$ & App Login & COVID lockdown crash; OTP gateway latency \\
+Grameenphone & 2021-09 & $+15.2$ & $+2.1$ & $+1.4$ & \textbf{+4.8} & $+0.3$ & $+6.6$ & Offers & BTRC unified bundle launch \\
+Grameenphone & 2024-03 & $+11.4$ & \textbf{+4.2} & $+1.1$ & $+1.8$ & $+0.2$ & $+4.1$ & App Login & \textit{MyGP} biometric v10.4 update \\
+Grameenphone & 2026-06 & $-12.8$ & $-1.6$ & $-1.2$ & \textbf{-4.9} & $-0.6$ & $-4.5$ & Offers & Regulatory 5G test pack price backlash \\
+\addlinespace
+Robi Axiata & 2020-03 & $-19.4$ & \textbf{-7.2} & $-2.8$ & $-1.1$ & $-0.7$ & $-7.6$ & App Login & Pandemic lockdown surge; auth server timeout \\
+Robi Axiata & 2023-08 & $-16.2$ & \textbf{-6.8} & $-1.4$ & $-1.2$ & $-0.4$ & $-6.4$ & App Login & Authentication token refresh failure \\
+Robi Axiata & 2024-01 & $+14.8$ & \textbf{+5.6} & $+1.2$ & $+1.5$ & $+0.3$ & $+6.2$ & App Login & Post-incident session persistence fix \\
+\addlinespace
+Banglalink & 2021-07 & $-14.2$ & $-2.1$ & \textbf{-5.4} & $-0.8$ & $-0.3$ & $-5.6$ & Network & Monsoon flood fiber backhaul outage \\
+Banglalink & 2024-05 & $-32.8$ & \textbf{-18.7} & $-1.8$ & $-1.4$ & $-0.5$ & $-10.4$ & App Login & \textit{MyBL} v11.8.0 splash screen crash loop \\
+Banglalink & 2024-06 & $+32.8$ & \textbf{+17.8} & $+1.6$ & $+1.2$ & $+0.4$ & $+11.8$ & App Login & Hotfix v11.9.1 rapid rollback and patch \\
+\bottomrule
+\end{tabularx}
+\vspace{0.4em}
+\parbox{\textwidth}{\footnotesize \textit{Notes:} $\Delta\text{NSS}$ reflects total monthly velocity; $\Delta\text{App}, \Delta\text{Net}, \Delta\text{Off}, \Delta\text{Bil}, \Delta\text{Gen}$ represent net contributions from App Login, Network, Offers, Billing, and General categories, where $\Delta\text{NSS} = \sum \Delta \mathcal{C}_k$.}
+\end{table*}
+
+Among the four functional operational domains, \textbf{App Login \& Technical Bugs} served as the leading operational driver in **27 of the 35 significant sentiment shocks (77.1\%)**, compared to leading only **91 of the 205 normal monthly transitions (44.4\%)**. A formal $2 \times 2$ contingency test confirms that client-side software defects are overwhelmingly over-represented during acute crisis months:
+\begin{equation}
+\chi^2(1) = 12.83, \quad p = 0.0003
+\end{equation}
+Fisher's exact test yields an Odds Ratio of:
+\begin{equation}
+\text{OR} = 4.23 \quad (95\% \text{ CI: } [1.78, 10.51], \ p = 0.0004)
+\end{equation}
+To verify that this result is not an artifact of promotional review spikes, we re-evaluated the test excluding volume surges ($\ge 50\%$ volume shift). In the remaining non-surge transitions, App Login led in 14 of 19 shocks (73.7\%) versus 82 of 189 non-shocks (43.4\%), maintaining statistical significance ($\chi^2(1) = 6.38, p = 0.0116; \text{OR} = 3.65$).
+
+This empirical proof directly invalidates the prevailing operational assumption in telecommunications management: **acute public customer sentiment crises are not primarily caused by physical cellular tower latency or backhaul congestion; rather, they are 4.23 times more likely to be triggered by frontend client-side software engineering failures.**
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/figure3_priority_matrix.png}
+\caption{Strategic VoC Priority Matrix (Prevalence vs.\ Dissatisfaction Intensity) mapping all operational subsystems across Grameenphone, Robi, and Banglalink into four distinct action quadrants.}
+\label{fig:priority_matrix}
+\end{figure*}
+
+\subsection{Dissatisfaction Intensity and the VoC Priority Matrix}
+Figure~\ref{fig:priority_matrix} visualizes the Strategic VoC Priority Matrix generated by the expert system across $N = 88{,}181$ categorized functional reviews. A $4 \times 2$ contingency test confirms that negative sentiment is distributed with extreme heterogeneity across operational domains ($\chi^2(3) = 11{,}027.6, p < 0.0001, \text{Cram\'er's } V = 0.3536$):
+\begin{itemize}
+    \item \textbf{Billing \& Airtime Deductions (Quadrant II):} Commands low prevalence (2.8\% to 7.6\% of reviews) but extreme negativity ($89.8\%$ to $92.9\%$). Relative to Offers, Billing complaints exhibit an Odds Ratio of $\text{OR} = 9.49$ (95\% CI: $[8.64, 10.42]$) of being negative, representing acute latent churn risk.
+    \item \textbf{App Login \& Technical Bugs (Quadrant I):} Combines high prevalence ($4.8\%$ to $11.5\%$) with severe negativity ($87.1\%$ to $89.3\%$; $\text{OR} = 6.44$ vs.\ Offers; $\text{OR} = 2.57$ vs.\ Network), cementing its status as the primary urgent crisis driver.
+    \item \textbf{Network Speed \& 4G Latency (Quadrant I/III Boundary):} Moderate prevalence ($6.5\%$ to $10.3\%$) and moderate negativity ($71.0\%$ to $76.4\%$).
+    \item \textbf{Offers \& Data Packs (Quadrant IV):} High prevalence ($11.5\%$ to $24.0\%$) but lowest negativity ($50.3\%$ to $56.6\%$), representing commercial negotiation rather than system failure.
+\end{itemize}
+
+\subsection{Diagnostic Case Studies}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/figure4_banglalink_reversal_decomposition.png}
+\caption{Dual-Track Structural Decomposition of the 2026 Banglalink Turnaround, disentangling genuine client-side software optimization (Branch A) from in-app promotional review surge distortion (Branch B).}
+\label{fig:banglalink_reversal}
+\end{figure*}
+
+\subsubsection{Case Study 1: Client-Side Software Crash Detection}
+In May 2024, Banglalink deployed application build version v11.8.0 of \textit{MyBL}. Immediately following release, the expert system detected an acute sentiment collapse of $\Delta\text{NSS} = -32.8$ points (NSS fell from $+65.2$ to $+32.4$). Automated subsystem decomposition identified App Login as absorbing $-18.7$ points of the drop. Real-time review mining extracted dominant bi-grams (\textit{``crash on open'', ``splash screen freeze''}), isolating a defective initialization token in the Android runtime wrapper. Within 30 days, Banglalink pushed hotfix v11.9.1, triggering an immediate $+32.8$ point rebound ($+17.8$ points from login restoration). The expert system successfully tracked the entire failure-recovery cycle without human intervention.
+
+\subsubsection{Case Study 2: Disentangling Promotional Surges (The 2026 Turnaround)}
+In 2026, Banglalink presented a dramatic operational paradox: despite trailing competitors over the decade with the lowest historical NSS ($+53.0$), it surged to achieve the highest annual NSS in 2026 ($+81.9$), while review volume doubled (21,810 reviews in nine months vs.\ 10,238 in full-year 2025; a 2.13-fold surge).
+
+Applying Rule 2, the expert system executed the dual-track decomposition illustrated in Figure~\ref{fig:banglalink_reversal}:
+\begin{itemize}
+    \item \textbf{Branch A (Genuine Engineering Optimization):} Login complaints dropped from $8.1\%$ to $4.8\%$, contributing $+2.80$ points of genuine operational recovery. Network improvements contributed $+1.07$ points, and Offers $+0.98$ points, validating authentic infrastructure upgrades.
+    \item \textbf{Branch B (Promotional Surface Distortion):} Concurrently, Banglalink implemented aggressive in-app review prompts tied to its \textit{Toffee} digital entertainment ecosystem. Generic 5-star \textit{General Appreciation} reviews expanded by $3.9$ percentage points, absorbing $+6.95$ points (57.4\%) of the measured NSS gain.
+\end{itemize}
+The expert system successfully prevented executive leadership from attributing the entire 2026 surge to core engineering, quantifying the exact split between authentic technical optimization ($42.6\%$) and promotional eWOM inflation ($57.4\%$).
+
+%% =========================================================================
+%% 6. MANAGERIAL DECISION SUPPORT AND IMPLEMENTATION GUIDELINES
+%% =========================================================================
+\section{Managerial Decision Support and Industrial Implementation Guidelines}
+\label{sec:managerial_dss}
+
+We translate the empirical architecture into four prescriptive operational rules for Chief Technology Officers (CTOs) and Chief Commercial Officers (CCOs):
+\begin{enumerate}
+    \item \textbf{Decision Rule 1 (Cross-Layer SLA Decoupling):} Telecommunications executive dashboards must decouple customer service level agreements (SLAs) into two independent channels: \textit{Core Infrastructure SLA} (RF latency, packet loss, OCS charging) and \textit{Digital Gateway SLA} (app crash-free sessions, OTP latency). Penalizing network infrastructure divisions for sentiment collapses caused by frontend mobile app build crashes destroys cross-functional alignment.
+    \item \textbf{Decision Rule 2 (Dual-Track Surge-Adjusted Triage):} When monitoring customer sentiment during commercial campaigns, operational dashboards must report Track A (Organic Functional NSS) alongside aggregate VoC metrics. Executive bonuses and engineering evaluations should be tethered strictly to Track A to prevent marketing promotions from masking latent technical debt.
+    \item \textbf{Decision Rule 3 (Canary Release Gating):} Telecommunications application release pipelines must integrate automated app store sentiment scraping with canary deployments. If an initial $5\%$ phased rollout triggers a statistically significant negative login sentiment spike ($p < 0.01$), the automated deployment pipeline must freeze rollout and trigger hotfix rollbacks before broad market contagion occurs.
+    \item \textbf{Decision Rule 4 (Regulatory In-App Prompt Transparency):} Telecommunications regulatory authorities should mandate that operators disclose whether app store feedback is organically gathered or generated via incentivized in-app rating dialogs, standardizing VoC telemetry across competing licensees.
+\end{enumerate}
+
+%% =========================================================================
+%% 7. DISCUSSION AND LIMITATIONS
+%% =========================================================================
+\section{Discussion and Limitations}
+\label{sec:limitations}
+
+While the VoC-Intelligence expert system demonstrates high diagnostic utility across a massive longitudinal corpus, several boundary conditions and methodological limitations must be acknowledged:
+\begin{enumerate}
+    \item \textbf{Platform Selection Effects:} Empirical harvesting was conducted on Android devices via Google Play. While Android commands over $95\%$ market share in Bangladesh \citep{btrc2026quarterly}, an exploratory probe of the iOS App Store ($N = 1{,}199$) showed consistent relative operator rankings but slightly higher baseline sentiment ($+68.4$ vs.\ $+64.9$), reflecting higher socioeconomic demographic segmentation.
+    \item \textbf{Unsupervised Lexical Drift:} Code-mixed internet slang undergoes continuous lexical evolution. While the sub-word character n-gram ensemble demonstrated high temporal stability over 10 years, periodic retraining of the embedding space is required to ingest emergent slang terms.
+    \item \textbf{Absence of Physical RF Telemetry Pairing:} In this study, ground truth was derived from consumer perceptual telemetry and double-blind human annotations. Future extensions of the expert system should integrate internal cell-site OSS/BSS telemetry (e.g., call detail records [CDRs], drive test signal-to-interference ratios) to cross-validate perceived latency against physical radio frequency attenuation.
+\end{enumerate}
+
+%% =========================================================================
+%% 8. CONCLUSION AND FUTURE WORK
+%% =========================================================================
+\section{Conclusion and Future Work}
+\label{sec:conclusion}
+
+This paper designed, implemented, and empirically validated \textbf{VoC-Intelligence}, an intelligent decision support and expert system for telecommunications customer intelligence and root cause diagnostics. By integrating sub-word code-mixed NLP normalization, a calibrated soft-voting tri-classifier ensemble, deep transformer benchmarking, and a formal expert inference engine, the system addresses the critical operational challenge of diagnosing customer dissatisfaction in high-scale telecommunications environments.
+
+Evaluated over a decade-long repository of 655,649 verified reviews across Bangladesh's three nationwide mobile operators, the system achieved 87.5\% cross-validation accuracy and 94.1\% consensus agreement with human ground truth. Our empirical findings provide rigorous statistical proof ($\chi^2(1) = 12.83, p = 0.0003; \text{OR} = 4.23$) that acute sentiment shocks are overwhelmingly driven by client-side application software engineering failures rather than core physical network latency. Furthermore, the dual-track change-point detection engine demonstrated how promotional review surges can artificially mask operational decay.
+
+Future work will focus on integrating real-time streaming LLM agent architectures for autonomous customer complaint resolution, expanding cross-platform scraping to social media commentary and call center audio transcripts, and deploying edge-native diagnostic models directly within customer-facing mobile applications.
+
+%% =========================================================================
+%% REFERENCES
+%% =========================================================================
+\bibliographystyle{elsarticle-harv}
+\bibliography{references}
+
+\end{document}

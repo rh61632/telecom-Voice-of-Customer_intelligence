@@ -19,9 +19,7 @@ import time
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-PYTHON_BIN = PROJECT_ROOT / "dl" / ".venv" / "bin" / "python"
-if not PYTHON_BIN.exists():
-    PYTHON_BIN = sys.executable
+PYTHON_BIN = sys.executable
 
 WORKER_SCRIPT = PROJECT_ROOT / "scraped_data_global" / "pipeline" / "scraper_worker.py"
 
@@ -35,6 +33,8 @@ def main():
             "Appends and deduplicates. Much faster for routine monthly refreshes."
         )
     )
+    parser.add_argument("--lang", type=str, default="en", help="Language code (default: en)")
+    parser.add_argument("--country", type=str, default="us", help="Country code (default: us)")
     args = parser.parse_args()
     mode = "INCREMENTAL" if args.incremental else "FULL"
 
@@ -47,7 +47,7 @@ def main():
     processes = {}
 
     for op in operators:
-        cmd = [str(PYTHON_BIN), str(WORKER_SCRIPT), "--operator", op]
+        cmd = [str(PYTHON_BIN), str(WORKER_SCRIPT), "--operator", op, "--lang", args.lang, "--country", args.country]
         if args.incremental:
             cmd.append("--incremental")
         p = subprocess.Popen(cmd)
@@ -61,7 +61,12 @@ def main():
     while True:
         alive = {op: p.poll() is None for op, p in processes.items()}
         if not any(alive.values()):
-            print("\n🎉 All 3 operator scrapers have finished execution!")
+            failed = {op: p.returncode for op, p in processes.items() if p.returncode != 0}
+            if failed:
+                print(f"\n⚠️ Some scrapers failed with non-zero exit codes: {failed}")
+                sys.exit(1)
+            else:
+                print("\n🎉 All 3 operator scrapers have finished execution!")
             break
         time.sleep(2)
 

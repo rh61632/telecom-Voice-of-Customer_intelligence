@@ -1,6 +1,6 @@
 """
 Script: calculate_agreement.py
-Purpose: Compute Cohen's Kappa and inter-annotator agreement between Ratul and second annotator (Friend).
+Purpose: Compute Cohen's Kappa and inter-annotator agreement between Annotator 1 and Annotator 2.
 """
 
 from pathlib import Path
@@ -32,17 +32,13 @@ def resolve_best_file(candidates):
 def resolve_files():
     annotator1_candidates = [
         GOLD_DIR / "blind_annotation_300_annotator1.csv",
-        GOLD_DIR / "blind_annotation_300_ratul.csv",
         GOLD_DIR.parent / "pipeline" / "blind_annotation_300_annotator1.csv",
-        GOLD_DIR.parent / "pipeline" / "blind_annotation_300_ratul.csv",
         Path.cwd() / "blind_annotation_300_annotator1.csv",
         PROJECT_ROOT / "blind_annotation_300_annotator1.csv",
     ]
     annotator2_candidates = [
         GOLD_DIR / "blind_annotation_200_annotator2.csv",
-        GOLD_DIR / "blind_annotation_200_friend.csv",
         GOLD_DIR.parent / "pipeline" / "blind_annotation_200_annotator2.csv",
-        GOLD_DIR.parent / "pipeline" / "blind_annotation_200_friend.csv",
         Path.cwd() / "blind_annotation_200_annotator2.csv",
         PROJECT_ROOT / "blind_annotation_200_annotator2.csv",
     ]
@@ -67,59 +63,59 @@ def evaluate_agreement():
     print("      INTER-ANNOTATOR AGREEMENT & COHEN'S KAPPA EVALUATION")
     print("=" * 70)
 
-    ratul_csv, friend_csv = resolve_files()
-    if not ratul_csv or not friend_csv:
+    ann1_csv, ann2_csv = resolve_files()
+    if not ann1_csv or not ann2_csv:
         print("Missing annotation CSV files.")
-        print(f"Ratul file found : {ratul_csv}")
-        print(f"Friend file found: {friend_csv}")
+        print(f"Annotator 1 file found: {ann1_csv}")
+        print(f"Annotator 2 file found: {ann2_csv}")
         return
 
-    print(f"Ratul CSV : {ratul_csv}")
-    print(f"Friend CSV: {friend_csv}")
+    print(f"Annotator 1 CSV: {ann1_csv}")
+    print(f"Annotator 2 CSV: {ann2_csv}")
 
-    with open(ratul_csv, "r", encoding="utf-8-sig") as f:
-        r_rows = list(csv.DictReader(f))
-    with open(friend_csv, "r", encoding="utf-8-sig") as f:
-        f_rows = list(csv.DictReader(f))
+    with open(ann1_csv, "r", encoding="utf-8-sig") as f:
+        ann1_rows = list(csv.DictReader(f))
+    with open(ann2_csv, "r", encoding="utf-8-sig") as f:
+        ann2_rows = list(csv.DictReader(f))
 
-    r_dict = {r["sample_id"]: r for r in r_rows if "sample_id" in r}
-    f_dict = {r["sample_id"]: r for r in f_rows if "sample_id" in r}
+    ann1_dict = {r["sample_id"]: r for r in ann1_rows if "sample_id" in r}
+    ann2_dict = {r["sample_id"]: r for r in ann2_rows if "sample_id" in r}
 
-    r_annotated_count = sum(1 for r in r_rows if r.get("sentiment_label", "").strip())
-    f_annotated_count = sum(1 for r in f_rows if r.get("sentiment_label", "").strip())
+    ann1_annotated_count = sum(1 for r in ann1_rows if r.get("sentiment_label", "").strip())
+    ann2_annotated_count = sum(1 for r in ann2_rows if r.get("sentiment_label", "").strip())
 
-    common_ids = [sid for sid in r_dict if sid in f_dict]
+    common_ids = [sid for sid in ann1_dict if sid in ann2_dict]
     paired = []
     for sid in common_ids:
-        s_r = r_dict[sid].get("sentiment_label", "").strip()
-        s_f = f_dict[sid].get("sentiment_label", "").strip()
-        if s_r and s_f:
+        s_1 = ann1_dict[sid].get("sentiment_label", "").strip()
+        s_2 = ann2_dict[sid].get("sentiment_label", "").strip()
+        if s_1 and s_2:
             paired.append({
                 "sample_id": sid,
-                "operator": r_dict[sid].get("operator", ""),
-                "rating": r_dict[sid].get("rating", ""),
-                "review_text": r_dict[sid].get("review_text", ""),
-                "sentiment_ratul": s_r,
-                "sentiment_friend": s_f,
-                "category_ratul": r_dict[sid].get("category_label", "").strip(),
-                "category_friend": f_dict[sid].get("category_label", "").strip(),
+                "operator": ann1_dict[sid].get("operator", ""),
+                "rating": ann1_dict[sid].get("rating", ""),
+                "review_text": ann1_dict[sid].get("review_text", ""),
+                "sentiment_ann1": s_1,
+                "sentiment_ann2": s_2,
+                "category_ann1": ann1_dict[sid].get("category_label", "").strip(),
+                "category_ann2": ann2_dict[sid].get("category_label", "").strip(),
             })
 
     total_paired = len(paired)
     if total_paired == 0:
         print("No overlapping reviews have been annotated by both annotators yet.")
-        print(f"Ratul completed : {r_annotated_count} / {len(r_rows)}")
-        print(f"Friend completed: {f_annotated_count} / {len(f_rows)}")
+        print(f"Annotator 1 completed: {ann1_annotated_count} / {len(ann1_rows)}")
+        print(f"Annotator 2 completed: {ann2_annotated_count} / {len(ann2_rows)}")
         return
 
     print(f"\nTotal overlapping reviews evaluated: {total_paired} / {len(common_ids)}")
 
     # 1. Sentiment Agreement
-    y_r = [p["sentiment_ratul"] for p in paired]
-    y_f = [p["sentiment_friend"] for p in paired]
+    y_1 = [p["sentiment_ann1"] for p in paired]
+    y_2 = [p["sentiment_ann2"] for p in paired]
     labels = ["Positive", "Neutral", "Negative"]
 
-    raw_agreement, kappa = compute_kappa(y_r, y_f, labels)
+    raw_agreement, kappa = compute_kappa(y_1, y_2, labels)
 
     print(f"\n📊 SENTIMENT RESULTS:")
     print(f"  • Raw Percentage Agreement : {raw_agreement:.2f}%")
@@ -135,30 +131,40 @@ def evaluate_agreement():
         interp = "Fair / Slight Agreement"
     print(f"  • Interpretation            : {interp}")
 
+    # Per-Operator Sentiment Breakdown
+    print("\n📊 PER-OPERATOR SENTIMENT BREAKDOWN:")
+    for op in ["Grameenphone", "Banglalink", "Robi"]:
+        op_paired = [p for p in paired if p["operator"] == op]
+        if op_paired:
+            op_y1 = [p["sentiment_ann1"] for p in op_paired]
+            op_y2 = [p["sentiment_ann2"] for p in op_paired]
+            op_raw, op_k = compute_kappa(op_y1, op_y2, labels)
+            print(f"  • {op:13s} (N={len(op_paired)}): agreement {op_raw:.2f}%, κ = {op_k:.4f}")
+
     # Confusion matrix
-    print("\nConfusion Matrix (Rows: Ratul, Columns: Friend):")
+    print("\nConfusion Matrix (Rows: Annotator 1, Columns: Annotator 2):")
     header = f"{'':15s}" + "".join([f"{l:>12s}" for l in labels])
     print(header)
-    for l_r in labels:
-        row_str = f"{'Ratul_' + l_r:15s}"
-        for l_f in labels:
-            c = sum(1 for a, b in zip(y_r, y_f) if a == l_r and b == l_f)
+    for l_1 in labels:
+        row_str = f"{'Ann1_' + l_1:15s}"
+        for l_2 in labels:
+            c = sum(1 for a, b in zip(y_1, y_2) if a == l_1 and b == l_2)
             row_str += f"{c:>12d}"
         print(row_str)
 
     # Disagreements
-    disagreements = [p for p in paired if p["sentiment_ratul"] != p["sentiment_friend"]]
+    disagreements = [p for p in paired if p["sentiment_ann1"] != p["sentiment_ann2"]]
     if disagreements:
         print(f"\nSentiment Disagreements ({len(disagreements)} cases):")
         for p in disagreements[:10]:
-            print(f"  [{p['sample_id']}] Ratul: {p['sentiment_ratul']} vs Friend: {p['sentiment_friend']}")
+            print(f"  [{p['sample_id']}] Annotator 1: {p['sentiment_ann1']} vs Annotator 2: {p['sentiment_ann2']}")
             print(f"    Rating: {p['rating']}★ | \"{p['review_text']}\"\n")
 
     # 2. Category Agreement
-    paired_cat = [p for p in paired if p["category_ratul"] and p["category_friend"]]
+    paired_cat = [p for p in paired if p["category_ann1"] and p["category_ann2"]]
     if paired_cat:
-        y_r_c = [p["category_ratul"] for p in paired_cat]
-        y_f_c = [p["category_friend"] for p in paired_cat]
+        y_1_c = [p["category_ann1"] for p in paired_cat]
+        y_2_c = [p["category_ann2"] for p in paired_cat]
         cat_labels = [
             "Billing & Airtime Deductions",
             "App Login & Technical Bugs",
@@ -166,7 +172,7 @@ def evaluate_agreement():
             "Offers & Data Packs",
             "General Appreciation / Other",
         ]
-        raw_c, kappa_c = compute_kappa(y_r_c, y_f_c, cat_labels)
+        raw_c, kappa_c = compute_kappa(y_1_c, y_2_c, cat_labels)
         print(f"\n📊 OPERATIONAL CATEGORY RESULTS (N={len(paired_cat)}):")
         print(f"  • Raw Percentage Agreement : {raw_c:.2f}%")
         print(f"  • Cohen's Kappa (κ)         : {kappa_c:.4f}")
@@ -181,14 +187,13 @@ def evaluate_agreement():
             interp_c = "Fair / Slight Agreement"
         print(f"  • Interpretation            : {interp_c}")
 
-        disagreements_c = [p for p in paired_cat if p["category_ratul"] != p["category_friend"]]
+        disagreements_c = [p for p in paired_cat if p["category_ann1"] != p["category_ann2"]]
         if disagreements_c:
             print(f"\nCategory Disagreements ({len(disagreements_c)} cases):")
             for p in disagreements_c[:10]:
-                print(f"  [{p['sample_id']}] Ratul: {p['category_ratul']} vs Friend: {p['category_friend']}")
+                print(f"  [{p['sample_id']}] Annotator 1: {p['category_ann1']} vs Annotator 2: {p['category_ann2']}")
                 print(f"    Rating: {p['rating']}★ | \"{p['review_text']}\"\n")
 
 
 if __name__ == "__main__":
     evaluate_agreement()
-

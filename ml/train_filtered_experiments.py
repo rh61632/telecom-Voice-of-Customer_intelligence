@@ -16,7 +16,7 @@ import joblib
 ML_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = ML_DIR.parent
 PROCESSED_DATA_DIR = PROJECT_ROOT / "data" / "processed"
-GOLD_CSV = PROJECT_ROOT / "scraped_data_2020" / "gold_set" / "gold_set_verified.csv"
+GOLD_CSV = PROJECT_ROOT / "data" / "gold_set" / "blind_annotation_300_annotator1.csv"
 MODELS_DIR = ML_DIR / "models"
 REPORTS_DIR = ML_DIR / "reports"
 
@@ -136,7 +136,7 @@ def run_ablation_study(df: pd.DataFrame):
 def evaluate_on_gold_standard(train_df: pd.DataFrame, min_words: int):
     """Train ensemble on filtered train_df and test on corresponding Gold Standard subset."""
     if not GOLD_CSV.exists():
-        return 0.0, 0.0
+        raise FileNotFoundError(f"Gold standard dataset not found at: {GOLD_CSV}")
 
     gold_df = pd.read_csv(GOLD_CSV)
     gold_df["word_count"] = gold_df["review_text"].astype(str).str.strip().str.split().apply(len)
@@ -149,8 +149,8 @@ def evaluate_on_gold_standard(train_df: pd.DataFrame, min_words: int):
     model.fit(train_df["review_text"], train_df["sentiment"])
     preds = model.predict(gold_sub["review_text"])
 
-    f1 = f1_score(gold_sub["gold_sentiment"], preds, average="macro", zero_division=0)
-    acc = accuracy_score(gold_sub["gold_sentiment"], preds)
+    f1 = f1_score(gold_sub["sentiment_label"], preds, average="macro", zero_division=0)
+    acc = accuracy_score(gold_sub["sentiment_label"], preds)
     return f1, acc
 
 
@@ -183,6 +183,34 @@ def export_ablation_report(results: list, df: pd.DataFrame):
     """Generate detailed markdown report of the short-text ablation study."""
     report_path = REPORTS_DIR / "short_text_filtering_ablation_study.md"
 
+    # Dynamic computation of category per-class metrics
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    oof_full = cross_val_predict(get_ensemble_pipeline(), df["review_text"], df["category"], cv=cv, n_jobs=-1)
+    rep_full = classification_report(df["category"], oof_full, output_dict=True)
+
+    df_filt = df[df["word_count"] >= 3].reset_index(drop=True)
+    oof_filt = cross_val_predict(get_ensemble_pipeline(), df_filt["review_text"], df_filt["category"], cv=cv, n_jobs=-1)
+    rep_filt = classification_report(df_filt["category"], oof_filt, output_dict=True)
+
+    r_full = results[0]
+    r_filt = results[1]
+    r_agg = results[2]
+
+    billing_prec_full = rep_full["Billing & Airtime Deductions"]["precision"] * 100
+    billing_prec_filt = rep_filt["Billing & Airtime Deductions"]["precision"] * 100
+
+    app_prec_full = rep_full["App Login & Technical Bugs"]["precision"] * 100
+    app_prec_filt = rep_filt["App Login & Technical Bugs"]["precision"] * 100
+
+    offers_f1_full = rep_full["Offers & Data Packs"]["f1-score"]
+    offers_f1_filt = rep_filt["Offers & Data Packs"]["f1-score"]
+
+    gold_f1_full = r_full["Gold Set Macro-F1"]
+    gold_f1_filt = r_filt["Gold Set Macro-F1"]
+    gold_f1_agg = r_agg["Gold Set Macro-F1"]
+    gold_f1_gain_filt = (gold_f1_filt - gold_f1_full) * 100
+    gold_f1_gain_agg = (gold_f1_agg - gold_f1_full) * 100
+
     md = f"""# Short-Text Filtering Ablation Study
 
 ## Executive Summary
@@ -198,19 +226,20 @@ In mobile app review datasets, 1-word and 2-word reviews (e.g., *"Good"*, *"Nice
     for r in results:
         md += f"| **{r['Filter Setting']}** | {r['Sample Count']:,d} | {r['Retained %']} | {r['Category Macro-F1']:.4f} | {r['Category Accuracy']*100:.2f}% | {r['Sentiment Macro-F1']:.4f} | {r['Sentiment Accuracy']*100:.2f}% | **{r['Gold Set Macro-F1']:.4f}** | {r['Gold Set Accuracy']*100:.2f}% |\n"
 
-    md += r"""
+    md += f"""
 ## Key Insights & Discoveries
 
-1. **Massive Surge in Gold Standard Macro-F1 (+6.55% to +7.80%):**
-   * On the **Human Gold Standard Ground Truth**, Macro-F1 jumped from **`0.6781`** on the full dataset up to **`0.7436`** when removing 1-2 word reviews ($\ge 3$ words).
-   * **Why?** Very short reviews on the Play Store frequently contain user misclicks (giving 1 star while saying "Good" or giving 5 stars while writing "faltu"), ambiguous emojis without context, and isolated sarcastic words. When reviews have at least 3 words, syntactic context enables the NLP models to reliably separate true sentiment.
+1. **Surge in Gold Standard Macro-F1 ({gold_f1_gain_filt:+.2f}% to {gold_f1_gain_agg:+.2f}%):**
+   * On the active **Human Gold Standard Ground Truth** (`blind_annotation_300_annotator1.csv`), Macro-F1 increased from **`{gold_f1_full:.4f}`** on the full dataset ($N=300$) to **`{gold_f1_filt:.4f}`** when removing 1–2 word reviews ($\\ge 3$ words, $N=68$), and reached **`{gold_f1_agg:.4f}`** under aggressive filtering ($\\ge 5$ words, $N=39$).
+   * *Note on sample count:* In the active gold standard ($N=300$), 77.3% (232/300) of reviews contain only 1–2 words (e.g., single-word affirmations or emojis), reducing the evaluated subset to $N=68$ for $\\ge 3$ words and $N=39$ for $\\ge 5$ words.
+   * **Why?** Very short reviews on the Play Store frequently contain user misclicks (giving 1 star while saying "Good" or giving 5 stars while writing "faltu"), ambiguous emojis without context, and isolated sarcastic words. When reviews have at least 3 to 5 words, syntactic context enables the NLP models to reliably separate true sentiment.
 
 2. **Improvement in Operational Category Precision:**
    * Removing generic short reviews reduced the dilution of the dataset by *General Appreciation / Other*.
    * Per-class precision for technical telecom categories improved substantially:
-     * **`Billing & Airtime Deductions`**: Precision increased from **64.82% ➔ 67.38%**
-     * **`App Login & Technical Bugs`**: Precision increased from **74.45% ➔ 76.26%**
-     * **`Offers & Data Packs`**: F1-score increased from **0.8309 ➔ 0.8326**
+     * **`Billing & Airtime Deductions`**: Precision increased from **{billing_prec_full:.2f}% ➔ {billing_prec_filt:.2f}%**
+     * **`App Login & Technical Bugs`**: Precision increased from **{app_prec_full:.2f}% ➔ {app_prec_filt:.2f}%**
+     * **`Offers & Data Packs`**: F1-score: **{offers_f1_full:.4f} ➔ {offers_f1_filt:.4f}**
 
 3. **Why Overall Accuracy Slightly Decreased (The Trivial Baseline Paradox):**
    * In the unfiltered dataset, 60.7% of reviews were generic *General Appreciation / Other* (mostly trivial 1-word praise).
@@ -220,7 +249,7 @@ In mobile app review datasets, 1-word and 2-word reviews (e.g., *"Good"*, *"Nice
 - Full Production Models (Original):
   - `ml/models/ensemble_voting_classifier.joblib` (Sentiment)
   - `ml/models/category_voting_classifier.joblib` (Category)
-- Filtered Models ($\ge 3$ words):
+- Filtered Models ($\\ge 3$ words):
   - `ml/models/sentiment_ensemble_filtered_min3words.joblib`
   - `ml/models/category_ensemble_filtered_min3words.joblib`
 """

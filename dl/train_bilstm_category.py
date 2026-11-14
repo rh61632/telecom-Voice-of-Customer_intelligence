@@ -1,5 +1,6 @@
 import math
 import os
+import argparse
 from pathlib import Path
 import re
 import json
@@ -282,8 +283,19 @@ def evaluate(model, dataloader):
     return macro_f1, acc, np.array(all_preds), np.array(all_labels), np.array(all_probs)
 
 
-def train_and_export_category_bilstm(df: pd.DataFrame, epochs=8, batch_size=32):
-    """Train BiLSTM category model on full dataset with validation split and export."""
+def train_and_export_category_bilstm(
+    df: pd.DataFrame,
+    epochs: int = 8,
+    batch_size: int = 32,
+    output_model_path: Path = None,
+    output_vocab_path: Path = None,
+):
+    """Train BiLSTM category model on full dataset with validation split and export.
+    
+    NOTE: The deployed Colab 1-layer word-only model is stored at dl/models/bilstm_category_model.pt.
+    To prevent clobbering that model, this local Word+Char-CNN training script defaults to saving
+    its weights to dl/models/bilstm_category_charcnn_model.pt.
+    """
     print("=" * 70)
     print("TRAINING PRODUCTION BiLSTM + ATTENTION MODEL (5 OPERATIONAL CATEGORIES)")
     print("=" * 70)
@@ -308,8 +320,8 @@ def train_and_export_category_bilstm(df: pd.DataFrame, epochs=8, batch_size=32):
     weights = torch.tensor([len(train_df) / (len(class_counts) * c) for c in class_counts], dtype=torch.float32)
 
     model = BiLSTMWithAttention(
-        word_vocab_size=len(vocab.word2idx) + 1,
-        char_vocab_size=len(vocab.char2idx) + 1,
+        word_vocab_size=len(vocab.word2idx),
+        char_vocab_size=len(vocab.char2idx),
         num_classes=5,
     )
 
@@ -337,19 +349,19 @@ def train_and_export_category_bilstm(df: pd.DataFrame, epochs=8, batch_size=32):
     print("\nFinal Validation Classification Report:")
     print(rep)
 
-    # Save model
-    model_path = MODELS_DIR / "bilstm_category_model.pt"
+    # Save model - default to non-colliding bilstm_category_charcnn_model.pt
+    model_path = output_model_path or (MODELS_DIR / "bilstm_category_charcnn_model.pt")
     torch.save({
         "model_state_dict": model.state_dict(),
-        "word_vocab_size": len(vocab.word2idx) + 1,
-        "char_vocab_size": len(vocab.char2idx) + 1,
+        "word_vocab_size": len(vocab.word2idx),
+        "char_vocab_size": len(vocab.char2idx),
         "num_classes": 5,
         "label_map": LABEL_MAP,
     }, model_path)
     print(f"Model saved to: {model_path}")
 
-    # Save vocabulary
-    vocab_path = MODELS_DIR / "bilstm_category_vocab.json"
+    # Save vocabulary - default to non-colliding bilstm_category_charcnn_vocab.json
+    vocab_path = output_vocab_path or (MODELS_DIR / "bilstm_category_charcnn_vocab.json")
     with open(vocab_path, "w", encoding="utf-8") as f:
         json.dump(vocab.to_dict(), f, indent=2, ensure_ascii=False)
     print(f"Vocabulary saved to: {vocab_path}")
@@ -378,5 +390,30 @@ def train_and_export_category_bilstm(df: pd.DataFrame, epochs=8, batch_size=32):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Train Word+Char-CNN BiLSTM Category Model (Saves to non-colliding bilstm_category_charcnn_model.pt)"
+    )
+    parser.add_argument("--epochs", type=int, default=8, help="Number of training epochs")
+    parser.add_argument("--batch_size", type=int, default=32, help="Batch size")
+    parser.add_argument(
+        "--output_model",
+        type=str,
+        default=None,
+        help="Optional destination path for model checkpoint (default: dl/models/bilstm_category_charcnn_model.pt)",
+    )
+    parser.add_argument(
+        "--output_vocab",
+        type=str,
+        default=None,
+        help="Optional destination path for vocabulary json (default: dl/models/bilstm_category_charcnn_vocab.json)",
+    )
+    args = parser.parse_args()
+
     df = load_dataset()
-    train_and_export_category_bilstm(df, epochs=8)
+    train_and_export_category_bilstm(
+        df,
+        epochs=args.epochs,
+        batch_size=args.batch_size,
+        output_model_path=Path(args.output_model) if args.output_model else None,
+        output_vocab_path=Path(args.output_vocab) if args.output_vocab else None,
+    )

@@ -1,0 +1,6 @@
+Sub-Cohort,N,Share (%),Cat Acc (CV),Cat Macro-F1 (CV),Sent Acc (CV),Sent Macro-F1 (CV),Cat Acc (Fit),Cat Macro-F1 (Fit)
+Bangla (Native Script),1091,24.2%,80.11%,0.7503,82.68%,0.7835,98.44%,0.9848
+Romanized Banglish,390,8.7%,85.13%,0.7305,79.23%,0.7567,98.72%,0.9866
+English,3005,66.8%,90.18%,0.7900,90.82%,0.7671,99.23%,0.9898
+Symbolic / Emoticons,14,0.3%,100.00%,1.0000,92.86%,0.4815,100.00%,1.0000
+Overall (Cross-Validation),4500,100.0%,87.33%,0.7800,87.84%,0.7823,99.00%,0.9883

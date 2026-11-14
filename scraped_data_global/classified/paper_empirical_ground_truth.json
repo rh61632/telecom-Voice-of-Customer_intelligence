@@ -1,0 +1,3264 @@
+{
+  "case_studies": {
+    "case_study_1_banglalink_spring_2024": {
+      "app_version_missingness": {
+        "missingness_percentage": 51.82,
+        "null_version_reviews": 71068,
+        "total_banglalink_reviews": 137131
+      },
+      "corpus_version_reporting_bias": {
+        "reporting_bias_pp": 10.96,
+        "unversioned_reviews": {
+          "n_reviews": 163425,
+          "nss_score": 54.47
+        },
+        "versioned_reviews": {
+          "n_reviews": 492224,
+          "nss_score": 65.43
+        }
+      },
+      "monthly_transitions": {
+        "2024-03": {
+          "n_reviews": 1093,
+          "nss_score": 42.82
+        },
+        "2024-04": {
+          "delta_login": -8.74,
+          "delta_nss": -11.18,
+          "n_reviews": 1315,
+          "nss_score": 31.63
+        },
+        "2024-05": {
+          "delta_general": 17.38,
+          "delta_login": 13.73,
+          "delta_nss": 32.78,
+          "n_reviews": 2265,
+          "nss_score": 64.42
+        },
+        "2024-06": {
+          "delta_nss": 15.13,
+          "n_reviews": 4528,
+          "nss_score": 79.55
+        }
+      },
+      "version_telemetry": {
+        "v11_8_0_april_2024": {
+          "n_reviews": 158,
+          "nss_score": -7.59
+        },
+        "v11_8_0_march_june_2024": {
+          "n_reviews": 198,
+          "nss_score": 10.61
+        },
+        "v11_9_1_march_june_2024": {
+          "n_reviews": 905,
+          "nss_score": 71.71
+        }
+      }
+    },
+    "case_study_2_banglalink_2025_2026_turnaround": {
+      "annual_turnaround": {
+        "2025": {
+          "n_reviews": 10238,
+          "nss_score": 66.39
+        },
+        "2026": {
+          "n_reviews": 21810,
+          "nss_score": 81.93
+        },
+        "delta_nss": 15.54,
+        "volume_multiplier": 2.13
+      },
+      "monthly_turnaround_transition": {
+        "2025-12": {
+          "n_reviews": 689,
+          "nss_score": 37.01
+        },
+        "2026-01": {
+          "n_reviews": 4644,
+          "nss_score": 85.16
+        },
+        "delta_nss": 48.15
+      },
+      "turnaround_decomposition": {
+        "general_appreciation_other_points": 10.33,
+        "per_domain_contributions": {
+          "App Login & Technical Bugs": 2.8,
+          "Billing & Airtime Deductions": 0.36,
+          "General Appreciation / Other": 10.33,
+          "Network Speed & 4G Latency": 1.07,
+          "Offers & Data Packs": 0.98
+        },
+        "technical_4_domain_total_points": 5.21
+      }
+    },
+    "decision_framework_tables7_8": {
+      "empirical_p_base": 0.044162,
+      "p_base_percentage": 4.42,
+      "per_operator_p_base": {
+        "Banglalink": {
+          "app_login_negatives": 9946,
+          "n_reviews": 137131,
+          "p_base": 0.07253
+        },
+        "Grameenphone": {
+          "app_login_negatives": 11058,
+          "n_reviews": 320140,
+          "p_base": 0.03454
+        },
+        "Robi": {
+          "app_login_negatives": 7951,
+          "n_reviews": 198378,
+          "p_base": 0.04008
+        }
+      },
+      "table8_alert_level_counts_240_transitions": {
+        "level_1_routine_fluctuation": {
+          "count": 147,
+          "pct": 61.25,
+          "threshold": "|Delta NSS| < 5.0"
+        },
+        "level_2_operational_warning": {
+          "count": 58,
+          "pct": 24.17,
+          "threshold": "5.0 <= |Delta NSS| < 10.0"
+        },
+        "level_3_critical_incident": {
+          "count": 15,
+          "pct": 6.25,
+          "threshold": "Delta NSS <= -10.0"
+        },
+        "level_4_promotional_surge": {
+          "count": 13,
+          "pct": 5.42,
+          "threshold": "pct_vol >= 50% and Delta Gen >= 5.0 pp"
+        }
+      }
+    }
+  },
+  "gold_and_irr": {
+    "category_voting_classifier": {
+      "consensus_n187_accuracy": 0.9412,
+      "gold_n300_accuracy": 0.9133,
+      "gold_n300_macro_f1": 0.4919,
+      "role": "Production Operational Category Model (category_voting_classifier.joblib)"
+    },
+    "challenger_models": {
+      "challenger_linearsvc": {
+        "consensus_n182_accuracy": 0.9121,
+        "gold_n300_accuracy": 0.89,
+        "gold_n300_macro_f1": 0.633,
+        "mcnemar_vs_star_heuristic": {
+          "b": 23,
+          "c": 16,
+          "chi2_continuity": 0.9231,
+          "chi2_uncorrected": 1.2564,
+          "p_continuity": 0.3366683676100388,
+          "p_exact_binomial": 0.3367836351899315,
+          "p_uncorrected": 0.262331675408357
+        }
+      },
+      "primary_logistic_regression": {
+        "consensus_n182_accuracy": 0.8571,
+        "gold_n300_accuracy": 0.8267,
+        "gold_n300_macro_f1": 0.5836,
+        "mcnemar_vs_star_heuristic": {
+          "b": 23,
+          "c": 35,
+          "chi2_continuity": 2.0862,
+          "chi2_uncorrected": 2.4828,
+          "p_continuity": 0.1486347107477688,
+          "p_exact_binomial": 0.14800580076020603,
+          "p_uncorrected": 0.11510021583257046
+        }
+      }
+    },
+    "deprecated_g600_retirement": {
+      "provenance_note": "Se=0.711 / Sp=0.942 was originally computed on legacy unblinded g600 datasets combining BiLSTM and ensemble predictions. It has been permanently replaced by active blind gold standard parameters (CLI Se=0.5217 / Sp=0.9747; Prod Se=0.4783 / Sp=0.9711).",
+      "retired_sensitivity": 0.711,
+      "retired_specificity": 0.942,
+      "status": "RETIRED_PER_ADR_003"
+    },
+    "ensemble_voting_classifier": {
+      "consensus_n182_accuracy": 0.9121,
+      "gold_n300_accuracy": 0.89,
+      "gold_n300_macro_f1": 0.6089,
+      "mcnemar_vs_star_heuristic": {
+        "b": 22,
+        "c": 15,
+        "chi2_continuity": 0.973,
+        "chi2_uncorrected": 1.3243,
+        "p_continuity": 0.32393984559853417,
+        "p_exact_binomial": 0.3240086000878364,
+        "p_uncorrected": 0.24981744183594812
+      },
+      "rogan_gladen_parameters": {
+        "false_negatives": 11,
+        "false_positives": 7,
+        "sensitivity": 0.5217,
+        "specificity": 0.9747,
+        "true_negatives": 270,
+        "true_positives": 12
+      },
+      "role": "CLI & Demo Hero Model (ensemble_voting_classifier.joblib)"
+    },
+    "inter_rater_reliability": {
+      "category_n196": {
+        "cohen_kappa": 0.7694,
+        "n_evaluated": 196,
+        "pabak": 0.9426,
+        "raw_agreement_pct": 95.41
+      },
+      "sentiment_n200": {
+        "cohen_kappa": 0.5762,
+        "n_evaluated": 200,
+        "pabak": 0.865,
+        "per_operator": {
+          "Banglalink": {
+            "cohen_kappa": 0.4846,
+            "n_pairs": 67,
+            "pabak": 0.9104,
+            "raw_agreement_pct": 94.03
+          },
+          "Grameenphone": {
+            "cohen_kappa": 0.6921,
+            "n_pairs": 67,
+            "pabak": 0.8433,
+            "raw_agreement_pct": 89.55
+          },
+          "Robi": {
+            "cohen_kappa": 0.34,
+            "n_pairs": 66,
+            "pabak": 0.8409,
+            "raw_agreement_pct": 89.39
+          }
+        },
+        "raw_agreement_pct": 91.0
+      }
+    },
+    "sentiment_voting_classifier": {
+      "consensus_n182_accuracy": 0.8791,
+      "gold_n300_accuracy": 0.8367,
+      "gold_n300_macro_f1": 0.5625,
+      "mcnemar_vs_star_heuristic": {
+        "b": 21,
+        "c": 30,
+        "chi2_continuity": 1.2549,
+        "chi2_uncorrected": 1.5882,
+        "p_continuity": 0.2626182904425206,
+        "p_exact_binomial": 0.2624375357110438,
+        "p_uncorrected": 0.20757844233562384
+      },
+      "rogan_gladen_parameters": {
+        "false_negatives": 12,
+        "false_positives": 8,
+        "sensitivity": 0.4783,
+        "specificity": 0.9711,
+        "true_negatives": 269,
+        "true_positives": 11
+      },
+      "role": "Global 655k Production Classifier (sentiment_voting_classifier.joblib)"
+    },
+    "star_rating_heuristic": {
+      "consensus_n182_accuracy": 0.9286,
+      "gold_n300_accuracy": 0.8667,
+      "gold_n300_macro_f1": 0.5438
+    }
+  },
+  "metadata": {
+    "dataset_files": {
+      "common_duration": "scraped_data_global\\classified\\all_operators_common_duration_classified.csv",
+      "global_classified": "scraped_data_global\\classified\\all_operators_classified_global.csv",
+      "gold_set_200": "data\\gold_set\\blind_annotation_200_annotator2.csv",
+      "gold_set_300": "data\\gold_set\\blind_annotation_300_annotator1.csv"
+    },
+    "dl_benchmarks_provenance": {
+      "banglabert_category": {
+        "accuracy": 0.8527,
+        "accuracy_std": 0.0114,
+        "cv_folds_macro_f1": [
+          0.7417,
+          0.741,
+          0.7851,
+          0.7742,
+          0.77
+        ],
+        "macro_f1": 0.7624,
+        "macro_f1_std": 0.0179,
+        "provenance": "dl/telecom_voc_banglabert_finetuning_colab.ipynb cell 6; ml/reports/category_benchmark_summary.csv:1-5"
+      },
+      "banglabert_sentiment": {
+        "accuracy": 0.916,
+        "accuracy_std": 0.0074,
+        "cv_folds_macro_f1": [
+          0.8654,
+          0.8492,
+          0.8711,
+          0.858,
+          0.8553
+        ],
+        "macro_f1": 0.8598,
+        "macro_f1_std": 0.0102,
+        "provenance": "dl/telecom_voc_banglabert_finetuning_colab.ipynb cell 6; dl/reports/results.txt:20-42"
+      },
+      "bilstm_char_cnn_category": {
+        "accuracy": 0.8402,
+        "macro_f1": 0.7259,
+        "provenance": "dl/reports/results.txt:32-37; ml/reports/category_benchmark_summary.csv:3"
+      },
+      "bilstm_char_cnn_sentiment": {
+        "accuracy": 0.8973,
+        "macro_f1": 0.8229,
+        "provenance": "dl/reports/results.txt:25-30"
+      },
+      "concatenation_order_caveat": "Classical ML training (ml/train_category.py:43-47) concatenates operators in order [GP, BL, Robi], whereas Colab BanglaBERT fine-tuning (dl/finetune_banglabert.py:82-86) concatenates [GP, Robi, BL]. Paired t-tests between Hero Ensemble and BanglaBERT are evaluated on the 5 fold scores.",
+      "minilm_category": {
+        "accuracy": 0.8291,
+        "macro_f1": 0.7102,
+        "provenance": "dl/reports/results.txt:38-42; ml/reports/category_benchmark_summary.csv:4"
+      },
+      "minilm_sentiment": {
+        "accuracy": 0.876,
+        "macro_f1": 0.7915,
+        "provenance": "dl/reports/results.txt:38-42"
+      }
+    },
+    "generated_at": "2026-11-11T19:04:23.515382+00:00",
+    "live_cpu_inference_latency": {
+      "category_voting_classifier": {
+        "ms_per_review": 11.692,
+        "reviews_per_sec": 85.5,
+        "samples_timed": 50
+      },
+      "ensemble_voting_classifier": {
+        "ms_per_review": 12.178,
+        "reviews_per_sec": 82.1,
+        "samples_timed": 50
+      },
+      "sentiment_voting_classifier": {
+        "ms_per_review": 6.078,
+        "reviews_per_sec": 164.5,
+        "samples_timed": 50
+      }
+    },
+    "python_version": "3.15.1",
+    "system": "Windows-11-10.0.26300-SP0"
+  },
+  "model_cv_and_ttests": {
+    "category_cv_models": {
+      "Balanced Logistic Regression": {
+        "folds_macro_f1": [
+          0.7809,
+          0.7638,
+          0.7956,
+          0.8025,
+          0.7796
+        ],
+        "mean_accuracy": 0.8716,
+        "mean_macro_f1": 0.7845,
+        "std_accuracy": 0.0086,
+        "std_macro_f1": 0.0135
+      },
+      "Calibrated LinearSVC": {
+        "folds_macro_f1": [
+          0.7741,
+          0.7589,
+          0.7839,
+          0.7761,
+          0.7388
+        ],
+        "mean_accuracy": 0.8691,
+        "mean_macro_f1": 0.7664,
+        "std_accuracy": 0.0074,
+        "std_macro_f1": 0.016
+      },
+      "ComplementNB": {
+        "folds_macro_f1": [
+          0.6742,
+          0.6999,
+          0.688,
+          0.7273,
+          0.6778
+        ],
+        "mean_accuracy": 0.8147,
+        "mean_macro_f1": 0.6934,
+        "std_accuracy": 0.0137,
+        "std_macro_f1": 0.0191
+      },
+      "Dummy (Most Frequent)": {
+        "folds_macro_f1": [
+          0.151,
+          0.151,
+          0.151,
+          0.151,
+          0.1512
+        ],
+        "mean_accuracy": 0.6069,
+        "mean_macro_f1": 0.1511,
+        "std_accuracy": 0.0004,
+        "std_macro_f1": 0.0001
+      },
+      "Hero Soft-Voting Ensemble": {
+        "folds_macro_f1": [
+          0.7678,
+          0.7644,
+          0.7908,
+          0.8022,
+          0.7716
+        ],
+        "mean_accuracy": 0.8733,
+        "mean_macro_f1": 0.7794,
+        "mean_weighted_f1": 0.8717,
+        "std_accuracy": 0.0081,
+        "std_macro_f1": 0.0146
+      }
+    },
+    "category_paired_ttests": {
+      "Hero_vs_Balanced_LogReg": {
+        "degrees_of_freedom": 4,
+        "p_value": 0.11302859400737439,
+        "t_statistic": -2.0236
+      },
+      "Hero_vs_BanglaBERT_Colab": {
+        "degrees_of_freedom": 4,
+        "p_value": 0.03722219015255142,
+        "t_statistic": 3.0719
+      },
+      "Hero_vs_Calibrated_LinearSVC": {
+        "degrees_of_freedom": 4,
+        "p_value": 0.14423544428328364,
+        "t_statistic": 1.8119
+      },
+      "Hero_vs_ComplementNB": {
+        "degrees_of_freedom": 4,
+        "p_value": 0.00025621636878250456,
+        "t_statistic": 12.2352
+      },
+      "Hero_vs_Dummy": {
+        "degrees_of_freedom": 4,
+        "p_value": 1.1077433796312154e-07,
+        "t_statistic": 85.7689
+      }
+    },
+    "sentiment_cv_models": {
+      "Balanced LinearSVC": {
+        "folds_macro_f1": [
+          0.7782,
+          0.7575,
+          0.8038,
+          0.7788,
+          0.7808
+        ],
+        "mean_accuracy": 0.8764,
+        "mean_macro_f1": 0.7798,
+        "std_accuracy": 0.0093,
+        "std_macro_f1": 0.0147
+      },
+      "Balanced Logistic Regression": {
+        "folds_macro_f1": [
+          0.7713,
+          0.7718,
+          0.8074,
+          0.7972,
+          0.7418
+        ],
+        "mean_accuracy": 0.8587,
+        "mean_macro_f1": 0.7779,
+        "std_accuracy": 0.018,
+        "std_macro_f1": 0.0229
+      },
+      "CLI Soft-Voting Ensemble": {
+        "folds_macro_f1": [
+          0.8001,
+          0.7646,
+          0.8114,
+          0.7798,
+          0.7542
+        ],
+        "mean_accuracy": 0.8784,
+        "mean_macro_f1": 0.782,
+        "std_accuracy": 0.0113,
+        "std_macro_f1": 0.0213
+      },
+      "ComplementNB": {
+        "folds_macro_f1": [
+          0.6942,
+          0.6994,
+          0.7093,
+          0.7311,
+          0.6933
+        ],
+        "mean_accuracy": 0.8422,
+        "mean_macro_f1": 0.7055,
+        "std_accuracy": 0.015,
+        "std_macro_f1": 0.014
+      },
+      "Dummy (Most Frequent)": {
+        "folds_macro_f1": [
+          0.2543,
+          0.2543,
+          0.2543,
+          0.2543,
+          0.254
+        ],
+        "mean_accuracy": 0.6164,
+        "mean_macro_f1": 0.2542,
+        "std_accuracy": 0.0004,
+        "std_macro_f1": 0.0001
+      },
+      "Global Prod Soft-Voting Ensemble": {
+        "folds_macro_f1": [
+          0.7674,
+          0.7547,
+          0.799,
+          0.7774,
+          0.7457
+        ],
+        "mean_accuracy": 0.8744,
+        "mean_macro_f1": 0.7688,
+        "std_accuracy": 0.0131,
+        "std_macro_f1": 0.0186
+      }
+    },
+    "sentiment_paired_ttests": {
+      "CLI_Ensemble_vs_ComplementNB": {
+        "degrees_of_freedom": 4,
+        "p_value": 0.0026720509460702786,
+        "t_statistic": 6.6386
+      },
+      "CLI_Ensemble_vs_Dummy": {
+        "degrees_of_freedom": 4,
+        "p_value": 9.818517988530987e-07,
+        "t_statistic": 49.6859
+      },
+      "Prod_Ensemble_vs_ComplementNB": {
+        "degrees_of_freedom": 4,
+        "p_value": 0.00134928968926381,
+        "t_statistic": 7.9601
+      },
+      "Prod_Ensemble_vs_Dummy": {
+        "degrees_of_freedom": 4,
+        "p_value": 6.228606002846166e-07,
+        "t_statistic": 55.681
+      }
+    }
+  },
+  "priority_matrix": {
+    "app_login_vs_network_odds_ratio": {
+      "ci_95": [
+        2.45,
+        2.7
+      ],
+      "odds_ratio": 2.57
+    },
+    "cramers_v": 0.3536,
+    "degrees_of_freedom": 3,
+    "domain_negativity_and_odds_ratios": {
+      "App Login & Technical Bugs": {
+        "ci_95": [
+          6.18,
+          6.7
+        ],
+        "negative_pct": 88.54,
+        "negative_reviews": 28955,
+        "odds_ratio_vs_offers": 6.44,
+        "total_reviews": 32701
+      },
+      "Billing & Airtime Deductions": {
+        "ci_95": [
+          8.64,
+          10.42
+        ],
+        "negative_pct": 91.93,
+        "negative_reviews": 5787,
+        "odds_ratio_vs_offers": 9.49,
+        "total_reviews": 6295
+      },
+      "Network Speed & 4G Latency": {
+        "ci_95": [
+          2.4,
+          2.61
+        ],
+        "negative_pct": 75.01,
+        "negative_reviews": 12083,
+        "odds_ratio_vs_offers": 2.5,
+        "total_reviews": 16108
+      },
+      "Offers & Data Packs": {
+        "ci_95": [
+          1.0,
+          1.0
+        ],
+        "negative_pct": 54.56,
+        "negative_reviews": 18046,
+        "odds_ratio_vs_offers": 1.0,
+        "total_reviews": 33077
+      }
+    },
+    "omnibus_chi2": 11027.6,
+    "p_value": 0.0,
+    "per_operator_negativity_bounds": {
+      "App Login & Technical Bugs": {
+        "max_pct": 89.28,
+        "min_pct": 87.1,
+        "per_operator": [
+          88.95,
+          87.1,
+          89.28
+        ]
+      },
+      "Billing & Airtime Deductions": {
+        "max_pct": 92.89,
+        "min_pct": 89.77,
+        "per_operator": [
+          92.89,
+          89.77,
+          91.87
+        ]
+      },
+      "Network Speed & 4G Latency": {
+        "max_pct": 76.37,
+        "min_pct": 74.01,
+        "per_operator": [
+          74.01,
+          76.37,
+          74.83
+        ]
+      },
+      "Offers & Data Packs": {
+        "max_pct": 56.62,
+        "min_pct": 50.26,
+        "per_operator": [
+          56.62,
+          50.26,
+          56.14
+        ]
+      }
+    },
+    "total_functional_reviews": 88181
+  },
+  "shocks_and_contingency": {
+    "all_35_shocks": [
+      {
+        "curr_month": "2020-04",
+        "d_ln_vol": 1.1771,
+        "delta_nss": 31.24,
+        "diff_billing": 1.09,
+        "diff_general": 20.7,
+        "diff_login": 5.49,
+        "diff_network": 0.42,
+        "diff_offers": 3.54,
+        "four_domain_diff": 10.54,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 5.49,
+        "leading_op_share_pct": 17.6,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 3920,
+        "n_prev": 1208,
+        "nss_curr": 48.95,
+        "nss_prev": 17.72,
+        "operator": "Grameenphone",
+        "pct_vol": 224.5,
+        "prev_month": "2020-03",
+        "recovery_months": null,
+        "transition": "2020-03 to 2020-04"
+      },
+      {
+        "curr_month": "2021-01",
+        "d_ln_vol": 0.5099,
+        "delta_nss": 10.94,
+        "diff_billing": -0.01,
+        "diff_general": 7.53,
+        "diff_login": 1.24,
+        "diff_network": 1.93,
+        "diff_offers": 0.25,
+        "four_domain_diff": 3.41,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 1.93,
+        "leading_op_share_pct": 17.7,
+        "leading_operational_domain": "Network Speed & 4G Latency",
+        "n_curr": 2601,
+        "n_prev": 1562,
+        "nss_curr": 61.32,
+        "nss_prev": 50.38,
+        "operator": "Grameenphone",
+        "pct_vol": 66.52,
+        "prev_month": "2020-12",
+        "recovery_months": 4,
+        "transition": "2020-12 to 2021-01"
+      },
+      {
+        "curr_month": "2021-05",
+        "d_ln_vol": -0.561,
+        "delta_nss": -13.75,
+        "diff_billing": 0.04,
+        "diff_general": -8.47,
+        "diff_login": -2.29,
+        "diff_network": -2.19,
+        "diff_offers": -0.84,
+        "four_domain_diff": -5.28,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -2.29,
+        "leading_op_share_pct": 16.7,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 2226,
+        "n_prev": 3901,
+        "nss_curr": 48.52,
+        "nss_prev": 62.27,
+        "operator": "Grameenphone",
+        "pct_vol": -42.94,
+        "prev_month": "2021-04",
+        "recovery_months": 4,
+        "transition": "2021-04 to 2021-05"
+      },
+      {
+        "curr_month": "2021-09",
+        "d_ln_vol": -0.3949,
+        "delta_nss": 13.57,
+        "diff_billing": 0.15,
+        "diff_general": 6.98,
+        "diff_login": 5.08,
+        "diff_network": 1.34,
+        "diff_offers": 0.02,
+        "four_domain_diff": 6.59,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 5.08,
+        "leading_op_share_pct": 37.5,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 2897,
+        "n_prev": 4300,
+        "nss_curr": 63.69,
+        "nss_prev": 50.12,
+        "operator": "Grameenphone",
+        "pct_vol": -32.63,
+        "prev_month": "2021-08",
+        "recovery_months": 49,
+        "transition": "2021-08 to 2021-09"
+      },
+      {
+        "curr_month": "2025-09",
+        "d_ln_vol": -0.4765,
+        "delta_nss": -18.54,
+        "diff_billing": -0.95,
+        "diff_general": -13.06,
+        "diff_login": -1.25,
+        "diff_network": -0.6,
+        "diff_offers": -2.68,
+        "four_domain_diff": -5.47,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -2.68,
+        "leading_op_share_pct": 14.4,
+        "leading_operational_domain": "Offers & Data Packs",
+        "n_curr": 3086,
+        "n_prev": 4970,
+        "nss_curr": 51.52,
+        "nss_prev": 70.06,
+        "operator": "Grameenphone",
+        "pct_vol": -37.91,
+        "prev_month": "2025-08",
+        "recovery_months": null,
+        "transition": "2025-08 to 2025-09"
+      },
+      {
+        "curr_month": "2026-03",
+        "d_ln_vol": 0.3675,
+        "delta_nss": 11.03,
+        "diff_billing": 0.46,
+        "diff_general": 7.1,
+        "diff_login": 0.77,
+        "diff_network": 0.78,
+        "diff_offers": 1.93,
+        "four_domain_diff": 3.94,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 1.93,
+        "leading_op_share_pct": 17.5,
+        "leading_operational_domain": "Offers & Data Packs",
+        "n_curr": 1834,
+        "n_prev": 1270,
+        "nss_curr": 64.34,
+        "nss_prev": 53.31,
+        "operator": "Grameenphone",
+        "pct_vol": 44.41,
+        "prev_month": "2026-02",
+        "recovery_months": 6,
+        "transition": "2026-02 to 2026-03"
+      },
+      {
+        "curr_month": "2021-09",
+        "d_ln_vol": 0.4056,
+        "delta_nss": 10.03,
+        "diff_billing": -0.1,
+        "diff_general": 6.13,
+        "diff_login": 1.36,
+        "diff_network": 1.96,
+        "diff_offers": 0.68,
+        "four_domain_diff": 3.9,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 1.96,
+        "leading_op_share_pct": 19.5,
+        "leading_operational_domain": "Network Speed & 4G Latency",
+        "n_curr": 3680,
+        "n_prev": 2453,
+        "nss_curr": 66.09,
+        "nss_prev": 56.05,
+        "operator": "Robi",
+        "pct_vol": 50.02,
+        "prev_month": "2021-08",
+        "recovery_months": 16,
+        "transition": "2021-08 to 2021-09"
+      },
+      {
+        "curr_month": "2023-01",
+        "d_ln_vol": 0.6461,
+        "delta_nss": -16.61,
+        "diff_billing": -0.0,
+        "diff_general": -9.45,
+        "diff_login": -7.4,
+        "diff_network": -0.32,
+        "diff_offers": 0.57,
+        "four_domain_diff": -7.15,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -7.4,
+        "leading_op_share_pct": 44.5,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 3465,
+        "n_prev": 1816,
+        "nss_curr": 49.58,
+        "nss_prev": 66.19,
+        "operator": "Robi",
+        "pct_vol": 90.8,
+        "prev_month": "2022-12",
+        "recovery_months": 20,
+        "transition": "2022-12 to 2023-01"
+      },
+      {
+        "curr_month": "2023-02",
+        "d_ln_vol": -0.8928,
+        "delta_nss": 10.67,
+        "diff_billing": 0.18,
+        "diff_general": 5.93,
+        "diff_login": 4.64,
+        "diff_network": 0.18,
+        "diff_offers": -0.26,
+        "four_domain_diff": 4.74,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 4.64,
+        "leading_op_share_pct": 43.5,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 1419,
+        "n_prev": 3465,
+        "nss_curr": 60.25,
+        "nss_prev": 49.58,
+        "operator": "Robi",
+        "pct_vol": -59.05,
+        "prev_month": "2023-01",
+        "recovery_months": 4,
+        "transition": "2023-01 to 2023-02"
+      },
+      {
+        "curr_month": "2023-12",
+        "d_ln_vol": -0.1814,
+        "delta_nss": 10.0,
+        "diff_billing": 0.36,
+        "diff_general": 7.19,
+        "diff_login": -0.53,
+        "diff_network": 0.32,
+        "diff_offers": 2.67,
+        "four_domain_diff": 2.82,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 2.67,
+        "leading_op_share_pct": 26.7,
+        "leading_operational_domain": "Offers & Data Packs",
+        "n_curr": 744,
+        "n_prev": 892,
+        "nss_curr": 48.79,
+        "nss_prev": 38.79,
+        "operator": "Robi",
+        "pct_vol": -16.59,
+        "prev_month": "2023-11",
+        "recovery_months": 7,
+        "transition": "2023-11 to 2023-12"
+      },
+      {
+        "curr_month": "2024-08",
+        "d_ln_vol": -0.3369,
+        "delta_nss": 17.45,
+        "diff_billing": -0.79,
+        "diff_general": 11.86,
+        "diff_login": 1.83,
+        "diff_network": 2.27,
+        "diff_offers": 2.27,
+        "four_domain_diff": 5.58,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 2.27,
+        "leading_op_share_pct": 13.0,
+        "leading_operational_domain": "Network Speed & 4G Latency",
+        "n_curr": 327,
+        "n_prev": 458,
+        "nss_curr": 54.13,
+        "nss_prev": 36.68,
+        "operator": "Robi",
+        "pct_vol": -28.6,
+        "prev_month": "2024-07",
+        "recovery_months": null,
+        "transition": "2024-07 to 2024-08"
+      },
+      {
+        "curr_month": "2024-09",
+        "d_ln_vol": 2.3754,
+        "delta_nss": 21.33,
+        "diff_billing": 1.98,
+        "diff_general": 13.62,
+        "diff_login": 4.27,
+        "diff_network": 0.65,
+        "diff_offers": 0.8,
+        "four_domain_diff": 7.71,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 4.27,
+        "leading_op_share_pct": 20.0,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 3517,
+        "n_prev": 327,
+        "nss_curr": 75.46,
+        "nss_prev": 54.13,
+        "operator": "Robi",
+        "pct_vol": 975.54,
+        "prev_month": "2024-08",
+        "recovery_months": null,
+        "transition": "2024-08 to 2024-09"
+      },
+      {
+        "curr_month": "2026-09",
+        "d_ln_vol": 0.1184,
+        "delta_nss": -13.74,
+        "diff_billing": -0.53,
+        "diff_general": -10.64,
+        "diff_login": -2.23,
+        "diff_network": 0.12,
+        "diff_offers": -0.46,
+        "four_domain_diff": -3.1,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -2.23,
+        "leading_op_share_pct": 16.2,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 2266,
+        "n_prev": 2013,
+        "nss_curr": 63.11,
+        "nss_prev": 76.85,
+        "operator": "Robi",
+        "pct_vol": 12.57,
+        "prev_month": "2026-08",
+        "recovery_months": null,
+        "transition": "2026-08 to 2026-09"
+      },
+      {
+        "curr_month": "2020-04",
+        "d_ln_vol": 0.9282,
+        "delta_nss": 11.26,
+        "diff_billing": 0.0,
+        "diff_general": 7.77,
+        "diff_login": 2.25,
+        "diff_network": 0.42,
+        "diff_offers": 0.81,
+        "four_domain_diff": 3.49,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 2.25,
+        "leading_op_share_pct": 20.0,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 2535,
+        "n_prev": 1002,
+        "nss_curr": 47.89,
+        "nss_prev": 36.63,
+        "operator": "Banglalink",
+        "pct_vol": 152.99,
+        "prev_month": "2020-03",
+        "recovery_months": 2,
+        "transition": "2020-03 to 2020-04"
+      },
+      {
+        "curr_month": "2020-10",
+        "d_ln_vol": -0.011,
+        "delta_nss": -10.68,
+        "diff_billing": -0.18,
+        "diff_general": -5.73,
+        "diff_login": -3.12,
+        "diff_network": -1.47,
+        "diff_offers": -0.18,
+        "four_domain_diff": -4.95,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -3.12,
+        "leading_op_share_pct": 29.2,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 1260,
+        "n_prev": 1274,
+        "nss_curr": 27.86,
+        "nss_prev": 38.54,
+        "operator": "Banglalink",
+        "pct_vol": -1.1,
+        "prev_month": "2020-09",
+        "recovery_months": 1,
+        "transition": "2020-09 to 2020-10"
+      },
+      {
+        "curr_month": "2020-11",
+        "d_ln_vol": -0.043,
+        "delta_nss": 14.56,
+        "diff_billing": 0.41,
+        "diff_general": 7.24,
+        "diff_login": 4.43,
+        "diff_network": 2.08,
+        "diff_offers": 0.41,
+        "four_domain_diff": 7.32,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 4.43,
+        "leading_op_share_pct": 30.4,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 1207,
+        "n_prev": 1260,
+        "nss_curr": 42.42,
+        "nss_prev": 27.86,
+        "operator": "Banglalink",
+        "pct_vol": -4.21,
+        "prev_month": "2020-10",
+        "recovery_months": 58,
+        "transition": "2020-10 to 2020-11"
+      },
+      {
+        "curr_month": "2021-01",
+        "d_ln_vol": 0.7267,
+        "delta_nss": -10.99,
+        "diff_billing": 0.11,
+        "diff_general": -4.29,
+        "diff_login": -4.89,
+        "diff_network": 0.25,
+        "diff_offers": -2.16,
+        "four_domain_diff": -6.7,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "App Login & Technical Bugs",
+        "leading_op_impact": -4.89,
+        "leading_op_share_pct": 44.5,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 2393,
+        "n_prev": 1157,
+        "nss_curr": 37.07,
+        "nss_prev": 48.06,
+        "operator": "Banglalink",
+        "pct_vol": 106.83,
+        "prev_month": "2020-12",
+        "recovery_months": 7,
+        "transition": "2020-12 to 2021-01"
+      },
+      {
+        "curr_month": "2021-05",
+        "d_ln_vol": -0.3582,
+        "delta_nss": -16.43,
+        "diff_billing": -0.83,
+        "diff_general": -7.1,
+        "diff_login": -2.83,
+        "diff_network": -4.9,
+        "diff_offers": -0.78,
+        "four_domain_diff": -9.33,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -4.9,
+        "leading_op_share_pct": 29.8,
+        "leading_operational_domain": "Network Speed & 4G Latency",
+        "n_curr": 1214,
+        "n_prev": 1737,
+        "nss_curr": 29.0,
+        "nss_prev": 45.42,
+        "operator": "Banglalink",
+        "pct_vol": -30.11,
+        "prev_month": "2021-04",
+        "recovery_months": 3,
+        "transition": "2021-04 to 2021-05"
+      },
+      {
+        "curr_month": "2021-08",
+        "d_ln_vol": 0.828,
+        "delta_nss": 13.21,
+        "diff_billing": 0.9,
+        "diff_general": 9.93,
+        "diff_login": -1.29,
+        "diff_network": 2.85,
+        "diff_offers": 0.82,
+        "four_domain_diff": 3.28,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 2.85,
+        "leading_op_share_pct": 21.6,
+        "leading_operational_domain": "Network Speed & 4G Latency",
+        "n_curr": 3035,
+        "n_prev": 1326,
+        "nss_curr": 52.88,
+        "nss_prev": 39.67,
+        "operator": "Banglalink",
+        "pct_vol": 128.88,
+        "prev_month": "2021-07",
+        "recovery_months": 22,
+        "transition": "2021-07 to 2021-08"
+      },
+      {
+        "curr_month": "2021-11",
+        "d_ln_vol": -0.3056,
+        "delta_nss": 10.98,
+        "diff_billing": 0.24,
+        "diff_general": 7.36,
+        "diff_login": 3.38,
+        "diff_network": 0.27,
+        "diff_offers": -0.27,
+        "four_domain_diff": 3.62,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 3.38,
+        "leading_op_share_pct": 30.8,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 2400,
+        "n_prev": 3258,
+        "nss_curr": 60.21,
+        "nss_prev": 49.23,
+        "operator": "Banglalink",
+        "pct_vol": -26.34,
+        "prev_month": "2021-10",
+        "recovery_months": 11,
+        "transition": "2021-10 to 2021-11"
+      },
+      {
+        "curr_month": "2022-10",
+        "d_ln_vol": -0.2163,
+        "delta_nss": -12.13,
+        "diff_billing": 0.0,
+        "diff_general": -7.06,
+        "diff_login": -2.99,
+        "diff_network": -1.01,
+        "diff_offers": -1.08,
+        "four_domain_diff": -5.07,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -2.99,
+        "leading_op_share_pct": 24.6,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 1176,
+        "n_prev": 1460,
+        "nss_curr": 40.48,
+        "nss_prev": 52.6,
+        "operator": "Banglalink",
+        "pct_vol": -19.45,
+        "prev_month": "2022-09",
+        "recovery_months": 15,
+        "transition": "2022-09 to 2022-10"
+      },
+      {
+        "curr_month": "2023-11",
+        "d_ln_vol": -0.1689,
+        "delta_nss": 12.23,
+        "diff_billing": 0.49,
+        "diff_general": 6.22,
+        "diff_login": 5.37,
+        "diff_network": 1.73,
+        "diff_offers": -1.58,
+        "four_domain_diff": 6.01,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 5.37,
+        "leading_op_share_pct": 43.9,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 1424,
+        "n_prev": 1686,
+        "nss_curr": 43.61,
+        "nss_prev": 31.38,
+        "operator": "Banglalink",
+        "pct_vol": -15.54,
+        "prev_month": "2023-10",
+        "recovery_months": 22,
+        "transition": "2023-10 to 2023-11"
+      },
+      {
+        "curr_month": "2024-02",
+        "d_ln_vol": 0.1897,
+        "delta_nss": -10.4,
+        "diff_billing": -0.15,
+        "diff_general": -6.97,
+        "diff_login": -2.76,
+        "diff_network": -0.08,
+        "diff_offers": -0.43,
+        "four_domain_diff": -3.43,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -2.76,
+        "leading_op_share_pct": 26.6,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 1742,
+        "n_prev": 1441,
+        "nss_curr": 45.12,
+        "nss_prev": 55.52,
+        "operator": "Banglalink",
+        "pct_vol": 20.89,
+        "prev_month": "2024-01",
+        "recovery_months": 3,
+        "transition": "2024-01 to 2024-02"
+      },
+      {
+        "curr_month": "2024-04",
+        "d_ln_vol": 0.1849,
+        "delta_nss": -11.18,
+        "diff_billing": 1.07,
+        "diff_general": -5.87,
+        "diff_login": -8.74,
+        "diff_network": 1.59,
+        "diff_offers": 0.77,
+        "four_domain_diff": -5.32,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "App Login & Technical Bugs",
+        "leading_op_impact": -8.74,
+        "leading_op_share_pct": 78.2,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 1315,
+        "n_prev": 1093,
+        "nss_curr": 31.63,
+        "nss_prev": 42.82,
+        "operator": "Banglalink",
+        "pct_vol": 20.31,
+        "prev_month": "2024-03",
+        "recovery_months": 1,
+        "transition": "2024-03 to 2024-04"
+      },
+      {
+        "curr_month": "2024-05",
+        "d_ln_vol": 0.5437,
+        "delta_nss": 32.78,
+        "diff_billing": 0.32,
+        "diff_general": 17.38,
+        "diff_login": 13.73,
+        "diff_network": 0.96,
+        "diff_offers": 0.39,
+        "four_domain_diff": 15.4,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 13.73,
+        "leading_op_share_pct": 41.9,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 2265,
+        "n_prev": 1315,
+        "nss_curr": 64.42,
+        "nss_prev": 31.63,
+        "operator": "Banglalink",
+        "pct_vol": 72.24,
+        "prev_month": "2024-04",
+        "recovery_months": 16,
+        "transition": "2024-04 to 2024-05"
+      },
+      {
+        "curr_month": "2024-06",
+        "d_ln_vol": 0.6927,
+        "delta_nss": 15.13,
+        "diff_billing": 0.04,
+        "diff_general": 12.99,
+        "diff_login": 1.32,
+        "diff_network": -0.09,
+        "diff_offers": 0.86,
+        "four_domain_diff": 2.14,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 1.32,
+        "leading_op_share_pct": 8.7,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 4528,
+        "n_prev": 2265,
+        "nss_curr": 79.55,
+        "nss_prev": 64.42,
+        "operator": "Banglalink",
+        "pct_vol": 99.91,
+        "prev_month": "2024-05",
+        "recovery_months": 1,
+        "transition": "2024-05 to 2024-06"
+      },
+      {
+        "curr_month": "2024-07",
+        "d_ln_vol": -2.2505,
+        "delta_nss": -44.75,
+        "diff_billing": 0.19,
+        "diff_general": -31.68,
+        "diff_login": -6.39,
+        "diff_network": -3.41,
+        "diff_offers": -3.46,
+        "four_domain_diff": -13.07,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -6.39,
+        "leading_op_share_pct": 14.3,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 477,
+        "n_prev": 4528,
+        "nss_curr": 34.8,
+        "nss_prev": 79.55,
+        "operator": "Banglalink",
+        "pct_vol": -89.47,
+        "prev_month": "2024-06",
+        "recovery_months": 16,
+        "transition": "2024-06 to 2024-07"
+      },
+      {
+        "curr_month": "2024-11",
+        "d_ln_vol": -0.1422,
+        "delta_nss": -22.01,
+        "diff_billing": -0.46,
+        "diff_general": -13.56,
+        "diff_login": -5.2,
+        "diff_network": -1.37,
+        "diff_offers": -1.42,
+        "four_domain_diff": -8.45,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -5.2,
+        "leading_op_share_pct": 23.6,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 517,
+        "n_prev": 596,
+        "nss_curr": 32.69,
+        "nss_prev": 54.7,
+        "operator": "Banglalink",
+        "pct_vol": -13.26,
+        "prev_month": "2024-10",
+        "recovery_months": 5,
+        "transition": "2024-10 to 2024-11"
+      },
+      {
+        "curr_month": "2025-01",
+        "d_ln_vol": -0.1004,
+        "delta_nss": 11.35,
+        "diff_billing": 0.62,
+        "diff_general": 7.84,
+        "diff_login": 1.94,
+        "diff_network": 0.48,
+        "diff_offers": 0.48,
+        "four_domain_diff": 3.52,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 1.94,
+        "leading_op_share_pct": 17.1,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 407,
+        "n_prev": 450,
+        "nss_curr": 51.35,
+        "nss_prev": 40.0,
+        "operator": "Banglalink",
+        "pct_vol": -9.56,
+        "prev_month": "2024-12",
+        "recovery_months": 6,
+        "transition": "2024-12 to 2025-01"
+      },
+      {
+        "curr_month": "2025-04",
+        "d_ln_vol": 0.7742,
+        "delta_nss": 18.5,
+        "diff_billing": 0.39,
+        "diff_general": 11.49,
+        "diff_login": 3.9,
+        "diff_network": 1.84,
+        "diff_offers": 0.88,
+        "four_domain_diff": 7.01,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 3.9,
+        "leading_op_share_pct": 21.1,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 681,
+        "n_prev": 314,
+        "nss_curr": 69.46,
+        "nss_prev": 50.96,
+        "operator": "Banglalink",
+        "pct_vol": 116.88,
+        "prev_month": "2025-03",
+        "recovery_months": 2,
+        "transition": "2025-03 to 2025-04"
+      },
+      {
+        "curr_month": "2025-05",
+        "d_ln_vol": -0.5172,
+        "delta_nss": -17.73,
+        "diff_billing": -0.35,
+        "diff_general": -9.17,
+        "diff_login": -5.09,
+        "diff_network": -2.67,
+        "diff_offers": -0.45,
+        "four_domain_diff": -8.56,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -5.09,
+        "leading_op_share_pct": 28.7,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 406,
+        "n_prev": 681,
+        "nss_curr": 51.72,
+        "nss_prev": 69.46,
+        "operator": "Banglalink",
+        "pct_vol": -40.38,
+        "prev_month": "2025-04",
+        "recovery_months": 5,
+        "transition": "2025-04 to 2025-05"
+      },
+      {
+        "curr_month": "2025-09",
+        "d_ln_vol": 0.1276,
+        "delta_nss": -17.83,
+        "diff_billing": -0.01,
+        "diff_general": -12.27,
+        "diff_login": -2.86,
+        "diff_network": -1.51,
+        "diff_offers": -1.17,
+        "four_domain_diff": -5.56,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -2.86,
+        "leading_op_share_pct": 16.0,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 334,
+        "n_prev": 294,
+        "nss_curr": 26.05,
+        "nss_prev": 43.88,
+        "operator": "Banglalink",
+        "pct_vol": 13.61,
+        "prev_month": "2025-08",
+        "recovery_months": 1,
+        "transition": "2025-08 to 2025-09"
+      },
+      {
+        "curr_month": "2025-10",
+        "d_ln_vol": 2.4586,
+        "delta_nss": 52.67,
+        "diff_billing": 1.86,
+        "diff_general": 34.63,
+        "diff_login": 8.21,
+        "diff_network": 3.99,
+        "diff_offers": 3.97,
+        "four_domain_diff": 18.03,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 8.21,
+        "leading_op_share_pct": 15.6,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 3904,
+        "n_prev": 334,
+        "nss_curr": 78.71,
+        "nss_prev": 26.05,
+        "operator": "Banglalink",
+        "pct_vol": 1068.86,
+        "prev_month": "2025-09",
+        "recovery_months": null,
+        "transition": "2025-09 to 2025-10"
+      },
+      {
+        "curr_month": "2025-12",
+        "d_ln_vol": -1.1523,
+        "delta_nss": -42.63,
+        "diff_billing": -0.84,
+        "diff_general": -26.07,
+        "diff_login": -11.16,
+        "diff_network": -2.67,
+        "diff_offers": -1.89,
+        "four_domain_diff": -16.56,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -11.16,
+        "leading_op_share_pct": 26.2,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 689,
+        "n_prev": 2181,
+        "nss_curr": 37.01,
+        "nss_prev": 79.64,
+        "operator": "Banglalink",
+        "pct_vol": -68.41,
+        "prev_month": "2025-11",
+        "recovery_months": 1,
+        "transition": "2025-11 to 2025-12"
+      },
+      {
+        "curr_month": "2026-01",
+        "d_ln_vol": 1.9081,
+        "delta_nss": 48.15,
+        "diff_billing": 0.77,
+        "diff_general": 30.26,
+        "diff_login": 12.0,
+        "diff_network": 2.59,
+        "diff_offers": 2.52,
+        "four_domain_diff": 17.89,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 12.0,
+        "leading_op_share_pct": 24.9,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 4644,
+        "n_prev": 689,
+        "nss_curr": 85.16,
+        "nss_prev": 37.01,
+        "operator": "Banglalink",
+        "pct_vol": 574.02,
+        "prev_month": "2025-12",
+        "recovery_months": null,
+        "transition": "2025-12 to 2026-01"
+      }
+    ],
+    "contingency_non_surge_2x2": {
+      "fisher_odds_ratio": 3.6537,
+      "fisher_p_value": 0.014980713454104856,
+      "pearson_chi2": 6.377,
+      "pearson_p_value": 0.011560863911937646,
+      "table": [
+        [
+          14,
+          5
+        ],
+        [
+          82,
+          107
+        ]
+      ]
+    },
+    "contingency_pooled_2x2": {
+      "fisher_odds_ratio": 4.228,
+      "fisher_p_value": 0.000404456655440102,
+      "pearson_chi2": 12.8317,
+      "pearson_p_value": 0.00034080122429723964,
+      "relative_risk": 1.7378,
+      "table": [
+        [
+          27,
+          8
+        ],
+        [
+          91,
+          114
+        ]
+      ],
+      "woolf_ci_95": [
+        1.83,
+        9.75
+      ],
+      "yates_chi2": 11.5547,
+      "yates_p_value": 0.0006757961309861957
+    },
+    "per_operator_asymmetry": {
+      "Banglalink": {
+        "all_transitions": {
+          "fisher_odds_ratio": 10.0,
+          "fisher_p_value": 0.0007074540190148796,
+          "non_shocks_login": 29,
+          "non_shocks_other": 29,
+          "shocks_login": 20,
+          "shocks_other": 2
+        },
+        "non_surge_transitions": {
+          "fisher_odds_ratio": 11.41,
+          "fisher_p_value": 0.00884639739758746,
+          "non_shocks_login": 27,
+          "non_shocks_other": 28,
+          "shocks_login": 11,
+          "shocks_other": 1
+        }
+      },
+      "Grameenphone": {
+        "all_transitions": {
+          "fisher_odds_ratio": 1.47,
+          "fisher_p_value": 0.6866001420298553,
+          "non_shocks_login": 30,
+          "non_shocks_other": 44,
+          "shocks_login": 3,
+          "shocks_other": 3
+        },
+        "non_surge_transitions": {
+          "fisher_odds_ratio": 1.5,
+          "fisher_p_value": 1.0,
+          "non_shocks_login": 26,
+          "non_shocks_other": 39,
+          "shocks_login": 2,
+          "shocks_other": 2
+        }
+      },
+      "Robi": {
+        "all_transitions": {
+          "fisher_odds_ratio": 1.71,
+          "fisher_p_value": 0.6948855302286348,
+          "non_shocks_login": 32,
+          "non_shocks_other": 41,
+          "shocks_login": 4,
+          "shocks_other": 3
+        },
+        "non_surge_transitions": {
+          "fisher_odds_ratio": 0.69,
+          "fisher_p_value": 1.0,
+          "non_shocks_login": 29,
+          "non_shocks_other": 40,
+          "shocks_login": 1,
+          "shocks_other": 2
+        }
+      }
+    },
+    "prop1_regression": {
+      "delta_nss_vs_d_ln_vol": {
+        "p_value": 9.566310892040709e-07,
+        "r_squared": 0.522,
+        "slope": 17.47
+      },
+      "gen_diff_vs_d_ln_vol": {
+        "p_value": 2.356137780107091e-07,
+        "r_squared": 0.56,
+        "slope": 11.52
+      }
+    },
+    "rmssd_and_ssi": {
+      "Banglalink": {
+        "non_surge_rmssd": 7.56,
+        "non_surge_ssi": 92.44,
+        "raw_rmssd": 13.61,
+        "raw_ssi": 86.39
+      },
+      "Grameenphone": {
+        "non_surge_rmssd": 5.14,
+        "non_surge_ssi": 94.86,
+        "raw_rmssd": 6.28,
+        "raw_ssi": 93.72
+      },
+      "Robi": {
+        "non_surge_rmssd": 4.53,
+        "non_surge_ssi": 95.47,
+        "raw_rmssd": 5.61,
+        "raw_ssi": 94.39
+      }
+    },
+    "shock_tallies": {
+      "by_leading_operational_domain": {
+        "App Login & Technical Bugs": 27,
+        "Billing & Airtime Deductions": 0,
+        "Network Speed & 4G Latency": 5,
+        "Offers & Data Packs": 3
+      },
+      "by_operator": {
+        "Banglalink": 22,
+        "Grameenphone": 6,
+        "Robi": 7
+      },
+      "negative_drops": 15,
+      "positive_jumps": 20,
+      "total_shocks": 35
+    },
+    "top10_by_abs_delta_nss": [
+      {
+        "curr_month": "2025-10",
+        "d_ln_vol": 2.4586,
+        "delta_nss": 52.67,
+        "diff_billing": 1.86,
+        "diff_general": 34.63,
+        "diff_login": 8.21,
+        "diff_network": 3.99,
+        "diff_offers": 3.97,
+        "four_domain_diff": 18.03,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 8.21,
+        "leading_op_share_pct": 15.6,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 3904,
+        "n_prev": 334,
+        "nss_curr": 78.71,
+        "nss_prev": 26.05,
+        "operator": "Banglalink",
+        "pct_vol": 1068.86,
+        "prev_month": "2025-09",
+        "recovery_months": NaN,
+        "transition": "2025-09 to 2025-10"
+      },
+      {
+        "curr_month": "2026-01",
+        "d_ln_vol": 1.9081,
+        "delta_nss": 48.15,
+        "diff_billing": 0.77,
+        "diff_general": 30.26,
+        "diff_login": 12.0,
+        "diff_network": 2.59,
+        "diff_offers": 2.52,
+        "four_domain_diff": 17.89,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 12.0,
+        "leading_op_share_pct": 24.9,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 4644,
+        "n_prev": 689,
+        "nss_curr": 85.16,
+        "nss_prev": 37.01,
+        "operator": "Banglalink",
+        "pct_vol": 574.02,
+        "prev_month": "2025-12",
+        "recovery_months": NaN,
+        "transition": "2025-12 to 2026-01"
+      },
+      {
+        "curr_month": "2024-07",
+        "d_ln_vol": -2.2505,
+        "delta_nss": -44.75,
+        "diff_billing": 0.19,
+        "diff_general": -31.68,
+        "diff_login": -6.39,
+        "diff_network": -3.41,
+        "diff_offers": -3.46,
+        "four_domain_diff": -13.07,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -6.39,
+        "leading_op_share_pct": 14.3,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 477,
+        "n_prev": 4528,
+        "nss_curr": 34.8,
+        "nss_prev": 79.55,
+        "operator": "Banglalink",
+        "pct_vol": -89.47,
+        "prev_month": "2024-06",
+        "recovery_months": 16.0,
+        "transition": "2024-06 to 2024-07"
+      },
+      {
+        "curr_month": "2025-12",
+        "d_ln_vol": -1.1523,
+        "delta_nss": -42.63,
+        "diff_billing": -0.84,
+        "diff_general": -26.07,
+        "diff_login": -11.16,
+        "diff_network": -2.67,
+        "diff_offers": -1.89,
+        "four_domain_diff": -16.56,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -11.16,
+        "leading_op_share_pct": 26.2,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 689,
+        "n_prev": 2181,
+        "nss_curr": 37.01,
+        "nss_prev": 79.64,
+        "operator": "Banglalink",
+        "pct_vol": -68.41,
+        "prev_month": "2025-11",
+        "recovery_months": 1.0,
+        "transition": "2025-11 to 2025-12"
+      },
+      {
+        "curr_month": "2024-05",
+        "d_ln_vol": 0.5437,
+        "delta_nss": 32.78,
+        "diff_billing": 0.32,
+        "diff_general": 17.38,
+        "diff_login": 13.73,
+        "diff_network": 0.96,
+        "diff_offers": 0.39,
+        "four_domain_diff": 15.4,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 13.73,
+        "leading_op_share_pct": 41.9,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 2265,
+        "n_prev": 1315,
+        "nss_curr": 64.42,
+        "nss_prev": 31.63,
+        "operator": "Banglalink",
+        "pct_vol": 72.24,
+        "prev_month": "2024-04",
+        "recovery_months": 16.0,
+        "transition": "2024-04 to 2024-05"
+      },
+      {
+        "curr_month": "2020-04",
+        "d_ln_vol": 1.1771,
+        "delta_nss": 31.24,
+        "diff_billing": 1.09,
+        "diff_general": 20.7,
+        "diff_login": 5.49,
+        "diff_network": 0.42,
+        "diff_offers": 3.54,
+        "four_domain_diff": 10.54,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 5.49,
+        "leading_op_share_pct": 17.6,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 3920,
+        "n_prev": 1208,
+        "nss_curr": 48.95,
+        "nss_prev": 17.72,
+        "operator": "Grameenphone",
+        "pct_vol": 224.5,
+        "prev_month": "2020-03",
+        "recovery_months": NaN,
+        "transition": "2020-03 to 2020-04"
+      },
+      {
+        "curr_month": "2024-11",
+        "d_ln_vol": -0.1422,
+        "delta_nss": -22.01,
+        "diff_billing": -0.46,
+        "diff_general": -13.56,
+        "diff_login": -5.2,
+        "diff_network": -1.37,
+        "diff_offers": -1.42,
+        "four_domain_diff": -8.45,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -5.2,
+        "leading_op_share_pct": 23.6,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 517,
+        "n_prev": 596,
+        "nss_curr": 32.69,
+        "nss_prev": 54.7,
+        "operator": "Banglalink",
+        "pct_vol": -13.26,
+        "prev_month": "2024-10",
+        "recovery_months": 5.0,
+        "transition": "2024-10 to 2024-11"
+      },
+      {
+        "curr_month": "2024-09",
+        "d_ln_vol": 2.3754,
+        "delta_nss": 21.33,
+        "diff_billing": 1.98,
+        "diff_general": 13.62,
+        "diff_login": 4.27,
+        "diff_network": 0.65,
+        "diff_offers": 0.8,
+        "four_domain_diff": 7.71,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 4.27,
+        "leading_op_share_pct": 20.0,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 3517,
+        "n_prev": 327,
+        "nss_curr": 75.46,
+        "nss_prev": 54.13,
+        "operator": "Robi",
+        "pct_vol": 975.54,
+        "prev_month": "2024-08",
+        "recovery_months": NaN,
+        "transition": "2024-08 to 2024-09"
+      },
+      {
+        "curr_month": "2025-09",
+        "d_ln_vol": -0.4765,
+        "delta_nss": -18.54,
+        "diff_billing": -0.95,
+        "diff_general": -13.06,
+        "diff_login": -1.25,
+        "diff_network": -0.6,
+        "diff_offers": -2.68,
+        "four_domain_diff": -5.47,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -2.68,
+        "leading_op_share_pct": 14.4,
+        "leading_operational_domain": "Offers & Data Packs",
+        "n_curr": 3086,
+        "n_prev": 4970,
+        "nss_curr": 51.52,
+        "nss_prev": 70.06,
+        "operator": "Grameenphone",
+        "pct_vol": -37.91,
+        "prev_month": "2025-08",
+        "recovery_months": NaN,
+        "transition": "2025-08 to 2025-09"
+      },
+      {
+        "curr_month": "2025-04",
+        "d_ln_vol": 0.7742,
+        "delta_nss": 18.5,
+        "diff_billing": 0.39,
+        "diff_general": 11.49,
+        "diff_login": 3.9,
+        "diff_network": 1.84,
+        "diff_offers": 0.88,
+        "four_domain_diff": 7.01,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 3.9,
+        "leading_op_share_pct": 21.1,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 681,
+        "n_prev": 314,
+        "nss_curr": 69.46,
+        "nss_prev": 50.96,
+        "operator": "Banglalink",
+        "pct_vol": 116.88,
+        "prev_month": "2025-03",
+        "recovery_months": 2.0,
+        "transition": "2025-03 to 2025-04"
+      }
+    ],
+    "top10_curated_multi_operator": [
+      {
+        "curr_month": "2020-04",
+        "d_ln_vol": 1.1771,
+        "delta_nss": 31.24,
+        "diff_billing": 1.09,
+        "diff_general": 20.7,
+        "diff_login": 5.49,
+        "diff_network": 0.42,
+        "diff_offers": 3.54,
+        "four_domain_diff": 10.54,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 5.49,
+        "leading_op_share_pct": 17.6,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 3920,
+        "n_prev": 1208,
+        "nss_curr": 48.95,
+        "nss_prev": 17.72,
+        "operator": "Grameenphone",
+        "pct_vol": 224.5,
+        "prev_month": "2020-03",
+        "recovery_months": NaN,
+        "transition": "2020-03 to 2020-04"
+      },
+      {
+        "curr_month": "2021-05",
+        "d_ln_vol": -0.561,
+        "delta_nss": -13.75,
+        "diff_billing": 0.04,
+        "diff_general": -8.47,
+        "diff_login": -2.29,
+        "diff_network": -2.19,
+        "diff_offers": -0.84,
+        "four_domain_diff": -5.28,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -2.29,
+        "leading_op_share_pct": 16.7,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 2226,
+        "n_prev": 3901,
+        "nss_curr": 48.52,
+        "nss_prev": 62.27,
+        "operator": "Grameenphone",
+        "pct_vol": -42.94,
+        "prev_month": "2021-04",
+        "recovery_months": 4.0,
+        "transition": "2021-04 to 2021-05"
+      },
+      {
+        "curr_month": "2021-09",
+        "d_ln_vol": -0.3949,
+        "delta_nss": 13.57,
+        "diff_billing": 0.15,
+        "diff_general": 6.98,
+        "diff_login": 5.08,
+        "diff_network": 1.34,
+        "diff_offers": 0.02,
+        "four_domain_diff": 6.59,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 5.08,
+        "leading_op_share_pct": 37.5,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 2897,
+        "n_prev": 4300,
+        "nss_curr": 63.69,
+        "nss_prev": 50.12,
+        "operator": "Grameenphone",
+        "pct_vol": -32.63,
+        "prev_month": "2021-08",
+        "recovery_months": 49.0,
+        "transition": "2021-08 to 2021-09"
+      },
+      {
+        "curr_month": "2025-09",
+        "d_ln_vol": -0.4765,
+        "delta_nss": -18.54,
+        "diff_billing": -0.95,
+        "diff_general": -13.06,
+        "diff_login": -1.25,
+        "diff_network": -0.6,
+        "diff_offers": -2.68,
+        "four_domain_diff": -5.47,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -2.68,
+        "leading_op_share_pct": 14.4,
+        "leading_operational_domain": "Offers & Data Packs",
+        "n_curr": 3086,
+        "n_prev": 4970,
+        "nss_curr": 51.52,
+        "nss_prev": 70.06,
+        "operator": "Grameenphone",
+        "pct_vol": -37.91,
+        "prev_month": "2025-08",
+        "recovery_months": NaN,
+        "transition": "2025-08 to 2025-09"
+      },
+      {
+        "curr_month": "2023-01",
+        "d_ln_vol": 0.6461,
+        "delta_nss": -16.61,
+        "diff_billing": -0.0,
+        "diff_general": -9.45,
+        "diff_login": -7.4,
+        "diff_network": -0.32,
+        "diff_offers": 0.57,
+        "four_domain_diff": -7.15,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -7.4,
+        "leading_op_share_pct": 44.5,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 3465,
+        "n_prev": 1816,
+        "nss_curr": 49.58,
+        "nss_prev": 66.19,
+        "operator": "Robi",
+        "pct_vol": 90.8,
+        "prev_month": "2022-12",
+        "recovery_months": 20.0,
+        "transition": "2022-12 to 2023-01"
+      },
+      {
+        "curr_month": "2023-02",
+        "d_ln_vol": -0.8928,
+        "delta_nss": 10.67,
+        "diff_billing": 0.18,
+        "diff_general": 5.93,
+        "diff_login": 4.64,
+        "diff_network": 0.18,
+        "diff_offers": -0.26,
+        "four_domain_diff": 4.74,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 4.64,
+        "leading_op_share_pct": 43.5,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 1419,
+        "n_prev": 3465,
+        "nss_curr": 60.25,
+        "nss_prev": 49.58,
+        "operator": "Robi",
+        "pct_vol": -59.05,
+        "prev_month": "2023-01",
+        "recovery_months": 4.0,
+        "transition": "2023-01 to 2023-02"
+      },
+      {
+        "curr_month": "2023-12",
+        "d_ln_vol": -0.1814,
+        "delta_nss": 10.0,
+        "diff_billing": 0.36,
+        "diff_general": 7.19,
+        "diff_login": -0.53,
+        "diff_network": 0.32,
+        "diff_offers": 2.67,
+        "four_domain_diff": 2.82,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 2.67,
+        "leading_op_share_pct": 26.7,
+        "leading_operational_domain": "Offers & Data Packs",
+        "n_curr": 744,
+        "n_prev": 892,
+        "nss_curr": 48.79,
+        "nss_prev": 38.79,
+        "operator": "Robi",
+        "pct_vol": -16.59,
+        "prev_month": "2023-11",
+        "recovery_months": 7.0,
+        "transition": "2023-11 to 2023-12"
+      },
+      {
+        "curr_month": "2021-05",
+        "d_ln_vol": -0.3582,
+        "delta_nss": -16.43,
+        "diff_billing": -0.83,
+        "diff_general": -7.1,
+        "diff_login": -2.83,
+        "diff_network": -4.9,
+        "diff_offers": -0.78,
+        "four_domain_diff": -9.33,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": -4.9,
+        "leading_op_share_pct": 29.8,
+        "leading_operational_domain": "Network Speed & 4G Latency",
+        "n_curr": 1214,
+        "n_prev": 1737,
+        "nss_curr": 29.0,
+        "nss_prev": 45.42,
+        "operator": "Banglalink",
+        "pct_vol": -30.11,
+        "prev_month": "2021-04",
+        "recovery_months": 3.0,
+        "transition": "2021-04 to 2021-05"
+      },
+      {
+        "curr_month": "2024-04",
+        "d_ln_vol": 0.1849,
+        "delta_nss": -11.18,
+        "diff_billing": 1.07,
+        "diff_general": -5.87,
+        "diff_login": -8.74,
+        "diff_network": 1.59,
+        "diff_offers": 0.77,
+        "four_domain_diff": -5.32,
+        "is_shock": true,
+        "is_surge": false,
+        "leading_5class_domain": "App Login & Technical Bugs",
+        "leading_op_impact": -8.74,
+        "leading_op_share_pct": 78.2,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 1315,
+        "n_prev": 1093,
+        "nss_curr": 31.63,
+        "nss_prev": 42.82,
+        "operator": "Banglalink",
+        "pct_vol": 20.31,
+        "prev_month": "2024-03",
+        "recovery_months": 1.0,
+        "transition": "2024-03 to 2024-04"
+      },
+      {
+        "curr_month": "2024-05",
+        "d_ln_vol": 0.5437,
+        "delta_nss": 32.78,
+        "diff_billing": 0.32,
+        "diff_general": 17.38,
+        "diff_login": 13.73,
+        "diff_network": 0.96,
+        "diff_offers": 0.39,
+        "four_domain_diff": 15.4,
+        "is_shock": true,
+        "is_surge": true,
+        "leading_5class_domain": "General Appreciation / Other",
+        "leading_op_impact": 13.73,
+        "leading_op_share_pct": 41.9,
+        "leading_operational_domain": "App Login & Technical Bugs",
+        "n_curr": 2265,
+        "n_prev": 1315,
+        "nss_curr": 64.42,
+        "nss_prev": 31.63,
+        "operator": "Banglalink",
+        "pct_vol": 72.24,
+        "prev_month": "2024-04",
+        "recovery_months": 16.0,
+        "transition": "2024-04 to 2024-05"
+      }
+    ],
+    "top_per_operator": {
+      "Banglalink": [
+        {
+          "curr_month": "2025-10",
+          "d_ln_vol": 2.4586,
+          "delta_nss": 52.67,
+          "diff_billing": 1.86,
+          "diff_general": 34.63,
+          "diff_login": 8.21,
+          "diff_network": 3.99,
+          "diff_offers": 3.97,
+          "four_domain_diff": 18.03,
+          "is_shock": true,
+          "is_surge": true,
+          "leading_5class_domain": "General Appreciation / Other",
+          "leading_op_impact": 8.21,
+          "leading_op_share_pct": 15.6,
+          "leading_operational_domain": "App Login & Technical Bugs",
+          "n_curr": 3904,
+          "n_prev": 334,
+          "nss_curr": 78.71,
+          "nss_prev": 26.05,
+          "operator": "Banglalink",
+          "pct_vol": 1068.86,
+          "prev_month": "2025-09",
+          "recovery_months": NaN,
+          "transition": "2025-09 to 2025-10"
+        },
+        {
+          "curr_month": "2026-01",
+          "d_ln_vol": 1.9081,
+          "delta_nss": 48.15,
+          "diff_billing": 0.77,
+          "diff_general": 30.26,
+          "diff_login": 12.0,
+          "diff_network": 2.59,
+          "diff_offers": 2.52,
+          "four_domain_diff": 17.89,
+          "is_shock": true,
+          "is_surge": true,
+          "leading_5class_domain": "General Appreciation / Other",
+          "leading_op_impact": 12.0,
+          "leading_op_share_pct": 24.9,
+          "leading_operational_domain": "App Login & Technical Bugs",
+          "n_curr": 4644,
+          "n_prev": 689,
+          "nss_curr": 85.16,
+          "nss_prev": 37.01,
+          "operator": "Banglalink",
+          "pct_vol": 574.02,
+          "prev_month": "2025-12",
+          "recovery_months": NaN,
+          "transition": "2025-12 to 2026-01"
+        },
+        {
+          "curr_month": "2024-07",
+          "d_ln_vol": -2.2505,
+          "delta_nss": -44.75,
+          "diff_billing": 0.19,
+          "diff_general": -31.68,
+          "diff_login": -6.39,
+          "diff_network": -3.41,
+          "diff_offers": -3.46,
+          "four_domain_diff": -13.07,
+          "is_shock": true,
+          "is_surge": true,
+          "leading_5class_domain": "General Appreciation / Other",
+          "leading_op_impact": -6.39,
+          "leading_op_share_pct": 14.3,
+          "leading_operational_domain": "App Login & Technical Bugs",
+          "n_curr": 477,
+          "n_prev": 4528,
+          "nss_curr": 34.8,
+          "nss_prev": 79.55,
+          "operator": "Banglalink",
+          "pct_vol": -89.47,
+          "prev_month": "2024-06",
+          "recovery_months": 16.0,
+          "transition": "2024-06 to 2024-07"
+        },
+        {
+          "curr_month": "2025-12",
+          "d_ln_vol": -1.1523,
+          "delta_nss": -42.63,
+          "diff_billing": -0.84,
+          "diff_general": -26.07,
+          "diff_login": -11.16,
+          "diff_network": -2.67,
+          "diff_offers": -1.89,
+          "four_domain_diff": -16.56,
+          "is_shock": true,
+          "is_surge": true,
+          "leading_5class_domain": "General Appreciation / Other",
+          "leading_op_impact": -11.16,
+          "leading_op_share_pct": 26.2,
+          "leading_operational_domain": "App Login & Technical Bugs",
+          "n_curr": 689,
+          "n_prev": 2181,
+          "nss_curr": 37.01,
+          "nss_prev": 79.64,
+          "operator": "Banglalink",
+          "pct_vol": -68.41,
+          "prev_month": "2025-11",
+          "recovery_months": 1.0,
+          "transition": "2025-11 to 2025-12"
+        }
+      ],
+      "Grameenphone": [
+        {
+          "curr_month": "2020-04",
+          "d_ln_vol": 1.1771,
+          "delta_nss": 31.24,
+          "diff_billing": 1.09,
+          "diff_general": 20.7,
+          "diff_login": 5.49,
+          "diff_network": 0.42,
+          "diff_offers": 3.54,
+          "four_domain_diff": 10.54,
+          "is_shock": true,
+          "is_surge": true,
+          "leading_5class_domain": "General Appreciation / Other",
+          "leading_op_impact": 5.49,
+          "leading_op_share_pct": 17.6,
+          "leading_operational_domain": "App Login & Technical Bugs",
+          "n_curr": 3920,
+          "n_prev": 1208,
+          "nss_curr": 48.95,
+          "nss_prev": 17.72,
+          "operator": "Grameenphone",
+          "pct_vol": 224.5,
+          "prev_month": "2020-03",
+          "recovery_months": NaN,
+          "transition": "2020-03 to 2020-04"
+        },
+        {
+          "curr_month": "2025-09",
+          "d_ln_vol": -0.4765,
+          "delta_nss": -18.54,
+          "diff_billing": -0.95,
+          "diff_general": -13.06,
+          "diff_login": -1.25,
+          "diff_network": -0.6,
+          "diff_offers": -2.68,
+          "four_domain_diff": -5.47,
+          "is_shock": true,
+          "is_surge": false,
+          "leading_5class_domain": "General Appreciation / Other",
+          "leading_op_impact": -2.68,
+          "leading_op_share_pct": 14.4,
+          "leading_operational_domain": "Offers & Data Packs",
+          "n_curr": 3086,
+          "n_prev": 4970,
+          "nss_curr": 51.52,
+          "nss_prev": 70.06,
+          "operator": "Grameenphone",
+          "pct_vol": -37.91,
+          "prev_month": "2025-08",
+          "recovery_months": NaN,
+          "transition": "2025-08 to 2025-09"
+        },
+        {
+          "curr_month": "2021-05",
+          "d_ln_vol": -0.561,
+          "delta_nss": -13.75,
+          "diff_billing": 0.04,
+          "diff_general": -8.47,
+          "diff_login": -2.29,
+          "diff_network": -2.19,
+          "diff_offers": -0.84,
+          "four_domain_diff": -5.28,
+          "is_shock": true,
+          "is_surge": false,
+          "leading_5class_domain": "General Appreciation / Other",
+          "leading_op_impact": -2.29,
+          "leading_op_share_pct": 16.7,
+          "leading_operational_domain": "App Login & Technical Bugs",
+          "n_curr": 2226,
+          "n_prev": 3901,
+          "nss_curr": 48.52,
+          "nss_prev": 62.27,
+          "operator": "Grameenphone",
+          "pct_vol": -42.94,
+          "prev_month": "2021-04",
+          "recovery_months": 4.0,
+          "transition": "2021-04 to 2021-05"
+        },
+        {
+          "curr_month": "2021-09",
+          "d_ln_vol": -0.3949,
+          "delta_nss": 13.57,
+          "diff_billing": 0.15,
+          "diff_general": 6.98,
+          "diff_login": 5.08,
+          "diff_network": 1.34,
+          "diff_offers": 0.02,
+          "four_domain_diff": 6.59,
+          "is_shock": true,
+          "is_surge": false,
+          "leading_5class_domain": "General Appreciation / Other",
+          "leading_op_impact": 5.08,
+          "leading_op_share_pct": 37.5,
+          "leading_operational_domain": "App Login & Technical Bugs",
+          "n_curr": 2897,
+          "n_prev": 4300,
+          "nss_curr": 63.69,
+          "nss_prev": 50.12,
+          "operator": "Grameenphone",
+          "pct_vol": -32.63,
+          "prev_month": "2021-08",
+          "recovery_months": 49.0,
+          "transition": "2021-08 to 2021-09"
+        }
+      ],
+      "Robi": [
+        {
+          "curr_month": "2024-09",
+          "d_ln_vol": 2.3754,
+          "delta_nss": 21.33,
+          "diff_billing": 1.98,
+          "diff_general": 13.62,
+          "diff_login": 4.27,
+          "diff_network": 0.65,
+          "diff_offers": 0.8,
+          "four_domain_diff": 7.71,
+          "is_shock": true,
+          "is_surge": true,
+          "leading_5class_domain": "General Appreciation / Other",
+          "leading_op_impact": 4.27,
+          "leading_op_share_pct": 20.0,
+          "leading_operational_domain": "App Login & Technical Bugs",
+          "n_curr": 3517,
+          "n_prev": 327,
+          "nss_curr": 75.46,
+          "nss_prev": 54.13,
+          "operator": "Robi",
+          "pct_vol": 975.54,
+          "prev_month": "2024-08",
+          "recovery_months": NaN,
+          "transition": "2024-08 to 2024-09"
+        },
+        {
+          "curr_month": "2024-08",
+          "d_ln_vol": -0.3369,
+          "delta_nss": 17.45,
+          "diff_billing": -0.79,
+          "diff_general": 11.86,
+          "diff_login": 1.83,
+          "diff_network": 2.27,
+          "diff_offers": 2.27,
+          "four_domain_diff": 5.58,
+          "is_shock": true,
+          "is_surge": false,
+          "leading_5class_domain": "General Appreciation / Other",
+          "leading_op_impact": 2.27,
+          "leading_op_share_pct": 13.0,
+          "leading_operational_domain": "Network Speed & 4G Latency",
+          "n_curr": 327,
+          "n_prev": 458,
+          "nss_curr": 54.13,
+          "nss_prev": 36.68,
+          "operator": "Robi",
+          "pct_vol": -28.6,
+          "prev_month": "2024-07",
+          "recovery_months": NaN,
+          "transition": "2024-07 to 2024-08"
+        },
+        {
+          "curr_month": "2023-01",
+          "d_ln_vol": 0.6461,
+          "delta_nss": -16.61,
+          "diff_billing": -0.0,
+          "diff_general": -9.45,
+          "diff_login": -7.4,
+          "diff_network": -0.32,
+          "diff_offers": 0.57,
+          "four_domain_diff": -7.15,
+          "is_shock": true,
+          "is_surge": true,
+          "leading_5class_domain": "General Appreciation / Other",
+          "leading_op_impact": -7.4,
+          "leading_op_share_pct": 44.5,
+          "leading_operational_domain": "App Login & Technical Bugs",
+          "n_curr": 3465,
+          "n_prev": 1816,
+          "nss_curr": 49.58,
+          "nss_prev": 66.19,
+          "operator": "Robi",
+          "pct_vol": 90.8,
+          "prev_month": "2022-12",
+          "recovery_months": 20.0,
+          "transition": "2022-12 to 2023-01"
+        },
+        {
+          "curr_month": "2026-09",
+          "d_ln_vol": 0.1184,
+          "delta_nss": -13.74,
+          "diff_billing": -0.53,
+          "diff_general": -10.64,
+          "diff_login": -2.23,
+          "diff_network": 0.12,
+          "diff_offers": -0.46,
+          "four_domain_diff": -3.1,
+          "is_shock": true,
+          "is_surge": false,
+          "leading_5class_domain": "General Appreciation / Other",
+          "leading_op_impact": -2.23,
+          "leading_op_share_pct": 16.2,
+          "leading_operational_domain": "App Login & Technical Bugs",
+          "n_curr": 2266,
+          "n_prev": 2013,
+          "nss_curr": 63.11,
+          "nss_prev": 76.85,
+          "operator": "Robi",
+          "pct_vol": 12.57,
+          "prev_month": "2026-08",
+          "recovery_months": NaN,
+          "transition": "2026-08 to 2026-09"
+        }
+      ]
+    }
+  },
+  "table1_taxonomy": {
+    "annual_trends_with_rogan_gladen": {
+      "2016": {
+        "n_reviews": 1308,
+        "nss_score": 21.02,
+        "observed_negative_prevalence": 29.59,
+        "rogan_gladen_adjusted_negative_pct": 59.41
+      },
+      "2017": {
+        "n_reviews": 3472,
+        "nss_score": 29.93,
+        "observed_negative_prevalence": 27.97,
+        "rogan_gladen_adjusted_negative_pct": 55.8
+      },
+      "2018": {
+        "n_reviews": 5064,
+        "nss_score": 3.44,
+        "observed_negative_prevalence": 42.06,
+        "rogan_gladen_adjusted_negative_pct": 87.16
+      },
+      "2019": {
+        "n_reviews": 10813,
+        "nss_score": 17.65,
+        "observed_negative_prevalence": 33.33,
+        "rogan_gladen_adjusted_negative_pct": 67.74
+      },
+      "2020": {
+        "n_reviews": 77471,
+        "nss_score": 51.51,
+        "observed_negative_prevalence": 18.46,
+        "rogan_gladen_adjusted_negative_pct": 34.64
+      },
+      "2021": {
+        "n_reviews": 96302,
+        "nss_score": 58.05,
+        "observed_negative_prevalence": 15.51,
+        "rogan_gladen_adjusted_negative_pct": 28.08
+      },
+      "2022": {
+        "n_reviews": 101562,
+        "nss_score": 63.79,
+        "observed_negative_prevalence": 12.62,
+        "rogan_gladen_adjusted_negative_pct": 21.66
+      },
+      "2023": {
+        "n_reviews": 92154,
+        "nss_score": 61.2,
+        "observed_negative_prevalence": 13.17,
+        "rogan_gladen_adjusted_negative_pct": 22.87
+      },
+      "2024": {
+        "n_reviews": 107196,
+        "nss_score": 67.95,
+        "observed_negative_prevalence": 9.96,
+        "rogan_gladen_adjusted_negative_pct": 15.74
+      },
+      "2025": {
+        "n_reviews": 107243,
+        "nss_score": 73.25,
+        "observed_negative_prevalence": 9.12,
+        "rogan_gladen_adjusted_negative_pct": 13.86
+      },
+      "2026": {
+        "n_reviews": 53064,
+        "nss_score": 74.05,
+        "observed_negative_prevalence": 8.78,
+        "rogan_gladen_adjusted_negative_pct": 13.11
+      }
+    },
+    "decade_scorecard_2016_2026": {
+      "Banglalink": {
+        "ci_95": [
+          52.63,
+          53.45
+        ],
+        "n_reviews": 137131,
+        "nss_score": 53.04,
+        "share_pct": 20.92,
+        "standard_error": 0.208
+      },
+      "Grameenphone": {
+        "ci_95": [
+          64.61,
+          65.09
+        ],
+        "n_reviews": 320140,
+        "nss_score": 64.85,
+        "share_pct": 48.83,
+        "standard_error": 0.121
+      },
+      "Robi": {
+        "ci_95": [
+          65.61,
+          66.21
+        ],
+        "n_reviews": 198378,
+        "nss_score": 65.91,
+        "share_pct": 30.26,
+        "standard_error": 0.153
+      },
+      "Sector": {
+        "n_reviews": 655649,
+        "nss_score": 62.7,
+        "share_pct": 100.0
+      }
+    },
+    "deployed_counts": {
+      "App Login & Technical Bugs": 32701,
+      "Billing & Airtime Deductions": 6295,
+      "General Appreciation / Other": 567468,
+      "Network Speed & 4G Latency": 16108,
+      "Offers & Data Packs": 33077
+    },
+    "partition_a_122months": {
+      "eras": [
+        {
+          "calendar_months": 17,
+          "end_ym": "2017-12",
+          "era_label": "Era 1: Nascent Android Utility",
+          "operator_metrics": {
+            "Banglalink": {
+              "aggregate_nss": 45.46,
+              "monthly_mean_nss": 46.13,
+              "monthly_std_nss": 9.65,
+              "n_reviews": 3262
+            },
+            "Grameenphone": {
+              "aggregate_nss": 8.78,
+              "monthly_mean_nss": 11.84,
+              "monthly_std_nss": 20.58,
+              "n_reviews": 1025
+            },
+            "Robi": {
+              "aggregate_nss": -52.54,
+              "monthly_mean_nss": -50.44,
+              "monthly_std_nss": 18.52,
+              "n_reviews": 493
+            }
+          },
+          "start_ym": "2016-08",
+          "total_reviews": 4780
+        },
+        {
+          "calendar_months": 36,
+          "end_ym": "2020-12",
+          "era_label": "Era 2: 4G Expansion & Self-Care Maturation",
+          "operator_metrics": {
+            "Banglalink": {
+              "aggregate_nss": 32.82,
+              "monthly_mean_nss": 27.5,
+              "monthly_std_nss": 16.85,
+              "n_reviews": 24814
+            },
+            "Grameenphone": {
+              "aggregate_nss": 42.44,
+              "monthly_mean_nss": 14.33,
+              "monthly_std_nss": 27.91,
+              "n_reviews": 30597
+            },
+            "Robi": {
+              "aggregate_nss": 54.98,
+              "monthly_mean_nss": 14.67,
+              "monthly_std_nss": 43.31,
+              "n_reviews": 37937
+            }
+          },
+          "start_ym": "2018-01",
+          "total_reviews": 93348
+        },
+        {
+          "calendar_months": 24,
+          "end_ym": "2022-12",
+          "era_label": "Era 3: Pandemic Digital Dependency",
+          "operator_metrics": {
+            "Banglalink": {
+              "aggregate_nss": 50.64,
+              "monthly_mean_nss": 49.3,
+              "monthly_std_nss": 9.33,
+              "n_reviews": 46913
+            },
+            "Grameenphone": {
+              "aggregate_nss": 62.69,
+              "monthly_mean_nss": 61.48,
+              "monthly_std_nss": 5.91,
+              "n_reviews": 86237
+            },
+            "Robi": {
+              "aggregate_nss": 66.25,
+              "monthly_mean_nss": 65.49,
+              "monthly_std_nss": 5.1,
+              "n_reviews": 64714
+            }
+          },
+          "start_ym": "2021-01",
+          "total_reviews": 197864
+        },
+        {
+          "calendar_months": 45,
+          "end_ym": "2026-09",
+          "era_label": "Era 4: Gamified Super-App Era",
+          "operator_metrics": {
+            "Banglalink": {
+              "aggregate_nss": 63.33,
+              "monthly_mean_nss": 53.53,
+              "monthly_std_nss": 18.48,
+              "n_reviews": 62142
+            },
+            "Grameenphone": {
+              "aggregate_nss": 69.44,
+              "monthly_mean_nss": 66.27,
+              "monthly_std_nss": 8.01,
+              "n_reviews": 202281
+            },
+            "Robi": {
+              "aggregate_nss": 70.64,
+              "monthly_mean_nss": 63.55,
+              "monthly_std_nss": 16.71,
+              "n_reviews": 95234
+            }
+          },
+          "start_ym": "2023-01",
+          "total_reviews": 359657
+        }
+      ],
+      "total_months": 122,
+      "total_reviews": 655649
+    },
+    "partition_b_122months": {
+      "eras": [
+        {
+          "calendar_months": 17,
+          "end_ym": "2017-12",
+          "era_label": "Era 1: Nascent Android Utility",
+          "operator_metrics": {
+            "Banglalink": {
+              "aggregate_nss": 45.46,
+              "monthly_mean_nss": 46.13,
+              "monthly_std_nss": 9.65,
+              "n_reviews": 3262
+            },
+            "Grameenphone": {
+              "aggregate_nss": 8.78,
+              "monthly_mean_nss": 11.84,
+              "monthly_std_nss": 20.58,
+              "n_reviews": 1025
+            },
+            "Robi": {
+              "aggregate_nss": -52.54,
+              "monthly_mean_nss": -50.44,
+              "monthly_std_nss": 18.52,
+              "n_reviews": 493
+            }
+          },
+          "start_ym": "2016-08",
+          "total_reviews": 4780
+        },
+        {
+          "calendar_months": 24,
+          "end_ym": "2019-12",
+          "era_label": "Era 2: Pre-Modern 4G Growth",
+          "operator_metrics": {
+            "Banglalink": {
+              "aggregate_nss": 19.69,
+              "monthly_mean_nss": 21.99,
+              "monthly_std_nss": 17.71,
+              "n_reviews": 7276
+            },
+            "Grameenphone": {
+              "aggregate_nss": 12.38,
+              "monthly_mean_nss": 0.98,
+              "monthly_std_nss": 23.32,
+              "n_reviews": 2997
+            },
+            "Robi": {
+              "aggregate_nss": 4.96,
+              "monthly_mean_nss": -9.9,
+              "monthly_std_nss": 30.75,
+              "n_reviews": 5604
+            }
+          },
+          "start_ym": "2018-01",
+          "total_reviews": 15877
+        },
+        {
+          "calendar_months": 36,
+          "end_ym": "2022-12",
+          "era_label": "Era 3: Modern Super-App Maturation",
+          "operator_metrics": {
+            "Banglalink": {
+              "aggregate_nss": 47.27,
+              "monthly_mean_nss": 45.72,
+              "monthly_std_nss": 9.95,
+              "n_reviews": 64451
+            },
+            "Grameenphone": {
+              "aggregate_nss": 58.57,
+              "monthly_mean_nss": 54.66,
+              "monthly_std_nss": 13.21,
+              "n_reviews": 113837
+            },
+            "Robi": {
+              "aggregate_nss": 65.38,
+              "monthly_mean_nss": 64.92,
+              "monthly_std_nss": 5.53,
+              "n_reviews": 97047
+            }
+          },
+          "start_ym": "2020-01",
+          "total_reviews": 275335
+        },
+        {
+          "calendar_months": 45,
+          "end_ym": "2026-09",
+          "era_label": "Era 4: Contemporary Operational Shocks",
+          "operator_metrics": {
+            "Banglalink": {
+              "aggregate_nss": 63.33,
+              "monthly_mean_nss": 53.53,
+              "monthly_std_nss": 18.48,
+              "n_reviews": 62142
+            },
+            "Grameenphone": {
+              "aggregate_nss": 69.44,
+              "monthly_mean_nss": 66.27,
+              "monthly_std_nss": 8.01,
+              "n_reviews": 202281
+            },
+            "Robi": {
+              "aggregate_nss": 70.64,
+              "monthly_mean_nss": 63.55,
+              "monthly_std_nss": 16.71,
+              "n_reviews": 95234
+            }
+          },
+          "start_ym": "2023-01",
+          "total_reviews": 359657
+        }
+      ],
+      "total_months": 122,
+      "total_reviews": 655649
+    },
+    "partition_c_122months": {
+      "eras": [
+        {
+          "calendar_months": 41,
+          "end_ym": "2019-12",
+          "era_label": "Era 1: Legacy Self-Care Foundation",
+          "operator_metrics": {
+            "Banglalink": {
+              "aggregate_nss": 27.67,
+              "monthly_mean_nss": 31.99,
+              "monthly_std_nss": 19.04,
+              "n_reviews": 10538
+            },
+            "Grameenphone": {
+              "aggregate_nss": 11.46,
+              "monthly_mean_nss": 5.49,
+              "monthly_std_nss": 22.61,
+              "n_reviews": 4022
+            },
+            "Robi": {
+              "aggregate_nss": 0.31,
+              "monthly_mean_nss": -26.71,
+              "monthly_std_nss": 33.02,
+              "n_reviews": 6097
+            }
+          },
+          "start_ym": "2016-08",
+          "total_reviews": 20657
+        },
+        {
+          "calendar_months": 12,
+          "end_ym": "2020-12",
+          "era_label": "Era 2: Pandemic Shock Transition",
+          "operator_metrics": {
+            "Banglalink": {
+              "aggregate_nss": 38.26,
+              "monthly_mean_nss": 38.54,
+              "monthly_std_nss": 6.96,
+              "n_reviews": 17538
+            },
+            "Grameenphone": {
+              "aggregate_nss": 45.71,
+              "monthly_mean_nss": 41.01,
+              "monthly_std_nss": 13.3,
+              "n_reviews": 27600
+            },
+            "Robi": {
+              "aggregate_nss": 63.64,
+              "monthly_mean_nss": 63.79,
+              "monthly_std_nss": 6.4,
+              "n_reviews": 32333
+            }
+          },
+          "start_ym": "2020-01",
+          "total_reviews": 77471
+        },
+        {
+          "calendar_months": 24,
+          "end_ym": "2022-12",
+          "era_label": "Era 3: Peak Digital Adoption",
+          "operator_metrics": {
+            "Banglalink": {
+              "aggregate_nss": 50.64,
+              "monthly_mean_nss": 49.3,
+              "monthly_std_nss": 9.33,
+              "n_reviews": 46913
+            },
+            "Grameenphone": {
+              "aggregate_nss": 62.69,
+              "monthly_mean_nss": 61.48,
+              "monthly_std_nss": 5.91,
+              "n_reviews": 86237
+            },
+            "Robi": {
+              "aggregate_nss": 66.25,
+              "monthly_mean_nss": 65.49,
+              "monthly_std_nss": 5.1,
+              "n_reviews": 64714
+            }
+          },
+          "start_ym": "2021-01",
+          "total_reviews": 197864
+        },
+        {
+          "calendar_months": 45,
+          "end_ym": "2026-09",
+          "era_label": "Era 4: Modern Telco Platform Ecosystems",
+          "operator_metrics": {
+            "Banglalink": {
+              "aggregate_nss": 63.33,
+              "monthly_mean_nss": 53.53,
+              "monthly_std_nss": 18.48,
+              "n_reviews": 62142
+            },
+            "Grameenphone": {
+              "aggregate_nss": 69.44,
+              "monthly_mean_nss": 66.27,
+              "monthly_std_nss": 8.01,
+              "n_reviews": 202281
+            },
+            "Robi": {
+              "aggregate_nss": 70.64,
+              "monthly_mean_nss": 63.55,
+              "monthly_std_nss": 16.71,
+              "n_reviews": 95234
+            }
+          },
+          "start_ym": "2023-01",
+          "total_reviews": 359657
+        }
+      ],
+      "total_months": 122,
+      "total_reviews": 655649
+    },
+    "per_operator_counts": {
+      "Banglalink": {
+        "App Login & Technical Bugs": 11140,
+        "Billing & Airtime Deductions": 1181,
+        "General Appreciation / Other": 113903,
+        "Network Speed & 4G Latency": 4991,
+        "Offers & Data Packs": 5916
+      },
+      "Grameenphone": {
+        "App Login & Technical Bugs": 12432,
+        "Billing & Airtime Deductions": 3560,
+        "General Appreciation / Other": 281253,
+        "Network Speed & 4G Latency": 6017,
+        "Offers & Data Packs": 16878
+      },
+      "Robi": {
+        "App Login & Technical Bugs": 9129,
+        "Billing & Airtime Deductions": 1554,
+        "General Appreciation / Other": 172312,
+        "Network Speed & 4G Latency": 5100,
+        "Offers & Data Packs": 10283
+      }
+    },
+    "percentages": {
+      "App Login & Technical Bugs": 4.99,
+      "Billing & Airtime Deductions": 0.96,
+      "General Appreciation / Other": 86.55,
+      "Network Speed & 4G Latency": 2.46,
+      "Offers & Data Packs": 5.04
+    },
+    "seed_counts_n4500": {
+      "App Login & Technical Bugs": 400,
+      "Billing & Airtime Deductions": 217,
+      "General Appreciation / Other": 2731,
+      "Network Speed & 4G Latency": 364,
+      "Offers & Data Packs": 788
+    }
+  },
+  "table3_seed_and_complexity": {
+    "feature_complexity_category": {
+      "d_active_max": 1199,
+      "d_active_mean": 109.72,
+      "d_active_median": 59.0,
+      "d_active_min": 0,
+      "vocabulary_size_V": 29843
+    },
+    "feature_complexity_ensemble_sentiment": {
+      "d_active_max": 971,
+      "d_active_mean": 110.86,
+      "d_active_median": 64.0,
+      "d_active_min": 0,
+      "vocabulary_size_V": 18027
+    },
+    "full_seed_n4500_performance": {
+      "accuracy": 0.99,
+      "confusion_matrix_5x5": {
+        "App Login & Technical Bugs": {
+          "App Login & Technical Bugs": 400,
+          "Billing & Airtime Deductions": 0,
+          "General Appreciation / Other": 0,
+          "Network Speed & 4G Latency": 0,
+          "Offers & Data Packs": 0
+        },
+        "Billing & Airtime Deductions": {
+          "App Login & Technical Bugs": 0,
+          "Billing & Airtime Deductions": 217,
+          "General Appreciation / Other": 0,
+          "Network Speed & 4G Latency": 0,
+          "Offers & Data Packs": 0
+        },
+        "General Appreciation / Other": {
+          "App Login & Technical Bugs": 8,
+          "Billing & Airtime Deductions": 2,
+          "General Appreciation / Other": 2687,
+          "Network Speed & 4G Latency": 19,
+          "Offers & Data Packs": 15
+        },
+        "Network Speed & 4G Latency": {
+          "App Login & Technical Bugs": 0,
+          "Billing & Airtime Deductions": 0,
+          "General Appreciation / Other": 0,
+          "Network Speed & 4G Latency": 364,
+          "Offers & Data Packs": 0
+        },
+        "Offers & Data Packs": {
+          "App Login & Technical Bugs": 0,
+          "Billing & Airtime Deductions": 0,
+          "General Appreciation / Other": 1,
+          "Network Speed & 4G Latency": 0,
+          "Offers & Data Packs": 787
+        }
+      },
+      "macro_f1": 0.9883,
+      "macro_precision": 0.9805,
+      "macro_recall": 0.9965,
+      "per_class_metrics": {
+        "App Login & Technical Bugs": {
+          "f1_score": 0.9901,
+          "precision": 0.9804,
+          "recall": 1.0,
+          "support": 400
+        },
+        "Billing & Airtime Deductions": {
+          "f1_score": 0.9954,
+          "precision": 0.9909,
+          "recall": 1.0,
+          "support": 217
+        },
+        "General Appreciation / Other": {
+          "f1_score": 0.9917,
+          "precision": 0.9996,
+          "recall": 0.9839,
+          "support": 2731
+        },
+        "Network Speed & 4G Latency": {
+          "f1_score": 0.9746,
+          "precision": 0.9504,
+          "recall": 1.0,
+          "support": 364
+        },
+        "Offers & Data Packs": {
+          "f1_score": 0.9899,
+          "precision": 0.9813,
+          "recall": 0.9987,
+          "support": 788
+        }
+      }
+    },
+    "global_corpus_language_distribution_661k": {
+      "Bangla (Native Script)": {
+        "count": 62296,
+        "percentage": 9.42
+      },
+      "English": {
+        "count": 509887,
+        "percentage": 77.12
+      },
+      "Romanized Banglish": {
+        "count": 74515,
+        "percentage": 11.27
+      },
+      "Symbolic / Emoticons": {
+        "count": 14462,
+        "percentage": 2.19
+      }
+    },
+    "table4_linguistic_subcohorts": {
+      "Bangla (Native Script)": {
+        "category_accuracy_cv": 0.8011,
+        "category_accuracy_fit": 0.9844,
+        "category_macro_f1_cv": 0.7503,
+        "category_macro_f1_fit": 0.9848,
+        "n_reviews": 1091,
+        "sentiment_accuracy_cv": 0.8268,
+        "sentiment_macro_f1_cv": 0.7835,
+        "share_pct": 24.2
+      },
+      "English": {
+        "category_accuracy_cv": 0.9018,
+        "category_accuracy_fit": 0.9923,
+        "category_macro_f1_cv": 0.79,
+        "category_macro_f1_fit": 0.9898,
+        "n_reviews": 3005,
+        "sentiment_accuracy_cv": 0.9082,
+        "sentiment_macro_f1_cv": 0.7671,
+        "share_pct": 66.8
+      },
+      "Romanized Banglish": {
+        "category_accuracy_cv": 0.8513,
+        "category_accuracy_fit": 0.9872,
+        "category_macro_f1_cv": 0.7305,
+        "category_macro_f1_fit": 0.9866,
+        "n_reviews": 390,
+        "sentiment_accuracy_cv": 0.7923,
+        "sentiment_macro_f1_cv": 0.7567,
+        "share_pct": 8.7
+      },
+      "Symbolic / Emoticons": {
+        "category_accuracy_cv": 1.0,
+        "category_accuracy_fit": 1.0,
+        "category_macro_f1_cv": 1.0,
+        "category_macro_f1_fit": 1.0,
+        "n_reviews": 14,
+        "sentiment_accuracy_cv": 0.9286,
+        "sentiment_macro_f1_cv": 0.4815,
+        "share_pct": 0.3
+      },
+      "global_corpus_language_distribution_661k": {
+        "Bangla (Native Script)": {
+          "count": 62296,
+          "percentage": 9.42
+        },
+        "English": {
+          "count": 509887,
+          "percentage": 77.12
+        },
+        "Romanized Banglish": {
+          "count": 74515,
+          "percentage": 11.27
+        },
+        "Symbolic / Emoticons": {
+          "count": 14462,
+          "percentage": 2.19
+        }
+      }
+    },
+    "vocabulary_size": 29843
+  },
+  "table4_linguistic_subcohorts": {
+    "Bangla (Native Script)": {
+      "category_accuracy_cv": 0.8011,
+      "category_accuracy_fit": 0.9844,
+      "category_macro_f1_cv": 0.7503,
+      "category_macro_f1_fit": 0.9848,
+      "n_reviews": 1091,
+      "sentiment_accuracy_cv": 0.8268,
+      "sentiment_macro_f1_cv": 0.7835,
+      "share_pct": 24.2
+    },
+    "English": {
+      "category_accuracy_cv": 0.9018,
+      "category_accuracy_fit": 0.9923,
+      "category_macro_f1_cv": 0.79,
+      "category_macro_f1_fit": 0.9898,
+      "n_reviews": 3005,
+      "sentiment_accuracy_cv": 0.9082,
+      "sentiment_macro_f1_cv": 0.7671,
+      "share_pct": 66.8
+    },
+    "Romanized Banglish": {
+      "category_accuracy_cv": 0.8513,
+      "category_accuracy_fit": 0.9872,
+      "category_macro_f1_cv": 0.7305,
+      "category_macro_f1_fit": 0.9866,
+      "n_reviews": 390,
+      "sentiment_accuracy_cv": 0.7923,
+      "sentiment_macro_f1_cv": 0.7567,
+      "share_pct": 8.7
+    },
+    "Symbolic / Emoticons": {
+      "category_accuracy_cv": 1.0,
+      "category_accuracy_fit": 1.0,
+      "category_macro_f1_cv": 1.0,
+      "category_macro_f1_fit": 1.0,
+      "n_reviews": 14,
+      "sentiment_accuracy_cv": 0.9286,
+      "sentiment_macro_f1_cv": 0.4815,
+      "share_pct": 0.3
+    },
+    "global_corpus_language_distribution_661k": {
+      "Bangla (Native Script)": {
+        "count": 62296,
+        "percentage": 9.42
+      },
+      "English": {
+        "count": 509887,
+        "percentage": 77.12
+      },
+      "Romanized Banglish": {
+        "count": 74515,
+        "percentage": 11.27
+      },
+      "Symbolic / Emoticons": {
+        "count": 14462,
+        "percentage": 2.19
+      }
+    }
+  }
+}

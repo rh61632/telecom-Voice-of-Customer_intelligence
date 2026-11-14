@@ -16,13 +16,13 @@ min_date = df['review_date'].min()
 max_date = df['review_date'].max()
 days = (max_date - min_date).days + 1
 print(f"Date range: {min_date.strftime('%Y-%m-%d')} to {max_date.strftime('%Y-%m-%d')}")
-print(f"Total days: {days} (Paper says: 3,716 days)")
+print(f"Total days: {days} (Paper says: 3,713 days)")
 
 # Modern era
 modern = df[(df['review_date'] >= '2020-01-01') & (df['review_date'] <= '2026-09-30')].copy()
 print(f"Modern era reviews: {len(modern):,} (Paper says: 634,992)")
 early = df[df['review_date'] < '2020-01-01'].copy()
-print(f"Early era reviews: {len(early):,} (Paper says: 20,678)")
+print(f"Early era reviews: {len(early):,} (Paper says: 20,657)")
 
 # Smallest monthly count
 monthly_counts = modern.groupby(['operator', 'ym']).size().unstack(level='operator')
@@ -40,7 +40,7 @@ cats = [
     'Billing & Airtime Deductions'
 ]
 df_4 = df[df['predicted_category'].isin(cats)].copy()
-print(f"\nTotal in 4 domains: {len(df_4):,} (Paper says: 88,184)")
+print(f"\nTotal in 4 domains: {len(df_4):,} (Paper says: 88,181)")
 
 # Within-domain negativity across 4 domains
 cont_tab = pd.crosstab(df_4['predicted_category'], df_4['predicted_sentiment'] == 'Negative')

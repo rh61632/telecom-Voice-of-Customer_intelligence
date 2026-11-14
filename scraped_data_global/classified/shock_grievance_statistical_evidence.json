@@ -1,0 +1,434 @@
+[
+  {
+    "operator": "Grameenphone",
+    "shock_name": "BTRC Package Restructuring & 5G Tariff Backlash",
+    "shock_months": [
+      "2025-08",
+      "2025-09",
+      "2026-06"
+    ],
+    "category": "Offers & Data Packs",
+    "target_count": 448,
+    "baseline_count": 9195,
+    "top_grievance_terms": [
+      {
+        "term": "এব মিনিটের",
+        "target_count": 4,
+        "background_count": 1,
+        "z_score": 1.866
+      },
+      {
+        "term": "98",
+        "target_count": 5,
+        "background_count": 4,
+        "z_score": 1.571
+      },
+      {
+        "term": "98 taka",
+        "target_count": 3,
+        "background_count": 1,
+        "z_score": 1.546
+      },
+      {
+        "term": "মিনিটের দাম",
+        "target_count": 6,
+        "background_count": 7,
+        "z_score": 1.483
+      },
+      {
+        "term": "50 min",
+        "target_count": 3,
+        "background_count": 2,
+        "z_score": 1.298
+      },
+      {
+        "term": "cup",
+        "target_count": 3,
+        "background_count": 2,
+        "z_score": 1.298
+      },
+      {
+        "term": "দুই দিন",
+        "target_count": 3,
+        "background_count": 2,
+        "z_score": 1.298
+      },
+      {
+        "term": "budget friendly",
+        "target_count": 4,
+        "background_count": 4,
+        "z_score": 1.293
+      },
+      {
+        "term": "when need",
+        "target_count": 4,
+        "background_count": 4,
+        "z_score": 1.293
+      },
+      {
+        "term": "remaining",
+        "target_count": 4,
+        "background_count": 5,
+        "z_score": 1.178
+      },
+      {
+        "term": "streaming",
+        "target_count": 3,
+        "background_count": 3,
+        "z_score": 1.122
+      },
+      {
+        "term": "নিত হব",
+        "target_count": 3,
+        "background_count": 3,
+        "z_score": 1.122
+      },
+      {
+        "term": "মিনিটের",
+        "target_count": 8,
+        "background_count": 25,
+        "z_score": 1.018
+      },
+      {
+        "term": "profit",
+        "target_count": 3,
+        "background_count": 4,
+        "z_score": 0.993
+      },
+      {
+        "term": "বেশ মিনিট",
+        "target_count": 3,
+        "background_count": 4,
+        "z_score": 0.993
+      }
+    ],
+    "representative_exemplars": [
+      "4 gb price 98 taka🤡. 1 gb for emergency situation i can't buy it and not able to create a mini offer 🤡. I'm quitting GP from now 🍆",
+      "There aren’t any good MB offers. We have to spend a lot of money to buy data. The minimum package is 3 GB for 98 taka. Not everyone can afford to spend that much just for internet.",
+      "internet prices is very high 3GB of internet cost 98 taka taka And this is the lowest internet pack in this app"
+    ]
+  },
+  {
+    "operator": "Banglalink",
+    "shock_name": "MyBL v11.8.0 Splash Crash & Authentication Loop",
+    "shock_months": [
+      "2024-03",
+      "2024-04",
+      "2024-05"
+    ],
+    "category": "App Login & Technical Bugs",
+    "target_count": 363,
+    "baseline_count": 9733,
+    "top_grievance_terms": [
+      {
+        "term": "এপের",
+        "target_count": 6,
+        "background_count": 3,
+        "z_score": 2.021
+      },
+      {
+        "term": "spend",
+        "target_count": 4,
+        "background_count": 1,
+        "z_score": 1.884
+      },
+      {
+        "term": "মাইবিএল",
+        "target_count": 4,
+        "background_count": 1,
+        "z_score": 1.884
+      },
+      {
+        "term": "দিছেন",
+        "target_count": 6,
+        "background_count": 4,
+        "z_score": 1.862
+      },
+      {
+        "term": "even see",
+        "target_count": 4,
+        "background_count": 2,
+        "z_score": 1.652
+      },
+      {
+        "term": "talked",
+        "target_count": 4,
+        "background_count": 2,
+        "z_score": 1.652
+      },
+      {
+        "term": "then what",
+        "target_count": 4,
+        "background_count": 2,
+        "z_score": 1.652
+      },
+      {
+        "term": "trap",
+        "target_count": 4,
+        "background_count": 2,
+        "z_score": 1.652
+      },
+      {
+        "term": "গেমস",
+        "target_count": 4,
+        "background_count": 2,
+        "z_score": 1.652
+      },
+      {
+        "term": "বের কর",
+        "target_count": 4,
+        "background_count": 2,
+        "z_score": 1.652
+      },
+      {
+        "term": "ডিজিটাল",
+        "target_count": 6,
+        "background_count": 0,
+        "z_score": 1.496
+      },
+      {
+        "term": "how stop",
+        "target_count": 4,
+        "background_count": 0,
+        "z_score": 1.366
+      },
+      {
+        "term": "islamic section",
+        "target_count": 4,
+        "background_count": 0,
+        "z_score": 1.366
+      },
+      {
+        "term": "seen ever",
+        "target_count": 4,
+        "background_count": 0,
+        "z_score": 1.366
+      },
+      {
+        "term": "shared",
+        "target_count": 4,
+        "background_count": 0,
+        "z_score": 1.366
+      }
+    ],
+    "representative_exemplars": []
+  },
+  {
+    "operator": "Banglalink",
+    "shock_name": "Monsoon Fiber Cut & Base Station Backhaul Outage",
+    "shock_months": [
+      "2021-04",
+      "2021-05",
+      "2021-07"
+    ],
+    "category": "Network Speed & 4G Latency",
+    "target_count": 358,
+    "baseline_count": 3404,
+    "top_grievance_terms": [
+      {
+        "term": "network system",
+        "target_count": 24,
+        "background_count": 40,
+        "z_score": 2.195
+      },
+      {
+        "term": "cant",
+        "target_count": 8,
+        "background_count": 4,
+        "z_score": 2.185
+      },
+      {
+        "term": "নেট থাক",
+        "target_count": 6,
+        "background_count": 2,
+        "z_score": 2.098
+      },
+      {
+        "term": "option",
+        "target_count": 6,
+        "background_count": 3,
+        "z_score": 1.893
+      },
+      {
+        "term": "system",
+        "target_count": 30,
+        "background_count": 74,
+        "z_score": 1.863
+      },
+      {
+        "term": "condition network",
+        "target_count": 4,
+        "background_count": 1,
+        "z_score": 1.802
+      },
+      {
+        "term": "coverage not",
+        "target_count": 4,
+        "background_count": 1,
+        "z_score": 1.802
+      },
+      {
+        "term": "developer",
+        "target_count": 4,
+        "background_count": 1,
+        "z_score": 1.802
+      },
+      {
+        "term": "hedar network",
+        "target_count": 4,
+        "background_count": 1,
+        "z_score": 1.802
+      },
+      {
+        "term": "one star",
+        "target_count": 4,
+        "background_count": 1,
+        "z_score": 1.802
+      },
+      {
+        "term": "present time",
+        "target_count": 4,
+        "background_count": 1,
+        "z_score": 1.802
+      },
+      {
+        "term": "theke kharap",
+        "target_count": 4,
+        "background_count": 1,
+        "z_score": 1.802
+      },
+      {
+        "term": "hedar",
+        "target_count": 6,
+        "background_count": 4,
+        "z_score": 1.72
+      },
+      {
+        "term": "যাবৎ",
+        "target_count": 6,
+        "background_count": 4,
+        "z_score": 1.72
+      },
+      {
+        "term": "বছর",
+        "target_count": 8,
+        "background_count": 8,
+        "z_score": 1.675
+      }
+    ],
+    "representative_exemplars": [
+      "The networking system is too bad to describe...cant browse,cant play. i am totally dissatisfied",
+      "Very poor network system",
+      "Sonar sim, hedar network banaisos tura hugat diya boiya thak hedar pot hogol net e pai na jei jaygay e jai onno sb net valo bt ai sim ar amn obosta kn bal ar network system. Aisob Bangladesh thaikka dura r naile net system thik kor bal."
+    ]
+  },
+  {
+    "operator": "Robi",
+    "shock_name": "4G Commercial Tariff Realignment Backlash",
+    "shock_months": [
+      "2018-01",
+      "2018-02",
+      "2018-03"
+    ],
+    "category": "Offers & Data Packs",
+    "target_count": 30,
+    "baseline_count": 5174,
+    "top_grievance_terms": [
+      {
+        "term": "hok",
+        "target_count": 5,
+        "background_count": 3,
+        "z_score": 1.805
+      },
+      {
+        "term": "60",
+        "target_count": 6,
+        "background_count": 6,
+        "z_score": 1.683
+      },
+      {
+        "term": "pack দাম",
+        "target_count": 3,
+        "background_count": 1,
+        "z_score": 1.595
+      },
+      {
+        "term": "নাহল",
+        "target_count": 3,
+        "background_count": 1,
+        "z_score": 1.595
+      },
+      {
+        "term": "ফেলব",
+        "target_count": 3,
+        "background_count": 1,
+        "z_score": 1.595
+      },
+      {
+        "term": "সিম ভেঙ",
+        "target_count": 3,
+        "background_count": 1,
+        "z_score": 1.595
+      },
+      {
+        "term": "সেদিন",
+        "target_count": 3,
+        "background_count": 1,
+        "z_score": 1.595
+      },
+      {
+        "term": "60 mb",
+        "target_count": 6,
+        "background_count": 0,
+        "z_score": 1.504
+      },
+      {
+        "term": "dea",
+        "target_count": 3,
+        "background_count": 2,
+        "z_score": 1.361
+      },
+      {
+        "term": "দাম কমাবেন",
+        "target_count": 3,
+        "background_count": 2,
+        "z_score": 1.361
+      },
+      {
+        "term": "ভেঙ",
+        "target_count": 3,
+        "background_count": 2,
+        "z_score": 1.361
+      },
+      {
+        "term": "কমাবেন সেদিন",
+        "target_count": 3,
+        "background_count": 0,
+        "z_score": 1.282
+      },
+      {
+        "term": "তাই বন্ধ",
+        "target_count": 3,
+        "background_count": 0,
+        "z_score": 1.282
+      },
+      {
+        "term": "দিন দাম",
+        "target_count": 3,
+        "background_count": 0,
+        "z_score": 1.282
+      },
+      {
+        "term": "নাহল আপনাদের",
+        "target_count": 3,
+        "background_count": 0,
+        "z_score": 1.282
+      }
+    ],
+    "representative_exemplars": [
+      "Internet pack এর দাম খুব বেশী, তাই এখন বন্ধ।যে দিন দাম কমাবেন সেদিন ফিরবো।নাহলে আপনাদের সিম ভেঙে ফেলবো।😡😡😡",
+      "Internet pack এর দাম খুব বেশী, তাই এখন বন্ধ।যে দিন দাম কমাবেন সেদিন ফিরবো।নাহলে আপনাদের সিম ভেঙে ফেলবো।😡😡😡",
+      "1 takay 60 mb diya hok ta na hole my airtel er moto etae obosta ty hobe kinto"
+    ]
+  }
+]
