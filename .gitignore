@@ -93,3 +93,22 @@ scraped_data_global/classified/all_operators_common_duration_classified.csv
 # Academic paper drafts / submissions (local only)
 # ──────────────────────────────────────────────
 paper/
+
+# ──────────────────────────────────────────────
+# AI agent / harness & GSD configuration (local only)
+# ──────────────────────────────────────────────
+.agent/
+.agents/
+.gemini/
+.gsd/
+adapters/
+GSD-STYLE.md
+PROJECT_RULES.md
+model_capabilities.yaml
+VERSION
+scripts/validate-agents.*
+scripts/validate-skills.*
+scripts/validate-workflows.*
+scripts/validate-templates.*
+scripts/validate-all.*
+
