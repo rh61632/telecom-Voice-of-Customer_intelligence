@@ -14,7 +14,8 @@ from ml.language_detector import detector
 
 # Preload production models
 print("Loading VoC Intelligence models...")
-sentiment_model, model_name = load_model("ensemble")
+hero_model, hero_name = load_model("ensemble")
+corpus_model, corpus_name = load_model("corpus")
 category_model = load_category_model()
 print("Models loaded successfully!")
 
@@ -26,12 +27,16 @@ OPERATIONAL_DESCRIPTIONS = {
     "General Appreciation / Other": "Baseline User Experience (Generic 5-star praise, UI design compliments, customer care)"
 }
 
-def analyze_review(review_text: str):
+def analyze_review(review_text: str, model_choice: str = "Hero Ensemble (89.0% Human Gold Benchmark)"):
     if not review_text or not review_text.strip():
         return "N/A", "N/A", "N/A", {}, {}, "Please enter a customer review."
 
+    is_hero = "Hero" in model_choice
+    active_model = hero_model if is_hero else corpus_model
+    active_name = "ensemble (Hero Benchmark)" if is_hero else "corpus (655k Dataset Lineage)"
+
     # Perform prediction
-    res = predict_sentiment(review_text, sentiment_model, model_name, category_model)
+    res = predict_sentiment(review_text, active_model, active_name, category_model)
 
     lang_badge = f"{res['language']} {'(Code-Mixed)' if res['is_code_mixed'] else ''}"
     sentiment_label = f"{res['sentiment']} ({res['confidence'] * 100:.1f}%)"
@@ -49,10 +54,18 @@ def analyze_review(review_text: str):
 
     # Diagnostic triage attribution
     triage_note = OPERATIONAL_DESCRIPTIONS.get(res["category"], "")
+    arch_note = (
+        "**Active Sentiment Model:** Hero Soft-Voting Ensemble (Calibrated LinearSVC + Logistic Regression + Complement Naive Bayes)\n\n"
+        "**Role & Performance:** Primary Interactive Benchmark Model | 89.0% Human Gold Agreement | 8.17 ms CPU latency"
+        if is_hero
+        else
+        "**Active Sentiment Model:** Master Corpus Voting Classifier (LinearSVC + Logistic Regression + Complement Naive Bayes)\n\n"
+        "**Role & Performance:** Master Dataset Classifier | Scored 655,649 longitudinal reviews & 35 NSS shocks | 83.7% Gold Agreement"
+    )
     diagnostic_summary = (
         f"**Decoupled Subsystem:** {triage_note}\n\n"
-        f"**Inference Hardware:** CPU (8.17 ms latency | 122.4 reviews/sec)\n"
-        f"**Underlying Architecture:** Soft-Voting Ensemble (Calibrated LinearSVC + Balanced Logistic Regression + Complement Naive Bayes)"
+        f"{arch_note}\n\n"
+        f"**Inference Hardware:** CPU (~8.2 ms latency | ~120+ reviews/sec)"
     )
 
     return lang_badge, sentiment_label, category_label, res["probabilities"], cat_probs, diagnostic_summary
@@ -78,6 +91,14 @@ with gr.Blocks(title="Telecom VoC Intelligence", css=custom_css, theme=gr.themes
                 label="Enter Customer Review (Bengali / Romanized Banglish / English)",
                 placeholder="e.g., App khule na, bar bar crash kore login er shomoy...",
                 lines=4
+            )
+            model_selector = gr.Radio(
+                choices=[
+                    "Hero Ensemble (89.0% Human Gold Benchmark)",
+                    "Master Corpus Classifier (655k Dataset Lineage)"
+                ],
+                value="Hero Ensemble (89.0% Human Gold Benchmark)",
+                label="Select Sentiment Model Architecture"
             )
             submit_btn = gr.Button("🔍 Classify & Decouple Subsystem", variant="primary")
 
@@ -108,7 +129,7 @@ with gr.Blocks(title="Telecom VoC Intelligence", css=custom_css, theme=gr.themes
 
     submit_btn.click(
         fn=analyze_review,
-        inputs=[input_text],
+        inputs=[input_text, model_selector],
         outputs=[out_lang, out_sent, out_cat, out_sent_probs, out_cat_probs, out_diag]
     )
 

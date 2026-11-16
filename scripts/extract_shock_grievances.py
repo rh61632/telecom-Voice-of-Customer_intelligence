@@ -127,12 +127,25 @@ def analyze_operator_shock(df, operator, shock_months, target_category, shock_na
     # Extract representative quotes that contain the top z-score terms
     top_terms = [r['term'] for r in z_results[:5]]
     exemplars = []
+    # Pass 1: High-density matches (>=2 terms)
     for r in shock_reviews:
         score = sum(1 for t in top_terms if t in r.lower())
         if score >= 2 and len(r.split()) >= 4:
             exemplars.append(r.strip().replace('\n', ' '))
             if len(exemplars) >= 3:
                 break
+                
+    # Pass 2: Fallback for concise single-term complaints if fewer than 3 found
+    if len(exemplars) < 3:
+        for r in shock_reviews:
+            clean_r = r.strip().replace('\n', ' ')
+            if clean_r in exemplars:
+                continue
+            score = sum(1 for t in top_terms if t in r.lower())
+            if score >= 1 and len(r.split()) >= 4:
+                exemplars.append(clean_r)
+                if len(exemplars) >= 3:
+                    break
                 
     print(f"\nCanonical Representative Review Exemplars:")
     for idx, ex in enumerate(exemplars, 1):

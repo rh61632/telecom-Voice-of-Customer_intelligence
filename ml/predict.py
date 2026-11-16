@@ -19,6 +19,8 @@ MODELS_DIR = ML_DIR / "models"
 
 MODEL_PATHS = {
     "ensemble": MODELS_DIR / "ensemble_voting_classifier.joblib",
+    "corpus": MODELS_DIR / "sentiment_voting_classifier.joblib",
+    "sentiment_voting": MODELS_DIR / "sentiment_voting_classifier.joblib",
     "logistic": MODELS_DIR / "primary_logistic_regression.joblib",
     "linearsvc": MODELS_DIR / "challenger_linearsvc.joblib",
 }
@@ -95,9 +97,9 @@ def main():
     )
     parser.add_argument(
         "--model", "-m",
-        choices=["ensemble", "logistic", "linearsvc"],
+        choices=["ensemble", "corpus", "sentiment_voting", "logistic", "linearsvc"],
         default="ensemble",
-        help="Model architecture to use (default: ensemble)",
+        help="Model architecture to use: 'ensemble' (Hero 89.0%% Gold Benchmark), 'corpus' (Master 655k Dataset Lineage), 'logistic', 'linearsvc' (default: %(default)s)",
     )
     parser.add_argument(
         "--filtered", "-f",

@@ -140,10 +140,17 @@ def load_bilstm_vocab(dl_dir: Union[str, Path]) -> Vocabulary:
         if main_mod is not None:
             main_mod.Vocabulary = Vocabulary
         raw_vocab = joblib.load(joblib_path)
-        word2idx = getattr(raw_vocab, "word2idx", {})
-        idx2word = getattr(raw_vocab, "idx2word", {})
-        min_freq = getattr(raw_vocab, "min_freq", 2)
-        return Vocabulary(min_freq=min_freq, word2idx=word2idx, idx2word=idx2word)
+        if isinstance(raw_vocab, dict):
+            word2idx = raw_vocab.get("word2idx", {})
+            idx2word = raw_vocab.get("idx2word", {})
+            min_freq = raw_vocab.get("min_freq", 2)
+            max_len = raw_vocab.get("max_len", 40)
+        else:
+            word2idx = getattr(raw_vocab, "word2idx", {})
+            idx2word = getattr(raw_vocab, "idx2word", {})
+            min_freq = getattr(raw_vocab, "min_freq", 2)
+            max_len = getattr(raw_vocab, "max_len", 40)
+        return Vocabulary(min_freq=min_freq, word2idx=word2idx, idx2word=idx2word, max_len=max_len)
     finally:
         if main_mod is not None:
             if prev_vocab is not None:

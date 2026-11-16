@@ -231,9 +231,9 @@ To verify that our empirical shock conclusions are not artifacts of the chosen $
 
 | Threshold Cutoff | Soft-Voting Ensemble Shocks (GP / Robi / BL) | Linear SVM Baseline Shocks (GP / Robi / BL) | Cross-Model Concordance |
 | :---: | :---: | :---: | :--- |
-| **$|\Delta \text{NSS}| \ge 8.0$ pp** | 11 / 16 / 33 (Total: 60) | 11 / 15 / 33 (Total: 59) | **98.3% agreement** |
-| **$|\Delta \text{NSS}| \ge 10.0$ pp** (Baseline) | 6 / 7 / 22 (Total: 35) | 6 / 7 / 22 (Total: 35) | **100.0% agreement** |
-| **$|\Delta \text{NSS}| \ge 12.0$ pp** | 4 / 4 / 16 (Total: 24) | 4 / 4 / 16 (Total: 24) | **100.0% agreement** |
+| **$|\Delta \text{NSS}| \ge 8.0$ pp** | 10 / 8 / 26 (Total: 44) | 11 / 9 / 26 (Total: 46) | **95.7% agreement** |
+| **$|\Delta \text{NSS}| \ge 10.0$ pp** (Baseline) | 6 / 7 / 22 (Total: 35) | 7 / 4 / 21 (Total: 32) | **91.4% agreement** |
+| **$|\Delta \text{NSS}| \ge 12.0$ pp** | 4 / 4 / 15 (Total: 23) | 4 / 4 / 16 (Total: 24) | **95.8% agreement** |
 
 *Operator Ranking Invariance*: Under every threshold and across both ensemble and single-model classifiers, Banglalink's shock frequency is **$3.1\times$ to $4.0\times$ higher** than Grameenphone and Robi.
 
@@ -371,17 +371,21 @@ Before measuring model accuracy, we established the validity and consistency of 
 #### 2. Trained Model Performance on Blind Human Ground Truth (Model vs. Human Agreement)
 The trained classifiers were then benchmarked directly against the blind human ground-truth cohort ($N = 300$ primary human reviews; $N = 182$ sentiment / $N = 187$ category dual-human consensus reviews):
 
-| Model Architecture | Evaluated Task | Human Raw Agreement (N=300) | Consensus Agreement (Dual-Human Agreed) | Cohen's Kappa (κ) | Status & Model Artifact |
-| :--- | :---: | :---: | :---: | :---: | :--- |
-| **Soft-Voting Ensemble (CLI/Demo)** | **Sentiment Analysis (3-Class)** | **89.00%** | **91.21%** | **0.5150** | 🏆 **Hero CLI/Demo Model (`ensemble_voting_classifier.joblib`)** |
-| Challenger LinearSVC | Sentiment Analysis (3-Class) | 89.00% | 91.21% | 0.5366 | Strong Linear Generalization (`challenger_linearsvc.joblib`) |
-| **Soft-Voting Ensemble (Global Prod)** | **Sentiment Analysis (3-Class)** | **83.67%** | **87.91%** | **0.4670** | 📦 **Master Corpus Classifier (`sentiment_voting_classifier.joblib`)** |
-| Primary Logistic Regression | Sentiment Analysis (3-Class) | 82.67% | 85.71% | 0.4624 | High Neutral Class Recall (`primary_logistic_regression.joblib`) |
-| Naive Star-Rating Baseline | Sentiment Analysis (3-Class) | 86.67% | 92.86% | 0.4244 | Heuristic (Fails on Sarcasm/Typos) |
-| \midrule
-| **Soft-Voting ML Ensemble** | **Operational Category (5-Class)** | **91.33%** | **94.12%** | **0.5046** | 🏷️ **Production Category Model (`category_voting_classifier.joblib`)** |
-| Challenger LinearSVC | Operational Category (5-Class) | 91.00% | 94.12% | 0.4679 | High Linear Baseline (`category_linearsvc.joblib`) |
-| Primary Logistic Regression | Operational Category (5-Class) | 89.33% | 92.51% | 0.4385 | Balanced Regularized Baseline (`category_logistic_regression.joblib`) |
+##### A. Sentiment Polarity Models (3-Class: Positive / Neutral / Negative)
+| Model Architecture | Human Agreement ($N=300$) | Consensus Agreement ($N=182$) | Cohen's Kappa ($\kappa$) | Status & Model Artifact |
+| :--- | :---: | :---: | :---: | :--- |
+| **Soft-Voting Ensemble (CLI/Demo)** | **89.00%** | **91.21%** | **0.5150** | 🏆 **Hero CLI/Demo Model (`ensemble_voting_classifier.joblib`)** |
+| Challenger LinearSVC | 89.00% | 91.21% | 0.5366 | Strong Linear Generalization (`challenger_linearsvc.joblib`) |
+| **Soft-Voting Ensemble (Global Prod)** | 83.67% | 87.91% | 0.4670 | 📦 **Master Corpus Classifier (`sentiment_voting_classifier.joblib`)** |
+| Primary Logistic Regression | 82.67% | 85.71% | 0.4624 | High Neutral Class Recall (`primary_logistic_regression.joblib`) |
+| Naive Star-Rating Baseline | 86.67% | 92.86% | 0.4244 | Heuristic (Fails on Sarcasm/Typos) |
+
+##### B. Operational Category Models (5-Class Taxonomy)
+| Model Architecture | Human Agreement ($N=300$) | Consensus Agreement ($N=187$) | Cohen's Kappa ($\kappa$) | Status & Model Artifact |
+| :--- | :---: | :---: | :---: | :--- |
+| **Soft-Voting ML Ensemble** | **91.33%** | **94.12%** | **0.5046** | 🏷️ **Production Category Model (`category_voting_classifier.joblib`)** |
+| Challenger LinearSVC | 91.00% | 94.12% | 0.4679 | High Linear Baseline (`category_linearsvc.joblib`) |
+| Primary Logistic Regression | 89.33% | 92.51% | 0.4385 | Balanced Regularized Baseline (`category_logistic_regression.joblib`) |
 
 > **Why Both Sentiment Ensembles Exist:**  
 > - **Model B (`ensemble_voting_classifier.joblib`)** was selected as our **default interactive inference model** in `ml/predict.py` and `demo/app.py` because it achieves superior accuracy (**89.00%** on Gold $N=300$ and **91.21%** on Consensus $N=182$) by focusing on word-level tokens without sub-word character noise.  
