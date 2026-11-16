@@ -73,13 +73,13 @@ All visualizations are generated natively in Python at high-resolution **300 DPI
 ### A. Market Net Sentiment Score & Sentiment Breakdown
 | Net Sentiment Score (NSS) Comparison | Sentiment Share by Operator |
 | :---: | :---: |
-| <img src="assets/plots/net_sentiment_score_comparison_bars.png?v=2" width="450"/> | <img src="assets/plots/operator_sentiment_distribution_bars.png?v=2" width="450"/> |
+| <img src="assets/plots/net_sentiment_score_comparison_bars_v2.png" width="450"/> | <img src="assets/plots/operator_sentiment_distribution_bars_v2.png" width="450"/> |
 
 ### B. Longitudinal Trajectory Across Shared Horizon (2016 – 2026)
 > **Full Unclipped Horizon**: Y-axis scaled from **-70% to +95%** with an explicit **0% Neutral Baseline**, capturing the full spectrum from Robi's early 2016 teething dip ($-57.9\%$) and 2018's acute 4G rollout backlash (GP $-16.0\%$, Robi $-28.8\%$) to 2026's peak digital adoption (Banglalink $+81.9\%$).
 
 <div align="center">
-  <img src="assets/plots/multi_year_sentiment_trend_line.png?v=4" width="900" alt="Complete Multi-Year Net Sentiment Trajectory (2016 - 2026)"/>
+  <img src="assets/plots/multi_year_sentiment_trend_line_v2.png" width="900" alt="Complete Multi-Year Net Sentiment Trajectory (2016 - 2026)"/>
 </div>
 
 #### Dedicated Standalone Era Trajectories (Yearly)
@@ -87,13 +87,13 @@ To prevent early teething volatility from compressing the modern high-volume era
 
 | Phase 1: Early Era (2016 – 2019 · $N = 20,657$) | Phase 2: Modern Era (2020 – 2026 · $N = 634,992$) |
 | :---: | :---: |
-| <img src="assets/plots/yearly_sentiment_trend_early_era.png?v=5" width="450" alt="Early Era NSS Trajectory (2016-2019)"/> | <img src="assets/plots/yearly_sentiment_trend_modern_era.png?v=5" width="450" alt="Modern Era NSS Trajectory (2020-2026)"/> |
+| <img src="assets/plots/yearly_sentiment_trend_early_era_v2.png" width="450" alt="Early Era NSS Trajectory (2016-2019)"/> | <img src="assets/plots/yearly_sentiment_trend_modern_era_v2.png" width="450" alt="Modern Era NSS Trajectory (2020-2026)"/> |
 | **Early Infancy & 4G Friction**: Scaled `[-70%, +60%]` with 0% Neutral Baseline highlighting SIM registration and the 2018 4G launch dip. | **Ecosystem Scale & Rivalry**: Scaled `[+30%, +92%]` highlighting 2023–24 VAS friction and 2026 Banglalink surge. |
 
 ### C. Operational Complaint Breakdown & Departmental Sentiment
 | Actionable Complaint Rates by Operator | Sentiment Composition per Comment Type |
 | :---: | :---: |
-| <img src="assets/plots/operator_category_complaint_distribution_bars.png?v=4" width="450"/> | <img src="assets/plots/category_sentiment_stacked_bars.png?v=4" width="450"/> |
+| <img src="assets/plots/operator_category_complaint_distribution_bars_v2.png" width="450"/> | <img src="assets/plots/category_sentiment_stacked_bars_v2.png" width="450"/> |
 
 ### D. Monthly-Granularity Sentiment Dynamics & Seasonality (Aug 2016 – Sep 2026)
 > **Complete Continuous Monthly Time Series (122 Full Months, $N = 655,649$)**: Full vertical dynamic range from **-80% to +95%** with a 0% neutral baseline across all 3,713 shared days.
@@ -102,13 +102,13 @@ To prevent early teething volatility from compressing the modern high-volume era
 > > **Statistical Significance & Central Limit Theorem (CLT) Standard (N ≥ 30)**: In accordance with the classical Central Limit Theorem guideline for asymptotic normality, monthly NSS values are strictly plotted only for operator months with **N ≥ 30 verified customer reviews**. Low-density early adoption months (N < 30, such as July 2016 where GP had 3 reviews and Robi had 0, or occasional early 2017 months) are excluded from the trajectory lines. This eliminates small-sample variance spikes and prevents individual reviews from distorting longitudinal trend integrity.
 
 <div align="center">
-  <img src="assets/plots/monthly_nss_trend_line.png?v=5" width="900" alt="Complete Monthly Net Sentiment Trajectory (Aug 2016 - Sep 2026)"/>
+  <img src="assets/plots/monthly_nss_trend_line_v2.png" width="900" alt="Complete Monthly Net Sentiment Trajectory (Aug 2016 - Sep 2026)"/>
 </div>
 
 #### Dedicated Standalone Era Trajectories (Monthly)
 | Phase 1: Early Era (Aug 2016 – Dec 2019 · 41 Months · N ≥ 30 CLT Floor) | Phase 2: Modern Era (Jan 2020 – Sep 2026 · 81 Months · N ≥ 30 CLT Floor) |
 | :---: | :---: |
-| <img src="assets/plots/monthly_nss_trend_early_era.png?v=5" width="450" alt="Early Era Monthly NSS (2016-2019)"/> | <img src="assets/plots/monthly_nss_trend_modern_era.png?v=5" width="450" alt="Modern Era Monthly NSS (2020-2026)"/> |
+| <img src="assets/plots/monthly_nss_trend_early_era_v2.png" width="450" alt="Early Era Monthly NSS (2016-2019)"/> | <img src="assets/plots/monthly_nss_trend_modern_era_v2.png" width="450" alt="Modern Era Monthly NSS (2020-2026)"/> |
 | **Acute Teething Volatility**: Detailed monthly progression through 2018's network crisis. | **Super-App Stability**: Quarterly ticks tracking seasonal recharges and modern market shifts. |
 
 ---
@@ -147,7 +147,7 @@ Sentiment Stability Index (SSI) = 100 - RMSSD
 ```
 
 <div align="center">
-  <img src="assets/plots/nss_stability_volatility_bars.png?v=1" width="850" alt="NSS Stability and Volatility Metrics"/>
+  <img src="assets/plots/nss_stability_volatility_bars_v2.png" width="850" alt="NSS Stability and Volatility Metrics"/>
 </div>
 
 | Operator | Mean NSS (2020–2026) | MoM Volatility (RMSSD) | Stability Index (SSI / 100) | Interquartile Range (IQR) | Stability Diagnosis |
@@ -327,7 +327,7 @@ To eliminate task ambiguity between 3-class sentiment polarity and 5-class depar
 > Evaluated on 3-class sentiment polarity: **Positive**, **Neutral**, and **Negative**.
 
 <div align="center">
-  <img src="assets/plots/sentiment_model_benchmark_bars.png?v=1" width="850" alt="Sentiment Analysis Model Benchmark (3-Class Polarity)"/>
+  <img src="assets/plots/sentiment_model_benchmark_bars_v2.png" width="850" alt="Sentiment Analysis Model Benchmark (3-Class Polarity)"/>
 </div>
 
 | Rank | Model Architecture | CV Accuracy | Macro-F1 | Inference Throughput | Key Strengths / Characteristics |
@@ -343,7 +343,7 @@ To eliminate task ambiguity between 3-class sentiment polarity and 5-class depar
 > Evaluated on 5 operational complaint domains: **Offers & Data Packs**, **App Login & Technical Bugs**, **Network Speed & 4G Latency**, **Billing & Airtime Deductions**, and **General Appreciation / Other**.
 
 <div align="center">
-  <img src="assets/plots/category_model_benchmark_bars.png?v=1" width="850" alt="Operational Category Model Benchmark (5-Class Taxonomy)"/>
+  <img src="assets/plots/category_model_benchmark_bars_v2.png" width="850" alt="Operational Category Model Benchmark (5-Class Taxonomy)"/>
 </div>
 
 | Rank | Model Architecture | CV Accuracy | Macro-F1 | Inference Throughput | Key Strengths / Characteristics |

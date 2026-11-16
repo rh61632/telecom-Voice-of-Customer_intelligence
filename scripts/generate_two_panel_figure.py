@@ -171,8 +171,12 @@ target_paths = [
     pathlib.Path('paper/figures/monthly_nss_trend_2020_2026.png'),
     pathlib.Path('assets/plots/monthly_nss_trend_modern_era.png'),
     pathlib.Path('assets/plots/monthly_nss_trend_2020_2026.png'),
+    pathlib.Path('assets/plots/monthly_nss_trend_modern_era_v2.png'),
+    pathlib.Path('assets/plots/monthly_nss_trend_2020_2026_v2.png'),
     pathlib.Path('scraped_data_global/plots/monthly_nss_trend_modern_era.png'),
     pathlib.Path('scraped_data_global/plots/monthly_nss_trend_2020_2026.png'),
+    pathlib.Path('scraped_data_global/plots/monthly_nss_trend_modern_era_v2.png'),
+    pathlib.Path('scraped_data_global/plots/monthly_nss_trend_2020_2026_v2.png'),
 ]
 
 for p in target_paths:

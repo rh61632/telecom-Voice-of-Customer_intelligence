@@ -53,7 +53,7 @@ Evaluated on the 4,500 curated ground-truth reviews across **Grameenphone**, **R
 > Evaluated on 3-class sentiment polarity: **Positive**, **Neutral**, and **Negative**.
 
 <div align="center">
-  <img src="../assets/plots/sentiment_model_benchmark_bars.png" width="780" alt="Sentiment Analysis Model Benchmark"/>
+  <img src="../assets/plots/sentiment_model_benchmark_bars_v2.png" width="780" alt="Sentiment Analysis Model Benchmark"/>
 </div>
 
 | Rank | Model Architecture | CV Accuracy | Macro-F1 | Status / Implementation |
@@ -69,7 +69,7 @@ Evaluated on the 4,500 curated ground-truth reviews across **Grameenphone**, **R
 > Evaluated on 5 operational complaint domains: **Offers & Data Packs**, **App Login & Technical Bugs**, **Network Speed & 4G Latency**, **Billing & Airtime Deductions**, and **General Appreciation / Other**.
 
 <div align="center">
-  <img src="../assets/plots/category_model_benchmark_bars.png" width="780" alt="Operational Category Model Benchmark"/>
+  <img src="../assets/plots/category_model_benchmark_bars_v2.png" width="780" alt="Operational Category Model Benchmark"/>
 </div>
 
 | Rank | Model Architecture | CV Accuracy | Macro-F1 | Status / Implementation |

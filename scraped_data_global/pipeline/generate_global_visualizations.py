@@ -117,8 +117,16 @@ def save_plot(fig, filename: str):
     p2 = ASSETS_PLOTS_DIR / filename
     fig.savefig(p1, dpi=300, bbox_inches="tight")
     fig.savefig(p2, dpi=300, bbox_inches="tight")
+
+    # Also save cache-busting versioned copy (_v2.png)
+    stem = Path(filename).stem
+    ext = Path(filename).suffix
+    v2_filename = f"{stem}_v2{ext}"
+    (PLOTS_DIR / v2_filename).write_bytes(p1.read_bytes())
+    (ASSETS_PLOTS_DIR / v2_filename).write_bytes(p2.read_bytes())
+
     plt.close(fig)
-    print(f"  ✓ Saved: {filename} (in {PLOTS_DIR.name}/ and {ASSETS_PLOTS_DIR.parent.name}/{ASSETS_PLOTS_DIR.name}/)")
+    print(f"  ✓ Saved: {filename} & {v2_filename} (in {PLOTS_DIR.name}/ and {ASSETS_PLOTS_DIR.parent.name}/{ASSETS_PLOTS_DIR.name}/)")
 
 
 def plot_operator_sentiment_distribution(df):
