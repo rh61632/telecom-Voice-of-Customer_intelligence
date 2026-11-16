@@ -48,7 +48,7 @@ for op in ['Grameenphone', 'Robi', 'Banglalink']:
 
 # Table 6 Decompositions
 print("\n--- TABLE 6 TRANSITIONS AUDIT (Exact) ---")
-m_sub = df[(df['review_date'] >= '2020-01-01') & (df['review_date'] <= '2026-09-30')]
+m_sub = df[(df['review_date'] >= '2020-01-01') & (df['review_date'] <= '2026-09-30 23:59:59')]
 
 transitions_to_check = [
     ('Grameenphone', '2020-03', '2020-04'),

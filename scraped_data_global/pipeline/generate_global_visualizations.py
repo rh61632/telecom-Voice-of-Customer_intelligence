@@ -228,7 +228,9 @@ def plot_net_sentiment_score(df):
 
     for bar, val in zip(bars, nss_vals):
         h = bar.get_height()
-        ax.annotate(f"+{h:.1f}%", xy=(bar.get_x() + bar.get_width() / 2, h), xytext=(0, 4),
+        # Round 2-decimal empirical score half-up to 1 decimal place (GP 64.85 -> 64.9, Robi 65.91 -> 65.9, BL 53.04 -> 53.0, Sector 62.70 -> 62.7)
+        val_rounded = round(round(val, 2) + 1e-9, 1)
+        ax.annotate(f"+{val_rounded:.1f}%", xy=(bar.get_x() + bar.get_width() / 2, h), xytext=(0, 4),
                     textcoords="offset points", ha="center", va="bottom", fontsize=11, fontweight="bold")
 
     plt.tight_layout()
@@ -363,7 +365,7 @@ def plot_yearly_sentiment_trajectory(df):
 
     ax_pre.axhline(0, color="#34495E", linestyle="--", linewidth=1.1, alpha=0.7)
     ax_pre.text(min(years_pre) - 0.2, 1.5, "0% Neutral Baseline", fontsize=8.5, color="#34495E", fontweight="bold")
-    ax_pre.set_title("Early Period: Annual Net Sentiment Score (NSS) Trajectory (2016 – 2019)\nMulti-Operator Common Duration Benchmark (N = 20,678)", fontsize=12, fontweight="bold", pad=48)
+    ax_pre.set_title("Early Period: Annual Net Sentiment Score (NSS) Trajectory (2016 – 2019)\nMulti-Operator Common Duration Benchmark (N = 20,657)", fontsize=12, fontweight="bold", pad=48)
     ax_pre.set_xlabel("Year", fontweight="bold")
     ax_pre.set_ylabel("Net Sentiment Score (%)", fontweight="bold")
     ax_pre.set_xlim(min(years_pre) - 0.25, max(years_pre) + 0.25)
@@ -676,8 +678,8 @@ def plot_sentiment_model_benchmark():
         "Multilingual MiniLM Head\n(384-dim Dense Embeddings · ~10x CPU)",
         "Hybrid BiLSTM + Attention (GPU)\n(Recurrent Context Modeling · PyTorch)",
     ]
-    acc = [91.60, 87.47, 82.33, 81.50]
-    f1_raw = [0.8598, 0.7684, 0.7475, 0.7180]
+    acc = [91.60, 87.44, 82.33, 81.50]
+    f1_raw = [0.8598, 0.7688, 0.7475, 0.7180]
     f1_pct = [v * 100 for v in f1_raw]
 
     fig, ax = plt.subplots(figsize=(11.0, 5.5), dpi=300)
@@ -742,8 +744,8 @@ def plot_category_model_benchmark():
         "Multilingual MiniLM Head\n(384-dim Dense Vector Embeddings)",
         "Hybrid BiLSTM + Attention (GPU)\n(Recurrent Context + Class Weighting)",
     ]
-    acc = [87.44, 85.27, 81.15, 80.84]
-    f1_raw = [0.7845, 0.7624, 0.7247, 0.7106]
+    acc = [87.33, 85.27, 81.15, 80.84]
+    f1_raw = [0.7794, 0.7624, 0.7247, 0.7106]
     f1_pct = [v * 100 for v in f1_raw]
 
     fig, ax = plt.subplots(figsize=(11.0, 5.5), dpi=300)

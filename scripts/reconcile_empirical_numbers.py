@@ -80,8 +80,8 @@ print(f"Total consecutive monthly transitions (CLT N>=30): {len(consec)}")
 shocks_all = consec[consec['delta_nss'].abs() >= 10.0]
 print(f"Total shocks (|ΔNSS| >= 10.0) across all valid transitions: {len(shocks_all)} ({len(shocks_all)/len(consec)*100:.1f}%)")
 
-# Modern era (2020-01 to 2026-09)
-consec_modern = consec[consec['year_month'] >= '2020-01']
+# Modern era intra-era transitions (2020-01 to 2026-09, excluding boundary)
+consec_modern = consec[(consec['prev_month'] >= '2020-01') & (consec['year_month'] >= '2020-01')]
 print(f"Modern era (2020-2026) consecutive monthly transitions: {len(consec_modern)}")
 shocks_modern = consec_modern[consec_modern['delta_nss'].abs() >= 10.0]
 print(f"Modern era shocks (|ΔNSS| >= 10.0): {len(shocks_modern)} out of {len(consec_modern)} transitions ({len(shocks_modern)/len(consec_modern)*100:.1f}%)")
@@ -100,16 +100,16 @@ for idx, r in shocks_modern.sort_values(by=['year_month', 'operator']).iterrows(
 
 # 4. Banglalink Spring 2024 App Version Data
 print("\n--- 4. Banglalink Spring 2024 App Versions ---")
-bl_2024 = df[(df['operator'] == 'Banglalink') & (df['date'].between('2024-03-01', '2024-06-30'))]
+bl_2024 = df[(df['operator'] == 'Banglalink') & (df['date'].between('2024-03-01', '2024-06-30 23:59:59'))]
 if 'app_version' in df.columns or 'review_version' in df.columns:
     col = 'app_version' if 'app_version' in df.columns else 'review_version'
     print(f"Version column '{col}' value counts for BL March-June 2024:")
     print(bl_2024[col].value_counts().head(10))
 else:
     print("No direct app_version column in common duration file; checking text keywords:")
-    bl_april = df[(df['operator'] == 'Banglalink') & (df['date'].between('2024-04-01', '2024-04-30'))]
+    bl_april = df[(df['operator'] == 'Banglalink') & (df['date'].between('2024-04-01', '2024-04-30 23:59:59'))]
     print(f"BL April 2024 total reviews: {len(bl_april)}")
     print(f"BL April 2024 negative reviews: {(bl_april['predicted_sentiment'] == 'Negative').sum()} ({(bl_april['predicted_sentiment'] == 'Negative').mean()*100:.1f}%)")
-    bl_may = df[(df['operator'] == 'Banglalink') & (df['date'].between('2024-05-01', '2024-05-31'))]
+    bl_may = df[(df['operator'] == 'Banglalink') & (df['date'].between('2024-05-01', '2024-05-31 23:59:59'))]
     print(f"BL May 2024 total reviews: {len(bl_may)}")
     print(f"BL May 2024 positive reviews: {(bl_may['predicted_sentiment'] == 'Positive').sum()} ({(bl_may['predicted_sentiment'] == 'Positive').mean()*100:.1f}%)")

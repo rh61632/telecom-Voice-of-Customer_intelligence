@@ -19,7 +19,7 @@ print(f"Date range: {min_date.strftime('%Y-%m-%d')} to {max_date.strftime('%Y-%m
 print(f"Total days: {days} (Paper says: 3,713 days)")
 
 # Modern era
-modern = df[(df['review_date'] >= '2020-01-01') & (df['review_date'] <= '2026-09-30')].copy()
+modern = df[(df['review_date'] >= '2020-01-01') & (df['review_date'] <= '2026-09-30 23:59:59')].copy()
 print(f"Modern era reviews: {len(modern):,} (Paper says: 634,992)")
 early = df[df['review_date'] < '2020-01-01'].copy()
 print(f"Early era reviews: {len(early):,} (Paper says: 20,657)")

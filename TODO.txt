@@ -121,6 +121,23 @@ Commands:
 
   4. Update `Data Last Scraped` date badge in `README.md` and commit to git.
 
+--------------------------------------------------------------------------------
+7. STAR RATING VS. AI SENTIMENT DIVERGENCE AUDIT (SARCASM & MISCLICK ANALYSIS)
+--------------------------------------------------------------------------------
+Context:
+  Across the 655,649 common duration reviews, 58,373 reviews (8.91%) exhibit
+  conflict between customer star ratings and AI predicted sentiment:
+  - 34,397 reviews (5.25%): 1–2★ rating with Positive AI sentiment (e.g. 1-star
+    misclicks on reviews praising "good", "nice", "ভালো").
+  - 23,976 reviews (3.66%): 4–5★ rating with Negative AI sentiment (e.g. Bengali
+    sarcasm, tariff complaints, and "Mb Rate High" where users gave 5 stars
+    so developers would notice their complaint).
+
+Action Plan:
+  - Implement diagnostic exporter `scripts/export_rating_sentiment_divergence.py`.
+  - Extract stratified samples of both conflict cohorts to CSV/Excel.
+  - Audit sarcasm detection fidelity vs. edge-case vocabulary gaps.
+
 ================================================================================
 END OF ROADMAP DOCUMENT
 ================================================================================

@@ -48,13 +48,27 @@ This directory contains the self-contained Classical Machine Learning pipeline f
 
 ## 🚀 Deployed Production & Ensemble Models
 
-| Model Artifact | Origin / Task | Features | Macro-F1 | Accuracy | Deployed Use Case |
+Both sentiment models exist in the repository to balance historical reproducibility with state-of-the-art interactive inference:
+
+| Model Artifact | Model Designation | Features & Architecture | Accuracy (Gold N=300) | Consensus (N=182) | Deployed Use Case & Rationale |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `ensemble_voting_classifier.joblib` | Local (`train_ensemble.py`) / Sentiment | Char TF-IDF (2–5) min_df=3 | 0.7820 ± 0.0213 | 87.84% ± 1.13% | Interactive CLI (`ml/predict.py`) & Web Demo (`demo/app.py`) |
-| `sentiment_voting_classifier.joblib` | Google Colab / Sentiment | Word (1–2, 12k) + Char (3–5, 25k) | 0.7688 ± 0.0186 | 87.44% ± 1.31% | Global 661k Corpus Classification (`classify_global_dataset.py`) |
-| `category_voting_classifier.joblib` | Google Colab / 5 Categories | Word (1–2, 12k) + Char (3–5, 25k) | 0.7794 ± 0.0146 | 87.33% ± 0.81% | Production Operational Category Classification |
-| `category_ensemble_filtered_min3words.joblib` | Local (`train_filtered_experiments.py`) | Word (1–2) + Char_wb (3–5) | 0.7803 | 85.95% | Filtered Category Experiment ($\ge 3$ words) |
-| `sentiment_ensemble_filtered_min3words.joblib` | Local (`train_filtered_experiments.py`) | Word (1–2) + Char_wb (3–5) | 0.7822 | 87.37% | Filtered Sentiment Experiment ($\ge 3$ words) |
+| **`ensemble_voting_classifier.joblib`** | **Model B (Hero Inference Model)** | Word TF-IDF (1–2) + Soft Voting (LR + Calibrated LinearSVC + ComplementNB) | **89.00%** | **91.21%** | 🏆 **Default for CLI (`ml/predict.py`) & Web Demo (`demo/app.py`)**.<br>_Why chosen:_ Achieves the highest human ground-truth accuracy (+5.33% over Model A) by focusing on clean word tokens without noise from irregular letter n-grams. |
+| **`sentiment_voting_classifier.joblib`** | **Model A (Global Corpus Classifier)** | Dual-Gram FeatureUnion: Word (1–2) + Char (3–5, 25k) + Soft Voting | 83.67% | 87.91% | 📦 **Preserved for Master Dataset Lineage (`classify_global_dataset.py`)**.<br>_Why preserved:_ Scored all 655,649 historical reviews in `all_operators_common_duration_classified.csv`; preserved verbatim to guarantee exact reproducibility of all historical longitudinal trends and metrics. |
+| `category_voting_classifier.joblib` | Production Category Model | Dual-Gram FeatureUnion: Word (1–2) + Char (3–5, 25k) + Soft Voting | 91.33% | 94.12% | Production Operational Category Classification (5 Classes) |
+| `category_ensemble_filtered_min3words.joblib` | Filtered Category Experiment | Word (1–2) + Char_wb (3–5) | 85.95% | — | Filtered Category Experiment ($\ge 3$ words) |
+| `sentiment_ensemble_filtered_min3words.joblib` | Filtered Sentiment Experiment | Word (1–2) + Char_wb (3–5) | 87.37% | — | Filtered Sentiment Experiment ($\ge 3$ words) |
+
+### 🔍 Why Model B Was Chosen Over Model A for Interactive Inference
+
+While both models employ a tri-classifier soft-voting ensemble (Logistic Regression + Calibrated LinearSVC + ComplementNB), **Model B (`ensemble_voting_classifier.joblib`) was selected as the default interactive inference engine** for the following empirical reasons:
+
+1. **Superior Human Agreement (+5.33% Gain on Gold Standard):**
+   - On the primary blind-annotated human ground truth ($N = 300$), Model B achieves **89.00% accuracy** (Macro-F1: 0.6089) compared to Model A's **83.67% accuracy** (Macro-F1: 0.5625).
+   - On the dual-human consensus subset ($N = 182$, where two independent reviewers reached 100% agreement), Model B reaches **91.21% accuracy** vs. Model A's **87.91%**.
+2. **Noise Resistance on Short & Ambiguous Reviews:**
+   - Model A includes character 3–5 n-grams, which occasionally overfit to sub-word character fragments in short slang or typos. Model B relies on regularized word unigrams and bigrams, avoiding sub-word false triggers.
+3. **Preservation of Model A for Dataset Lineage:**
+   - Rather than discarding Model A or silently re-scoring the 655k historical database (which would alter longitudinal monthly NSS timelines), Model A remains fully preserved in `ml/models/` to ensure end-to-end data provenance for all retrospective research.
 
 ---
 

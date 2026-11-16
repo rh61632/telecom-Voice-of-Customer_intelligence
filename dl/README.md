@@ -59,7 +59,7 @@ Evaluated on the 4,500 curated ground-truth reviews across **Grameenphone**, **R
 | Rank | Model Architecture | CV Accuracy | Macro-F1 | Status / Implementation |
 | :---: | :--- | :---: | :---: | :--- |
 | 🥇 | **BUET BanglaBERT (Fine-Tuned)** | **91.60%** | **0.8598** | Full 12-layer backpropagation (`csebuetnlp/banglabert`) |
-| 🥈 | **Hero Soft-Voting ML Ensemble** | **87.47%** | **0.7684** | Calibrated probability soft-voting classifier (~17.5k rev/s CPU) |
+| 🥈 | **Hero Soft-Voting ML Ensemble** | **87.44%** | **0.7688** | Calibrated probability soft-voting classifier (~17.5k rev/s CPU) |
 | 🥉 | **Multilingual MiniLM Head** | **82.33%** | **0.7475** | Multilingual sentence semantic representations (`paraphrase-multilingual-MiniLM-L12-v2`) |
 | 4 | **Hybrid BiLSTM + Attention (GPU)** | **81.50%** | **0.7180** | 1-layer word-level BiLSTM with Bahdanau additive attention |
 
@@ -74,7 +74,7 @@ Evaluated on the 4,500 curated ground-truth reviews across **Grameenphone**, **R
 
 | Rank | Model Architecture | CV Accuracy | Macro-F1 | Status / Implementation |
 | :---: | :--- | :---: | :---: | :--- |
-| 🥇 | **Hero Soft-Voting ML Ensemble** | **87.44%** | **0.7845** | Dual-Gram TF-IDF + Logistic Regression + LinearSVC + ComplementNB |
+| 🥇 | **Hero Soft-Voting ML Ensemble** | **87.33%** | **0.7794** | Dual-Gram TF-IDF + Logistic Regression + LinearSVC + ComplementNB |
 | 🥈 | **BUET BanglaBERT (Fine-Tuned)** | **85.27%** | **0.7624** | Full 12-layer backpropagation (`csebuetnlp/banglabert`) |
 | 🥉 | **Multilingual MiniLM Head** | **81.15%** | **0.7247** | `paraphrase-multilingual-MiniLM-L12-v2` 384-dim dense vectors |
 | 4 | **Hybrid BiLSTM + Attention (GPU)** | **80.84%** | **0.7106** | 1-layer word-level BiLSTM with Bahdanau additive attention and class-weighted loss |

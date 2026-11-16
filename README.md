@@ -36,10 +36,11 @@ This flagship project provides an empirical, end-to-end Voice-of-Customer (VoC) 
 > **Methodological Note on Common Duration Window & Statistical Significance (CLT Rule)**:  
 > 1. **Common Duration Window**: To guarantee strict statistical equity and eliminate temporal selection bias (ensuring no operator has missing historical windows in comparative analytics), all published benchmarks, comparative scorecards, trendlines, and category distributions strictly analyze the continuous **3,713-Day Common Duration Period** (**August 1, 2016 – September 30, 2026**, $N = 655,649$) where all three operators coexist simultaneously. The full multi-year corpus ($N = 661,160$, October 2014 – October 2026) is preserved in storage for extended longitudinal modeling.
 > 2. **Central Limit Theorem (CLT) Sampling Rule (N ≥ 30)**: In longitudinal time-series analytics, we follow the classical Central Limit Theorem standard (N ≥ 30) for sample normality. Low-density early adoption months (N < 30, such as July 2016 where Grameenphone had 3 reviews and Robi had 0, or sporadic months in 2016–2017) are omitted from monthly trend lines. This eliminates small-sample distortion—where a single random negative or positive review would artificially swing net sentiment by ±30% to ±100%—ensuring that every plotted data point reflects genuine, statistically meaningful consumer sentiment. Because annual volume for each operator consistently exceeds this N ≥ 30 CLT floor across every year of the common duration period (ranging from 126 reviews up to >75,000 reviews), yearly trajectories cleanly represent all continuous years without needing arbitrary higher cutoffs.
+> 3. **Client App Version Telemetry & Reporting Bias**: Across the 655,649 common duration reviews, 24.93% (163,425 reviews) lack client build tags (`app_version` is null in Google Play when users review via web browsers, post-uninstallation, or on restricted device profiles). Missingness varies by operator: Grameenphone (18.37%), Robi (16.91%), and Banglalink (51.82%). Crucially, unversioned reviews exhibit an **11.0 percentage point lower Net Sentiment Score** (+54.47% vs. +65.43% for versioned reviews) with elevated technical bug complaint rates (6.4% vs. 4.5%). Product teams analyzing release performance (e.g., comparing specific builds like `v11.8.0` to `v11.9.1`) should account for this non-random reporting bias to avoid overestimating user satisfaction. (Reproducible via [`scripts/check_version_bias.py`](scripts/check_version_bias.py)).
 
 ### 📊 Common Duration Performance Scorecard ($N = 655,649$, August 1, 2016 – September 30, 2026 | 3,713 Days)
 
-Every review was scored by our production **Soft-Voting Ensemble** (trained on 4,500 Groq LLM-annotated seed reviews and benchmarked against an empirical human gold standard, achieving **87.5% CV Accuracy** on Sentiment and **87.3%** on Operational Categories), cross-verified with **PyTorch BiLSTM + Attention**, **Balanced Logistic Regression**, **Calibrated LinearSVC**, and fine-tuned **BUET BanglaBERT** (**91.6% CV Accuracy**).
+Every review was scored by our production **Soft-Voting Ensemble** (trained on 4,500 Groq LLM-annotated seed reviews and benchmarked against an empirical human gold standard, achieving **87.4% CV Accuracy** on Sentiment and **87.3%** on Operational Categories), cross-verified with **PyTorch BiLSTM + Attention**, **Balanced Logistic Regression**, **Calibrated LinearSVC**, and fine-tuned **BUET BanglaBERT** (**91.6% CV Accuracy**).
 
 ```
 +---------------------------------------------------------------------------------------------------------+
@@ -75,7 +76,7 @@ All visualizations are generated natively in Python at high-resolution **300 DPI
 | <img src="assets/plots/net_sentiment_score_comparison_bars.png?v=2" width="450"/> | <img src="assets/plots/operator_sentiment_distribution_bars.png?v=2" width="450"/> |
 
 ### B. Longitudinal Trajectory Across Shared Horizon (2016 – 2026)
-> **Full Unclipped Horizon**: Y-axis scaled from **-35% to +95%** with an explicit **0% Neutral Baseline**, capturing the full spectrum from 2018's acute 4G rollout backlash (GP $-16.0\%$, Robi $-28.8\%$) to 2026's peak digital adoption (Banglalink $+81.9\%$).
+> **Full Unclipped Horizon**: Y-axis scaled from **-70% to +95%** with an explicit **0% Neutral Baseline**, capturing the full spectrum from Robi's early 2016 teething dip ($-57.9\%$) and 2018's acute 4G rollout backlash (GP $-16.0\%$, Robi $-28.8\%$) to 2026's peak digital adoption (Banglalink $+81.9\%$).
 
 <div align="center">
   <img src="assets/plots/multi_year_sentiment_trend_line.png?v=4" width="900" alt="Complete Multi-Year Net Sentiment Trajectory (2016 - 2026)"/>
@@ -87,7 +88,7 @@ To prevent early teething volatility from compressing the modern high-volume era
 | Phase 1: Early Era (2016 – 2019 · $N = 20,657$) | Phase 2: Modern Era (2020 – 2026 · $N = 634,992$) |
 | :---: | :---: |
 | <img src="assets/plots/yearly_sentiment_trend_early_era.png?v=5" width="450" alt="Early Era NSS Trajectory (2016-2019)"/> | <img src="assets/plots/yearly_sentiment_trend_modern_era.png?v=5" width="450" alt="Modern Era NSS Trajectory (2020-2026)"/> |
-| **Early Infancy & 4G Friction**: Scaled `[-35%, +55%]` with 0% Neutral Baseline highlighting SIM registration and the 2018 4G launch dip. | **Ecosystem Scale & Rivalry**: Scaled `[+30%, +92%]` highlighting 2023–24 VAS friction and 2026 Banglalink surge. |
+| **Early Infancy & 4G Friction**: Scaled `[-70%, +60%]` with 0% Neutral Baseline highlighting SIM registration and the 2018 4G launch dip. | **Ecosystem Scale & Rivalry**: Scaled `[+30%, +92%]` highlighting 2023–24 VAS friction and 2026 Banglalink surge. |
 
 ### C. Operational Complaint Breakdown & Departmental Sentiment
 | Actionable Complaint Rates by Operator | Sentiment Composition per Comment Type |
@@ -119,16 +120,16 @@ Tracking customer sentiment across the shared 3,713-day window (August 2016 – 
 | Year | Grameenphone (MyGP) | Robi (My Robi) | Banglalink (MyBL) | Empirical Data-Backed Trend |
 | :---: | :---: | :---: | :---: | :--- |
 | **2016** *(Aug–Dec)* | **+2.5%** (438) | **-57.9%** (126) | **+45.3%** (744) | Early app deployment; Robi experienced high negative sentiment (72.2% negative), while Banglalink launched with 63.2% positive reviews. |
-| **2017** | **+13.5%** (587) | **-50.7%** (367) | **+45.5%** (2,518) | Banglalink volume grew 3.3× at stable +45.5% NSS; Robi remained negative at 67.8% negative reviews. |
-| **2018** | **-16.0%** (605) | **-28.8%** (1,418) | **+22.3%** (3,041) | Industry-wide sentiment dip; GP negative reviews rose to 47.9% (NSS -16.0%) and Robi recorded 53.6% negative reviews. |
-| **2019** | **+19.6%** (2,392) | **+16.4%** (4,186) | **+17.8%** (4,235) | Sentiment rebounded across all operators; Robi turned positive (+16.4% NSS) as positive reviews reached 51.5%. |
-| **2020** | **+45.7%** (27,600) | **+63.6%** (32,333) | **+38.3%** (17,538) | Multi-fold review volume expansion (77,471 total reviews, up +616% YoY); Robi NSS surged to +63.6% on 76.5% positive reviews. |
+| **2017** | **+13.5%** (587) | **-50.7%** (367) | **+45.5%** (2,518) | Banglalink volume grew 3.3× at stable +45.5% NSS; Robi remained negative at 68.4% negative reviews. |
+| **2018** | **-16.0%** (605) | **-28.8%** (1,418) | **+22.3%** (3,041) | Industry-wide sentiment dip; GP negative reviews rose to 50.4% (NSS -16.0%) and Robi recorded 56.7% negative reviews. |
+| **2019** | **+19.6%** (2,392) | **+16.4%** (4,186) | **+17.8%** (4,235) | Sentiment rebounded across all operators; Robi turned positive (+16.4% NSS) as positive reviews reached 50.9%. |
+| **2020** | **+45.7%** (27,600) | **+63.6%** (32,333) | **+38.3%** (17,538) | Multi-fold review volume expansion (77,471 total reviews, up +616% YoY); Robi NSS surged to +63.6% on 76.6% positive reviews. |
 | **2021** | **+61.0%** (40,535) | **+63.8%** (30,296) | **+46.6%** (25,471) | Upward trajectory continued across all operators; GP NSS rose +15.3 points to +61.0%. |
 | **2022** | **+64.2%** (45,702) | **+68.4%** (34,418) | **+55.5%** (21,442) | Sustained high sentiment; GP and Robi maintained positive shares above 76%, Banglalink rose to +55.5% NSS. |
 | **2023** | **+69.8%** (60,609) | **+48.7%** (16,784) | **+40.1%** (14,761) | Divergence year; GP expanded to 60.6k reviews at +69.8% NSS, while Robi dropped to +48.7% (login bug complaints increased) and Banglalink dipped to +40.1%. |
 | **2024** | **+70.6%** (75,059) | **+66.0%** (16,804) | **+57.2%** (15,333) | GP logged peak volume (>75k reviews) at +70.6% NSS; Robi rebounded +17.3 points to +66.0%. |
 | **2025** | **+70.3%** (54,262) | **+78.6%** (42,743) | **+66.4%** (10,238) | Robi achieved market-leading +78.6% NSS (negative reviews dropped to 6.4%); Banglalink improved to +66.4%. |
-| **2026** *(Jan–Sep)* | **+56.8%** (12,351) | **+76.2%** (18,903) | **+81.9%** (21,810) | Banglalink recorded highest 2026 NSS at +81.9% (86.8% positive); GP declined to +56.8% as negative reviews reached 16.2%. |
+| **2026** *(Jan–Sep)* | **+56.8%** (12,351) | **+76.2%** (18,903) | **+81.9%** (21,810) | Banglalink recorded highest 2026 NSS at +81.9% (87.1% positive); GP declined to +56.8% as negative reviews reached 17.4%. |
 
 ---
 
@@ -194,7 +195,7 @@ Below are major operational shocks detected by the pipeline and their exact cate
 | **Robi** | 2022-12 → 2023-01 | +66.2% | +49.6% | **-16.6 pts** | App Login & Technical Bugs | -7.40 pts | Severe login session failure; App Login complaints accounted for nearly half the total decline. |
 | **Robi** | 2023-01 → 2023-02 | +49.6% | +60.3% | **+10.7 pts** | App Login & Technical Bugs | +4.64 pts | Recovery following stability patch, restoring +4.64 pts in login sentiment. |
 | **Robi** | 2023-11 → 2023-12 | +38.8% | +48.8% | **+10.0 pts** | Offers & Data Packs | +2.67 pts | Year-end data pack promotions generated positive sentiment lift (+2.67 pts). |
-| **Banglalink** | 2021-04 → 2021-05 | +58.8% | +42.4% | **-16.4 pts** | Network Speed & 4G Latency | -4.90 pts | High surge in network speed and coverage complaints (-4.90 pts). |
+| **Banglalink** | 2021-04 → 2021-05 | +45.4% | +29.0% | **-16.4 pts** | Network Speed & 4G Latency | -4.90 pts | High surge in network speed and coverage complaints (-4.90 pts). |
 | **Banglalink** | 2024-03 → 2024-04 | +42.8% | +31.6% | **-11.2 pts** | App Login & Technical Bugs | -8.74 pts | App launch freezing and blank-screen crash on v11.8.0 update (-8.74 pts impact). |
 | **Banglalink** | 2024-04 → 2024-05 | +31.6% | +64.4% | **+32.8 pts** | App Login & Technical Bugs | +13.73 pts | Hotfix v11.9.1/v11.10.x resolved launch crashes, driving a +13.73 pts recovery in login sentiment alone. |
 
@@ -208,7 +209,7 @@ Filtering out volume-surge transitions decouples true operational volatility fro
 | Operator | Raw Unadjusted RMSSD | Surge-Filtered RMSSD | Volatility Reduction (%) | Reviewer-Mix Interpretation |
 | :--- | :---: | :---: | :---: | :--- |
 | **Banglalink (MyBL)** | **13.61 points** | **7.56 points** | **-44.5%** | Nearly half of Banglalink's excess volatility is driven by volume surges rather than permanent infrastructure failures. |
-| **Grameenphone (MyGP)** | **6.28 points** | **5.15 points** | **-18.0%** | Moderate surge sensitivity; underlying network and tariff stability remains high. |
+| **Grameenphone (MyGP)** | **6.28 points** | **5.14 points** | **-18.0%** | Moderate surge sensitivity; underlying network and tariff stability remains high. |
 | **Robi (My Robi)** | **5.61 points** | **4.53 points** | **-19.3%** | Industry-leading operational stability; robust to both operational shocks and reviewer-mix shifts. |
 | **Ratio (Banglalink / Robi)** | **2.43×** | **1.67×** | **-31.3%** | The apparent 2.4× volatility gap substantially compresses once promotional and prompting surges are controlled. |
 
@@ -246,9 +247,9 @@ Every review was classified into **5 operational domains** by our Soft-Voting Ca
 
 | Operational Category (All Sentiments) | Grameenphone (320.1k) | Robi (198.4k) | Banglalink (137.1k) | Topic Description |
 | :--- | :---: | :---: | :---: | :--- |
-| **General Appreciation / Other** | **87.85%** (281,254) | **86.86%** (172,312) | **83.06%** (113,920) | General positive praise, short greetings, and neutral feedback. |
-| **Offers & Data Packs** | **5.27%** (16,878) | **5.18%** (10,283) | **4.31%** (5,917) | Data bundles, pack pricing, recharge offers, and validity duration. |
-| **App Login & Technical Bugs** | **3.88%** (12,434) | **4.60%** (9,129) | **8.12%** (11,140) | OTP authentication, session timeouts, and app crash reports. |
+| **General Appreciation / Other** | **87.85%** (281,253) | **86.86%** (172,312) | **83.06%** (113,903) | General positive praise, short greetings, and neutral feedback. |
+| **Offers & Data Packs** | **5.27%** (16,878) | **5.18%** (10,283) | **4.31%** (5,916) | Data bundles, pack pricing, recharge offers, and validity duration. |
+| **App Login & Technical Bugs** | **3.88%** (12,432) | **4.60%** (9,129) | **8.12%** (11,140) | OTP authentication, session timeouts, and app crash reports. |
 | **Network Speed & 4G Latency** | **1.88%** (6,017) | **2.57%** (5,100) | **3.64%** (4,991) | Data speed, signal coverage, and 4G connectivity comments. |
 | **Billing & Airtime Deductions** | **1.11%** (3,560) | **0.78%** (1,554) | **0.86%** (1,181) | Balance deductions, recharge discrepancies, and VAS charges. |
 
@@ -257,7 +258,7 @@ When isolating strictly **negative customer reviews** (the direct metric plotted
 
 | Operational Complaint Domain | Grameenphone (MyGP) | Robi (My Robi) | Banglalink (MyBL) | Measured Operational Vulnerability |
 | :--- | :---: | :---: | :---: | :--- |
-| **App Login & Technical Bugs** | **3.45%** (11,059) | **4.01%** (7,951) | **7.25%** (9,946) | **Banglalink**: Elevated technical login and session bug complaints. |
+| **App Login & Technical Bugs** | **3.45%** (11,058) | **4.01%** (7,951) | **7.25%** (9,946) | **Banglalink**: Elevated technical login and session bug complaints. |
 | **Offers & Data Packs** | **2.99%** (9,557) | **2.61%** (5,168) | **2.42%** (3,321) | **Grameenphone**: Highest negative pack pricing and validity friction. |
 | **Network Speed & 4G Latency** | **1.39%** (4,453) | **1.96%** (3,895) | **2.72%** (3,735) | **Banglalink**: Highest negative signal and 4G speed feedback. |
 | **Billing & Airtime Deductions** | **1.03%** (3,307) | **0.70%** (1,395) | **0.79%** (1,085) | **Grameenphone**: Highest balance deduction grievance rate. |
@@ -280,7 +281,7 @@ To measure authentic operational friction rather than aggregate discussion volum
 #### 1. Why Joint Sentiment-Category Filtering Is Statistically Necessary
 Evaluating complaints solely by raw category frequency (`Category Review Volume / Total Review Volume`) introduces severe positive distortion because substantial proportions of domain-specific feedback represent constructive appreciation or promotional satisfaction:
 - In **Offers & Data Packs**, **25.3%** of all customer reviews across the market are positive commendations (e.g., users thanking the operator for affordable packages or recharge bonuses).
-- In **Network Speed & 4G Latency**, **14.8%** of reviews express satisfaction with fast data speeds and strong coverage.
+- In **Network Speed & 4G Latency**, **18.5%** of reviews express satisfaction with fast data speeds and strong coverage.
 - Therefore, a review constitutes an actionable operational grievance *if and only if* it satisfies both criteria:
 
 > **Operational Complaint Rule**:  
@@ -310,9 +311,9 @@ Within-Category Dissatisfaction (%) = ----------------------------------------- 
 | Operational Domain | Grameenphone (%) | Robi (%) | Banglalink (%) | Operational Interpretation |
 | :--- | :---: | :---: | :---: | :--- |
 | **Billing & Airtime Deductions** | **92.89%** (3,307 / 3,560) | **89.77%** (1,395 / 1,554) | **91.87%** (1,085 / 1,181) | Pure pain point: >90% of billing discussions are negative. |
-| **App Login & Technical Bugs** | **88.94%** (11,059 / 12,434) | **87.10%** (7,951 / 9,129) | **89.28%** (9,946 / 11,140) | Critical failure domain: almost exclusively reported as bugs. |
+| **App Login & Technical Bugs** | **88.95%** (11,058 / 12,432) | **87.10%** (7,951 / 9,129) | **89.28%** (9,946 / 11,140) | Critical failure domain: almost exclusively reported as bugs. |
 | **Network Speed & 4G Latency** | **74.01%** (4,453 / 6,017) | **76.37%** (3,895 / 5,100) | **74.83%** (3,735 / 4,991) | Consistent friction: ~75% of network feedback is critical. |
-| **Offers & Data Packs** | **56.62%** (9,557 / 16,878) | **50.26%** (5,168 / 10,283) | **56.13%** (3,321 / 5,917) | Mixed topic: ~50-57% negative, with balance being positive praise. |
+| **Offers & Data Packs** | **56.62%** (9,557 / 16,878) | **50.26%** (5,168 / 10,283) | **56.14%** (3,321 / 5,916) | Mixed topic: ~50-57% negative, with balance being positive praise. |
 
 ---
 
@@ -332,7 +333,7 @@ To eliminate task ambiguity between 3-class sentiment polarity and 5-class depar
 | Rank | Model Architecture | CV Accuracy | Macro-F1 | Inference Throughput | Key Strengths / Characteristics |
 | :---: | :--- | :---: | :---: | :---: | :--- |
 | 🥇 | **BUET BanglaBERT (Fine-Tuned)** | **91.60%** | **0.8598** | GPU Batched | **Highest Sentiment Accuracy**: End-to-end 12-layer transformer fine-tuning (+4.1% Acc, +9.1% F1 over Ensemble). |
-| 🥈 | **Soft-Voting ML Ensemble** | **87.47%** | **0.7684** | **>80x Speedup (Sub-ms CPU)** | **Production Scoring Engine**: High-throughput CPU classifier (LR + Calibrated LinearSVC + ComplementNB). |
+| 🥈 | **Soft-Voting ML Ensemble** | **87.44%** | **0.7688** | **>80x Speedup (Sub-ms CPU)** | **Production Scoring Engine**: High-throughput CPU classifier (LR + Calibrated LinearSVC + ComplementNB). |
 | 🥉 | **Multilingual MiniLM Head** | **82.33%** | **0.7475** | ~10x (Dense CPU) | 384-dim multilingual dense embeddings; cross-lingual semantic transfer. |
 | 4 | **Hybrid BiLSTM + Attention (GPU)** | **81.50%** | **0.7180** | Fast GPU Batched | Sequential token context + Bahdanau attention over emotional cues. |
 
@@ -347,7 +348,7 @@ To eliminate task ambiguity between 3-class sentiment polarity and 5-class depar
 
 | Rank | Model Architecture | CV Accuracy | Macro-F1 | Inference Throughput | Key Strengths / Characteristics |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| 🥇 | **Soft-Voting ML Ensemble** | **87.44%** | **0.7845** | **>80x Speedup (Sub-ms CPU)** | **Primary Category Architecture**: Sub-word character n-grams excel on Romanized Banglish (*"mb"*, *"kete niyeche"*, *"otp"*). |
+| 🥇 | **Soft-Voting ML Ensemble** | **87.33%** | **0.7794** | **>80x Speedup (Sub-ms CPU)** | **Primary Category Architecture**: Sub-word character n-grams excel on Romanized Banglish (*"mb"*, *"kete niyeche"*, *"otp"*). |
 | 🥈 | **BUET BanglaBERT (Fine-Tuned)** | **85.27%** | **0.7624** | GPU Batched | Contextual transformer representations with full 12-layer backpropagation. |
 | 🥉 | **Multilingual MiniLM Head** | **81.15%** | **0.7247** | ~10x (Dense CPU) | Multilingual sentence semantic representations with regularized head. |
 | 4 | **Hybrid BiLSTM + Attention (GPU)** | **80.84%** | **0.7106** | Fast GPU Batched | Sequential token context + inverse frequency class weighting. |
@@ -370,17 +371,23 @@ Before measuring model accuracy, we established the validity and consistency of 
 #### 2. Trained Model Performance on Blind Human Ground Truth (Model vs. Human Agreement)
 The trained classifiers were then benchmarked directly against the blind human ground-truth cohort ($N = 300$ primary human reviews; $N = 182$ sentiment / $N = 187$ category dual-human consensus reviews):
 
-| Model Architecture | Evaluated Task | Human Raw Agreement (N=300) | Consensus Agreement (Dual-Human Agreed) | Cohen's Kappa (κ) | Status |
+| Model Architecture | Evaluated Task | Human Raw Agreement (N=300) | Consensus Agreement (Dual-Human Agreed) | Cohen's Kappa (κ) | Status & Model Artifact |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Soft-Voting ML Ensemble** | **Operational Category (5-Class)** | **91.33%** | **94.12%** | **0.5046** | Production Category Model |
-| Challenger LinearSVC | Operational Category (5-Class) | 91.00% | 94.12% | 0.4679 | High Linear Baseline |
-| Primary Logistic Regression | Operational Category (5-Class) | 89.33% | 92.51% | 0.4385 | Balanced Regularized Baseline |
-| **Soft-Voting ML Ensemble** | **Sentiment Analysis (3-Class)** | **83.67%** | **87.91%** | **0.4670** | Production Sentiment Model |
-| Challenger LinearSVC | Sentiment Analysis (3-Class) | 89.00% | 91.21% | 0.5366 | Strong Linear Generalization |
-| Primary Logistic Regression | Sentiment Analysis (3-Class) | 82.67% | 85.71% | 0.4624 | High Neutral Class Recall |
+| **Soft-Voting Ensemble (CLI/Demo)** | **Sentiment Analysis (3-Class)** | **89.00%** | **91.21%** | **0.5150** | 🏆 **Hero CLI/Demo Model (`ensemble_voting_classifier.joblib`)** |
+| Challenger LinearSVC | Sentiment Analysis (3-Class) | 89.00% | 91.21% | 0.5366 | Strong Linear Generalization (`challenger_linearsvc.joblib`) |
+| **Soft-Voting Ensemble (Global Prod)** | **Sentiment Analysis (3-Class)** | **83.67%** | **87.91%** | **0.4670** | 📦 **Master Corpus Classifier (`sentiment_voting_classifier.joblib`)** |
+| Primary Logistic Regression | Sentiment Analysis (3-Class) | 82.67% | 85.71% | 0.4624 | High Neutral Class Recall (`primary_logistic_regression.joblib`) |
 | Naive Star-Rating Baseline | Sentiment Analysis (3-Class) | 86.67% | 92.86% | 0.4244 | Heuristic (Fails on Sarcasm/Typos) |
+| \midrule
+| **Soft-Voting ML Ensemble** | **Operational Category (5-Class)** | **91.33%** | **94.12%** | **0.5046** | 🏷️ **Production Category Model (`category_voting_classifier.joblib`)** |
+| Challenger LinearSVC | Operational Category (5-Class) | 91.00% | 94.12% | 0.4679 | High Linear Baseline (`category_linearsvc.joblib`) |
+| Primary Logistic Regression | Operational Category (5-Class) | 89.33% | 92.51% | 0.4385 | Balanced Regularized Baseline (`category_logistic_regression.joblib`) |
 
-> **Key Takeaway**: On clear human consensus reviews (where both independent human annotators agreed 100%), the production ensemble reaches **94.12% agreement** on Operational Categories and **87.91% agreement** on Sentiment Polarity (with Challenger LinearSVC achieving **91.21%**). Across the complete blind human benchmark ($N = 300$, loaded with sarcastic Bengali expressions, informal Banglish slang, and rating-text misclicks), the Ensemble maintains **91.33% agreement** on Operational Categories and **83.67% agreement** on Sentiment Polarity (with Challenger LinearSVC achieving **89.00%** and Naive Star-Rating achieving **86.67%**), confirming robust generalization to real-world customer feedback.
+> **Why Both Sentiment Ensembles Exist:**  
+> - **Model B (`ensemble_voting_classifier.joblib`)** was selected as our **default interactive inference model** in `ml/predict.py` and `demo/app.py` because it achieves superior accuracy (**89.00%** on Gold $N=300$ and **91.21%** on Consensus $N=182$) by focusing on word-level tokens without sub-word character noise.  
+> - **Model A (`sentiment_voting_classifier.joblib`)** is preserved in `ml/models/` to maintain 100% data lineage and reproducibility for the 655,649 historical reviews scored during the initial global batch classification.
+
+> **Key Takeaway**: On clear human consensus reviews (where both independent human annotators agreed 100%), the Hero Ensemble reaches **91.21% agreement** on Sentiment Polarity and **94.12% agreement** on Operational Categories. Across the complete blind human benchmark ($N = 300$, loaded with sarcastic Bengali expressions, informal Banglish slang, and rating-text misclicks), the Hero Ensemble maintains **89.00% agreement** on Sentiment Polarity and **91.33% agreement** on Operational Categories, confirming robust generalization to real-world customer feedback.
 
 * Detailed confusion matrices, operator breakdowns, and linguistic disagreement analyses are documented in **[`gold_standard_evaluation_report.md`](data/gold_set/gold_standard_evaluation_report.md)** and **[`comprehensive_benchmark_table.md`](data/gold_set/comprehensive_benchmark_table.md)**.
 
@@ -487,10 +494,11 @@ telecom-Voice-of-Customer_intelligence/
 │
 ├── ml/                                       # Classical Machine Learning Engine
 │   ├── models/
-│   │   ├── sentiment_voting_classifier.joblib # 🏆 Production Sentiment Model (87.5% CV)
-│   │   ├── category_voting_classifier.joblib  # 🏷️ Production Category Model (87.4% CV)
-│   │   ├── primary_logistic_regression.joblib
-│   │   └── challenger_linearsvc.joblib
+│   │   ├── ensemble_voting_classifier.joblib  # 🏆 Hero Interactive Sentiment Model (89.0% Gold Acc; CLI & Demo)
+│   │   ├── sentiment_voting_classifier.joblib # 📦 Master Corpus Sentiment Classifier (87.4% CV; scored 655k reviews)
+│   │   ├── category_voting_classifier.joblib  # 🏷️ Production Category Model (87.3% CV; 5 classes)
+│   │   ├── primary_logistic_regression.joblib # Regularized linear baseline
+│   │   └── challenger_linearsvc.joblib        # Calibrated maximum-margin baseline
 │   └── predict.py                            # CLI dual prediction utility
 │
 ├── dl/                                       # Deep Learning & Neural Models (Colab GPU Suites)

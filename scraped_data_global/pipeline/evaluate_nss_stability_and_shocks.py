@@ -162,8 +162,9 @@ def main():
     mdf_recent = mdf[mdf["year"] >= 2020].copy()
     stability_recent = compute_stability_metrics(mdf_recent, "Recent High-Volume (Jan 2020 - Sep 2026)")
     
-    # Shock detection
-    shocks = detect_and_attribute_shocks(mdf, threshold=10.0)
+    # Shock detection: Strictly modern intra-era shocks (Jan 2020 - Sep 2026, 240 transitions)
+    # Discarding pre-2020 and boundary transitions (Dec 2019 -> Jan 2020)
+    shocks = detect_and_attribute_shocks(mdf_recent, threshold=10.0)
     shocks_df = pd.DataFrame(shocks)
     
     print("\n" + "=" * 80)
@@ -176,11 +177,12 @@ def main():
         print(f"{op:<15} | {s['mean_nss']:>7.2f}%  | {s['mom_volatility_rmssd']:>17.2f} pp  | {s['sentiment_stability_index_ssi']:>19.2f} / 100 | {s['iqr']:>7.2f} pp")
         
     print("\n" + "=" * 80)
-    print(f"HISTORICAL SIGNIFICANT JUMPS (|ΔNSS| >= 10.0 pp): {len(shocks)} TOTAL SHOCKS DETECTED")
+    print(f"MODERN INTRA-ERA SHOCKS (|ΔNSS| >= 10.0 pp, 2020-2026): {len(shocks)} TOTAL SHOCKS DETECTED")
     print("=" * 80)
-    recent_shocks = [s for s in shocks if int(s['current_month'].split('-')[0]) >= 2020]
-    print(f"  - 2020-2026 Modern Era: {len(recent_shocks)} shocks")
-    print(f"  - Pre-2020 Early Era: {len(shocks) - len(recent_shocks)} shocks\n")
+    for op in OPERATORS:
+        op_shocks = [s for s in shocks if s['operator'] == op]
+        print(f"  - {op}: {len(op_shocks)} shocks")
+    print()
     
     # Save outputs
     out_json = {
@@ -188,8 +190,7 @@ def main():
             "high_volume_era_2020_2026": stability_recent,
             "full_common_window_2016_2026": stability_all
         },
-        "significant_shocks_count": len(shocks),
-        "recent_shocks_count": len(recent_shocks),
+        "modern_intra_era_shocks_count": len(shocks),
         "shocks_data": shocks
     }
     

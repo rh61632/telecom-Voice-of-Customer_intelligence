@@ -7,7 +7,7 @@ df['review_date'] = pd.to_datetime(df['review_date'])
 df['year_month'] = df['review_date'].dt.to_period('M')
 
 # Modern Era: 2020-01 to 2026-09
-modern = df[(df['review_date'] >= '2020-01-01') & (df['review_date'] <= '2026-09-30')].copy()
+modern = df[(df['review_date'] >= '2020-01-01') & (df['review_date'] <= '2026-09-30 23:59:59')].copy()
 
 # Function to compute monthly NSS
 def get_monthly_nss(sub_df, sent_col='predicted_sentiment'):
@@ -123,7 +123,7 @@ for op in operators:
 shocks_df = pd.DataFrame(all_transitions)
 print(f"\nTotal Modern Shocks (|Delta NSS| >= 10): {len(shocks_df)}")
 print(shocks_df['direction'].value_counts())
-print("\nLeading Category Tally for All 37 Shocks:")
+print("\nLeading Category Tally for All 35 Shocks:")
 print(pd.crosstab(shocks_df['leading_cat'], shocks_df['direction'], margins=True))
 
 print(f"\nMedian Leading Domain Share: {shocks_df['leading_share'].median():.1f}%")
@@ -132,7 +132,7 @@ print(f"Leading Share IQR: [{shocks_df['leading_share'].quantile(0.25):.1f}%, {s
 # 3. Banglalink Spring 2024 App Version Breakdown
 bl_spring = df[(df['operator'] == 'Banglalink') & 
                (df['review_date'] >= '2024-03-01') & 
-               (df['review_date'] <= '2024-05-31')].copy()
+               (df['review_date'] <= '2024-05-31 23:59:59')].copy()
 bl_spring['month'] = bl_spring['review_date'].dt.strftime('%Y-%m')
 
 print("\n--- Banglalink Spring 2024 by Month and Top Versions ---")

@@ -5,7 +5,7 @@ df = pd.read_csv('scraped_data_global/classified/all_operators_common_duration_c
 df['review_date'] = pd.to_datetime(df['review_date'])
 df['year_month'] = df['review_date'].dt.to_period('M')
 
-m_sub = df[(df['review_date'] >= '2020-01-01') & (df['review_date'] <= '2026-09-30')]
+m_sub = df[(df['review_date'] >= '2020-01-01') & (df['review_date'] <= '2026-09-30 23:59:59')]
 monthly = m_sub.groupby(['operator', 'year_month'])['predicted_sentiment'].value_counts().unstack(fill_value=0)
 for col in ['Positive', 'Negative', 'Neutral']:
     if col not in monthly.columns: monthly[col] = 0
