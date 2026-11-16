@@ -89,12 +89,14 @@ Evaluated on the 4,500 curated ground-truth reviews across **Grameenphone**, **R
 
 ## 📂 Saved Artifacts in `dl/models/`
 
+* `bilstm_attention_model.pt`: Local Word + Char-CNN BiLSTM checkpoint with attention (used by `dl/predict_dl.py --model bilstm`)
 * `bilstm_sentiment_model.pt`: Trained PyTorch weights for Sentiment Analysis (1-layer word-only HybridBiLSTMAttention)
 * `bilstm_category_model.pt`: Trained PyTorch weights for Operational Comment Types (1-layer word-only HybridBiLSTMAttention)
 * `bilstm_vocab.json`: Portable JSON vocabulary dictionary (2,864 words, min_freq=2, unpickler-free)
 * `bilstm_vocab.joblib`: Serialized legacy vocabulary (preserved for backward compatibility)
 * `sent_le.joblib`: Sentiment label encoder (used by BiLSTM and MiniLM)
 * `cat_le.joblib`: Operational category label encoder (alphabetical class order, used by BiLSTM and MiniLM)
+* `minilm_transformer_head.pt`: PyTorch classification head weights for Multilingual MiniLM (used by `dl/predict_dl.py --model transformer`)
 * `minilm_sent_head.joblib`: Regularized MiniLM classification head (Sentiment)
 * `minilm_cat_head.joblib`: Regularized MiniLM classification head (Category)
 * `banglabert_finetuned_sentiment/`: Fine-tuned BUET BanglaBERT model for Sentiment (91.60% CV Acc, 88.40% Test)

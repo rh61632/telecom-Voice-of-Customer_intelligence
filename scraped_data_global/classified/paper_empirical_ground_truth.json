@@ -323,21 +323,21 @@
         "provenance": "dl/reports/results.txt:38-42"
       }
     },
-    "generated_at": "2026-11-11T19:04:23.515382+00:00",
+    "generated_at": "2026-11-16T17:07:01.445772+00:00",
     "live_cpu_inference_latency": {
       "category_voting_classifier": {
-        "ms_per_review": 11.692,
-        "reviews_per_sec": 85.5,
+        "ms_per_review": 6.382,
+        "reviews_per_sec": 156.7,
         "samples_timed": 50
       },
       "ensemble_voting_classifier": {
-        "ms_per_review": 12.178,
-        "reviews_per_sec": 82.1,
+        "ms_per_review": 5.629,
+        "reviews_per_sec": 177.6,
         "samples_timed": 50
       },
       "sentiment_voting_classifier": {
-        "ms_per_review": 6.078,
-        "reviews_per_sec": 164.5,
+        "ms_per_review": 5.342,
+        "reviews_per_sec": 187.2,
         "samples_timed": 50
       }
     },

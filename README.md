@@ -465,9 +465,11 @@ telecom-Voice-of-Customer_intelligence/
 │       └── comprehensive_benchmark_table.md  # Multi-model vs human benchmark matrix
 │
 ├── scripts/                                  # 🔬 Econometric Diagnostics & Analytical Scripts
+│   ├── audit_project_integrity.py            # Master project integrity auditor (validates 8 empirical modules)
 │   ├── analyze_surges.py                     # Review volume surge diagnostics & filtered RMSSD
 │   ├── audit_point1.py                       # Non-shock login leading counts & Fisher exact tests
 │   ├── audit_thresholds.py                   # Shock count sensitivity across thresholds & models
+│   ├── extract_shock_grievances.py           # Authenticated grievance quote extractor for major shocks
 │   └── check_version_bias.py                 # Banglalink build telemetry auditor (v11.8.0 / v11.9.1)
 │
 ├── scraped_data_global/            # 🌟 MASTER DATASET SUITE (N=661,160)
@@ -509,12 +511,15 @@ telecom-Voice-of-Customer_intelligence/
 │   ├── telecom_voc_banglabert_finetuning_colab.ipynb # 🇧🇩 BUET BanglaBERT Fine-Tuning Suite (91.6% Acc)
 │   ├── telecom_voc_master_unified_colab.ipynb # 🏆 Master Unified Colab: ALL ML + DL Models
 │   ├── finetune_banglabert.py                # Standalone end-to-end BanglaBERT fine-tuning CLI
+│   ├── predict_dl.py                         # Unified multi-architecture deep learning CLI inference
 │   ├── models/
 │   │   ├── banglabert_finetuned_sentiment/   # 🥇 Fine-Tuned Sentiment Model (91.60% CV Acc)
 │   │   ├── banglabert_finetuned_category/    # 🥈 Category Model (85.27% CV Acc)
 │   │   ├── bilstm_sentiment_model.pt         # Hybrid BiLSTM + Attention (Sentiment)
 │   │   ├── bilstm_category_model.pt          # Hybrid BiLSTM + Attention (Category)
-│   │   ├── bilstm_vocab.joblib               # Model vocabulary dictionary
+│   │   ├── bilstm_vocab.json                 # Portable vocabulary dictionary (2,864 tokens)
+│   │   ├── bilstm_vocab.joblib               # Legacy vocabulary dictionary
+│   │   ├── minilm_transformer_head.pt        # Multilingual MiniLM Head
 │   │   └── minilm_sent_head.joblib           # Multilingual MiniLM Head
 │   ├── reports/
 │   │   └── banglabert_finetuning_report.txt  # Detailed classification metrics
@@ -548,7 +553,9 @@ telecom-Voice-of-Customer_intelligence/
 git clone https://github.com/rh61632/telecom-Voice-of-Customer_intelligence.git
 cd telecom-Voice-of-Customer_intelligence
 
-source ml/.venv/bin/activate
+# Create and activate virtual environment:
+python -m venv .venv
+source .venv/bin/activate       # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -577,24 +584,30 @@ python scraped_data_global/pipeline/generate_global_visualizations.py
 python ml/predict.py --text "নেটওয়ার্ক খুব বাজে কিন্তু অফার ভালো"
 ```
 
-### 6. Interactive Google Colab Notebooks (GPU Training & Model Replication)
+### 6. Launch Interactive Web Demonstration (Gradio UI)
+```bash
+# Launch interactive local web application at http://localhost:7860:
+python demo/app.py
+```
+
+### 7. Interactive Google Colab Notebooks (GPU Training & Model Replication)
 For GPU training without local hardware:
 * **[BUET BanglaBERT Training Suite](dl/telecom_voc_banglabert_finetuning_colab.ipynb)**: End-to-end transformer fine-tuning achieving **91.60% Sentiment Accuracy**.
 * **[Master Unified Suite](dl/telecom_voc_master_unified_colab.ipynb)**: Benchmarks all 8 ML/DL architectures in a single unified workflow.
 
-### 7. Evaluate Inter-Annotator Reliability (Cohen's Kappa)
+### 8. Evaluate Inter-Annotator Reliability (Cohen's Kappa)
 ```bash
 # Computes raw agreement, Cohen's Kappa, and confusion matrices across annotators:
 python data/gold_set/calculate_agreement.py
 ```
 
-### 8. Run Automated Master Project Integrity Audit (8 Modules in <10s)
+### 9. Run Automated Master Project Integrity Audit (8 Modules in <10s)
 ```bash
 # Validates data provenance, NSS invariants, shock counts, statistical tests, and document caps:
 python scripts/audit_project_integrity.py
 ```
 
-### 9. Run Review Volume Surge & Filtered Volatility Diagnostics
+### 10. Run Review Volume Surge & Filtered Volatility Diagnostics
 ```bash
 # Computes raw vs surge-filtered RMSSD and reviewer-mix regression:
 python scripts/analyze_surges.py

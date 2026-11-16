@@ -242,45 +242,85 @@ def main():
         choices=[
             "bilstm",
             "transformer",
+            "bilstm-colab",
             "bilstm-colab-sentiment",
             "bilstm-colab-category",
+            "banglabert",
             "banglabert-sentiment",
             "banglabert-category",
         ],
-        default="bilstm-colab-category",
-        help="Deep learning model architecture to use for prediction",
+        default=None,
+        help="Deep learning model architecture to use for prediction (default: bilstm-colab)",
     )
-    parser.add_argument("--task", choices=["sentiment", "category"], default=None, help="Optional task override")
+    parser.add_argument(
+        "--task",
+        choices=["sentiment", "category"],
+        default=None,
+        help="Target task: 'sentiment' (3 classes) or 'category' (5 operational classes)",
+    )
     parser.add_argument("--text", "-t", type=str, help="Review text to classify")
     args = parser.parse_args()
 
+    # Determine resolved task and model
+    selected_model = args.model
+    selected_task = args.task
+
+    if selected_model is None:
+        if selected_task == "sentiment":
+            selected_model = "bilstm-colab-sentiment"
+        elif selected_task == "category":
+            selected_model = "bilstm-colab-category"
+        else:
+            selected_model = "bilstm-colab-category"
+            selected_task = "category"
+    elif selected_model == "bilstm-colab":
+        if selected_task == "sentiment":
+            selected_model = "bilstm-colab-sentiment"
+        else:
+            selected_model = "bilstm-colab-category"
+            selected_task = "category"
+    elif selected_model == "banglabert":
+        if selected_task == "category":
+            selected_model = "banglabert-category"
+        else:
+            selected_model = "banglabert-sentiment"
+            selected_task = "sentiment"
+    elif selected_model in ("bilstm", "transformer"):
+        if selected_task == "category":
+            print(f"Note: Local {selected_model} checkpoint is trained for Sentiment Analysis. Running Sentiment task.")
+        selected_task = "sentiment"
+    elif "-sentiment" in selected_model:
+        selected_task = "sentiment"
+    elif "-category" in selected_model:
+        selected_task = "category"
+
     # Dispatch model loader
-    if args.model == "bilstm":
+    if selected_model == "bilstm":
         model, vocab = load_bilstm()
         predict_fn = lambda t: predict_bilstm(t, model, vocab)
         model_display = "Local BiLSTM with Char-CNN (Sentiment)"
-    elif args.model == "transformer":
+    elif selected_model == "transformer":
         tokenizer, transformer, head = load_transformer()
         predict_fn = lambda t: predict_transformer(t, tokenizer, transformer, head)
         model_display = "Local Multilingual MiniLM Transformer Head (Sentiment)"
-    elif args.model == "bilstm-colab-sentiment":
+    elif selected_model == "bilstm-colab-sentiment":
         model, vocab, classes, task_name = load_bilstm_colab("sentiment")
         predict_fn = lambda t: predict_bilstm_colab(t, model, vocab, classes, task_name)
         model_display = "Colab Word-Only Hybrid BiLSTM + Attention (Sentiment)"
-    elif args.model == "bilstm-colab-category":
+    elif selected_model == "bilstm-colab-category":
         model, vocab, classes, task_name = load_bilstm_colab("category")
         predict_fn = lambda t: predict_bilstm_colab(t, model, vocab, classes, task_name)
         model_display = "Colab Word-Only Hybrid BiLSTM + Attention (Operational Category)"
-    elif args.model == "banglabert-sentiment":
+    elif selected_model == "banglabert-sentiment":
         tokenizer, model, id2label, task_name = load_banglabert("sentiment")
         predict_fn = lambda t: predict_banglabert(t, tokenizer, model, id2label, task_name)
         model_display = "BUET BanglaBERT Fine-Tuned (Sentiment)"
-    elif args.model == "banglabert-category":
+    elif selected_model == "banglabert-category":
         tokenizer, model, id2label, task_name = load_banglabert("category")
         predict_fn = lambda t: predict_banglabert(t, tokenizer, model, id2label, task_name)
         model_display = "BUET BanglaBERT Fine-Tuned (Operational Category)"
     else:
-        raise ValueError(f"Unknown model architecture: {args.model}")
+        raise ValueError(f"Unknown model architecture: {selected_model}")
 
     if args.text:
         res = predict_fn(args.text)

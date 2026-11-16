@@ -5,7 +5,7 @@ pattern = re.compile(r'(Grameenphone|Robi|Banglalink|operator_colors|brand_color
 found = set()
 
 for root, dirs, files in os.walk('.'):
-    if '.git' in root or 'node_modules' in root or 'brain' in root:
+    if any(skip in root for skip in ['.git', 'node_modules', 'brain', '.venv', '__pycache__']):
         continue
     for f in files:
         if f.endswith(('.py', '.md', '.json', '.txt')):
